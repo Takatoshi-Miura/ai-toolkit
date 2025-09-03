@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "mcp__mcp-google-drive__g_drive_copy_element",
+      "mcp__mcp-google-drive__g_drive_get_file_structure",
+      "mcp__mcp-google-drive__g_drive_read_file_part",
+      "mcp__mcp-google-drive__g_drive_insert_value",
+      "mcp__mcp-google-drive__g_drive_search_files",
+      "mcp__mcp-google-drive__g_drive_read_file"
     ],
     "deny": [],
     "ask": []
