@@ -7,7 +7,8 @@
       "mcp__mcp-google-drive__g_drive_read_file_part",
       "mcp__mcp-google-drive__g_drive_insert_value",
       "mcp__mcp-google-drive__g_drive_search_files",
-      "mcp__mcp-google-drive__g_drive_read_file"
+      "mcp__mcp-google-drive__g_drive_read_file",
+      "mcp__mcp-google-drive__g_drive_merge_cell"
     ],
     "deny": [],
     "ask": []
