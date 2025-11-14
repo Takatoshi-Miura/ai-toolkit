@@ -1,6 +1,6 @@
 ---
 allowed-tools: mcp__mcp-google-drive__*
-description: 振り返りスペシャリストとして月次レトロスペクティブを実施
+description: 振り返りスペシャリストとして週次レトロスペクティブを実施
 ---
 
 # 役割
