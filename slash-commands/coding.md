@@ -16,10 +16,22 @@ description: モバイルアプリ開発のスペシャリストとして実装�
 - **更新頻度**: 最低でも各Phase完了時には必ず更新する
 
 # 手順
-1. 2~7で読み取るmdファイルの内容を確認して全体像を把握し、TODOを漏れなく作成してください
+1. 以降の手順で読み取るmdファイルの内容を確認して全体像を把握し、TODOを漏れなく作成してください
     - TODOは `~/Documents/Git/ai-toolkit/templates/coding-task.md` に記載してください
     - 内容が既にあってもクリアして上書きしてOK
     - タスクをあなたの判断で省略せずに、全てのタスクを漏れなく記載してください
+2. ユーザーに質問して以下の情報を提供してもらう
+    - RedmineチケットURL
+    - ブランチ名で使用するprefix 例）continuous_capture
+    - 空コミットで使用するprefix 例）外貨対応
+    - PRテンプレートのパス
+    - PRマージ先のブランチ
+    - 概要設計書のURL
+    - テスト項目書のURL（シート名を指定可能）
+    - 実装したいこと・その他共有事項
+3. 提供してもらった情報を読み取る
+    - Redmineチケットは、~/Documents/Git/ai-toolkit/task/read-redmine-ticket.md の手順で読み取る
+    - スプレッドシートやGoogleドキュメントの場合は、 ~/Documents/Git/ai-toolkit/task/read-google-drive.md の手順で読み取る
 2. ~/Documents/Git/ai-toolkit/task/git-create-branch.md のタスクを実施し、実装ブランチを作成する
 3. ~/Documents/Git/ai-toolkit/task/git-create-empty-commit.md のタスクを実施し、空コミットを作成する
 4. ~/Documents/Git/ai-toolkit/task/git-push-current-branch.md のタスクを実行し、現在のブランチをプッシュしてください。

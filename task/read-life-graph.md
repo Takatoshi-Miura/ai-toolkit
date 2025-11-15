@@ -7,5 +7,4 @@ https://docs.google.com/spreadsheets/d/1WF58VNM0lGfN-YKqR2ySXU_EKQQCpyrV4da8WiVt
 - パートナーとの時間計測は2025年6月から開始しました
 
 # 手順
-1. mcp-google-driveのg_drive_get_file_structure ツールを使い、シート構造を把握してください
-2. mcp-google-driveのg_drive_read_file_part ツールを使い、「Googleカレンダー集計」シートのA~O列を全て読んでください
+1. ~/Documents/Git/ai-toolkit/task/read-google-drive.md の手順で上記リンクの「Googleカレンダー集計」シートのA~O列を全て読み込む
