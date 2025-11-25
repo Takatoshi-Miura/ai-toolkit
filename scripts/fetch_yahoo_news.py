@@ -27,11 +27,11 @@ def extract_news_from_html(html: str, category: str) -> List[Dict[str, str]]:
     soup = BeautifulSoup(html, 'html.parser')
     articles = []
 
-    # Yahoo ニュースの記事リンクを抽出
-    # 複数のパターンを試行して記事を取得
+    # Yahoo ニュースのピックアップ記事リンクを抽出
+    # '/pickup/' 形式のURLを取得する
 
-    # パターン1: <a> タグで href に '/articles/' が含まれるもの
-    links = soup.find_all('a', href=lambda x: x and '/articles/' in x)
+    # パターン1: <a> タグで href に '/pickup/' が含まれるもの
+    links = soup.find_all('a', href=lambda x: x and '/pickup/' in x)
 
     seen_urls = set()
 
@@ -62,7 +62,7 @@ def extract_news_from_html(html: str, category: str) -> List[Dict[str, str]]:
             title = link.get_text(strip=True)
 
         # 方法3: 親要素から取得
-        if not title or len(title) < 10:
+        if not title or len(title) < 5:
             parent = link.find_parent(['li', 'div', 'article'])
             if parent:
                 # 見出しタグを探す
@@ -71,7 +71,7 @@ def extract_news_from_html(html: str, category: str) -> List[Dict[str, str]]:
                     title = heading.get_text(strip=True)
 
         # タイトルが有効な場合のみ追加
-        if title and len(title) >= 10 and url.startswith('https://news.yahoo.co.jp/articles/'):
+        if title and len(title) >= 5 and url.startswith('https://news.yahoo.co.jp/pickup/'):
             articles.append({
                 'title': title,
                 'url': url
@@ -93,7 +93,7 @@ def extract_news_from_html(html: str, category: str) -> List[Dict[str, str]]:
 
             href = link.get('href', '')
 
-            if '/articles/' not in href:
+            if '/pickup/' not in href:
                 continue
 
             if href.startswith('/'):
@@ -107,7 +107,7 @@ def extract_news_from_html(html: str, category: str) -> List[Dict[str, str]]:
             # タイトル取得
             title = link.get_text(strip=True)
 
-            if not title or len(title) < 10:
+            if not title or len(title) < 5:
                 continue
 
             articles.append({
@@ -131,39 +131,37 @@ def generate_markdown(domestic_articles, world_articles, business_articles) -> s
 
 ---
 
-## 🏠 国内ニュース
+## 国内タイトル
 
 """
 
-    # 国内タイトル
-    for i, article in enumerate(domestic_articles[:8], 1):
-        md += f"{i}. {article['title']}\n"
+    # 国内タイトル（タイトルのみ）
+    for article in domestic_articles[:8]:
+        md += f"- {article['title']}\n"
 
-    md += "\n## 🌏 国際ニュース\n\n"
+    md += "\n## 国際タイトル\n\n"
 
-    # 国際タイトル
-    for i, article in enumerate(world_articles[:8], 1):
-        md += f"{i}. {article['title']}\n"
+    # 国際タイトル（タイトルのみ）
+    for article in world_articles[:8]:
+        md += f"- {article['title']}\n"
 
-    md += "\n## 💼 経済ニュース\n\n"
+    md += "\n## 経済タイトル\n\n"
 
-    # 経済タイトル
-    for i, article in enumerate(business_articles[:8], 1):
-        md += f"{i}. {article['title']}\n"
+    # 経済タイトル（タイトルのみ）
+    for article in business_articles[:8]:
+        md += f"- {article['title']}\n"
 
-    md += "\n---\n\n## 🔗 リンク集\n\n### 国内\n"
+    md += "\n## リンク集\n\n"
 
-    # リンク集
-    for i, article in enumerate(domestic_articles[:8], 1):
-        md += f"{i}. [{article['title']}]({article['url']})\n"
+    # リンク集（全24件をまとめて表示）
+    for article in domestic_articles[:8]:
+        md += f"- {article['url']}\n"
 
-    md += "\n### 国際\n"
-    for i, article in enumerate(world_articles[:8], 1):
-        md += f"{i}. [{article['title']}]({article['url']})\n"
+    for article in world_articles[:8]:
+        md += f"- {article['url']}\n"
 
-    md += "\n### 経済\n"
-    for i, article in enumerate(business_articles[:8], 1):
-        md += f"{i}. [{article['title']}]({article['url']})\n"
+    for article in business_articles[:8]:
+        md += f"- {article['url']}\n"
 
     md += "\n---\n\n"
     md += "*このIssueは GitHub Actions により自動生成されました（完全無料版）*\n"
