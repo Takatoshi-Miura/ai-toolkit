@@ -1,0 +1,45 @@
+name: Daily Yahoo News Fetcher
+
+on:
+  # 毎朝7時（JST）に実行 = UTC 22時（前日）
+  schedule:
+    - cron: '0 22 * * *'
+  # 手動実行も可能
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  fetch-news:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 lxml
+
+      - name: Fetch Yahoo News (完全無料版)
+        id: fetch_news
+        run: |
+          python scripts/fetch_yahoo_news.py
+
+      - name: Create GitHub Issue with News
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # 結果ファイルから Issue を作成
+          TITLE="📰 Yahoo ニュース - $(TZ=Asia/Tokyo date '+%Y年%m月%d日')"
+          gh issue create \
+            --title "$TITLE" \
+            --body-file news_output.md \
+            --label "news,automated"
