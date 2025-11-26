@@ -1,9 +1,9 @@
 name: Daily Yahoo News Fetcher
 
 on:
-  # 毎朝7時（JST）に実行 = UTC 22時（前日）
+  # 毎朝6時（JST）に実行 = UTC 21時（前日）
   schedule:
-    - cron: '0 22 * * *'
+    - cron: '0 21 * * *'
   # 手動実行も可能
   workflow_dispatch:
 
