@@ -14,4 +14,4 @@ https://docs.google.com/spreadsheets/d/1P519LiN0Tiu-NvWuYgek9jc4IfvXTzIukkVkuokA
 ・パートナーのおこづかいには病院代も含まれているため、一般家庭よりは高額になります
 
 # 手順
-1. ~/Documents/Git/ai-toolkit/task/read-google-drive.md の手順で上記リンクの「予算：給与負担」シートのA~G列、「マネープラン」シートのA~AN列を読み込む
+1. ~/Documents/Git/ai-toolkit/task/read-google-drive.md の手順で上記リンクの「予算_給与負担」シートのA~G列、「マネープラン」シートのA~AN列を読み込む
