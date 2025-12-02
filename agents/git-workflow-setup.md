@@ -1,6 +1,6 @@
 ---
 name: git-workflow-setup
-description: Git操作専門エージェント(ブランチ作成、空コミット、プッシュ、PR作成)
+description: Git操作専門エージェント(ブランチ作成、空コミット、プッシュ、PR作成、Redmineコメント追加)
 tools: Bash, Read, mcp__mcp-github__create_pull_request, mcp__mcp-redmine__*
 model: haiku
 ---

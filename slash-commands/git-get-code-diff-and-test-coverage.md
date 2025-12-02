@@ -22,3 +22,4 @@ automata-a/app/build/reports/jacoco/index.html
     - 表の列は「ファイル名」「カバレッジ%」としてください
     - テストファイルはリストに載せなくてOKです
     - Jetpack ComposeコンポーネントやFragment/View系のファイルもリストに載せなくてOKです
+5. 上記のタスクが完了したら、総評として本ファイルへのプロンプト修正提案を行う

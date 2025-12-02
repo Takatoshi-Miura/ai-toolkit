@@ -1,5 +1,5 @@
 ---
-allowed-tools: mcp__mcp-google-drive__*
+allowed-tools: mcp__mcp-google-drive__*, Task
 description: モバイルアプリ開発のスペシャリストとして実装タスクを実施
 ---
 
