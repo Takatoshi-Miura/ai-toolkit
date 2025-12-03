@@ -42,7 +42,13 @@ description: モバイルアプリ開発のスペシャリストとして実装�
         - merge_target_branch: PRのマージ先ブランチ（手順2で取得）
     - サブエージェント内で自動生成される情報:
         - implementation_description: 実装内容の英語説明（ticket_titleから自動生成）
+    - サブエージェントに実行させるタスク:
+        - ブランチ作成
+        - 空コミット作成
+        - ブランチプッシュ
+        - PR作成（ドラフト状態）
+        - **Redmineチケットへのコメント追加（PR URLを記載）** ← 必須
     - 出力: PR URL、作成したブランチ名
-5. ~/Documents/Git/ai-toolkit/task/coding_plan.md のタスクを実施し、実装計画を立てる
-6. ~/Documents/Git/ai-toolkit/task/coding_coding.md のタスクを実施し、実装を行う
+5. ~/Documents/Git/ai-toolkit/task/coding-plan.md のタスクを実施し、実装計画を立てる
+6. ~/Documents/Git/ai-toolkit/task/coding-implementation.md のタスクを実施し、実装を行う
 7. 上記のタスクが完了したら、総評として上記のmdファイルへのプロンプト修正提案を行う

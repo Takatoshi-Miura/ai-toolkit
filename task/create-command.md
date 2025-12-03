@@ -90,6 +90,12 @@
 - タスクファイル: `~/Documents/Git/ai-toolkit/templates/task-template.md`
 
 
+## テンプレート整合性チェック
+
+ファイル生成後、以下のタスクを実施してテンプレート整合性を確認すること：
+- `~/Documents/Git/ai-toolkit/task/command-validation.md`
+
+
 ## 命名規則
 
 - コマンド名: kebab-case（例: `create-command`, `review-code`）
