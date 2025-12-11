@@ -31,7 +31,6 @@ ai-toolkit/
 | `/coding` | モバイルアプリ開発のスペシャリストとして実装タスクを実施（Git ワークフロー・計画含む） |
 | `/create-command` | カスタムスラッシュコマンドとタスクファイルを対話形式で作成 |
 | `/create-mcp-server` | 要件に基づくMCPサーバを構築 |
-| `/create-release-handbook` | リリース作業のハンドブックを作成 |
 | `/fetch-news` | 最新ニュース記事を取得して提供 |
 | `/fetch-web-search-result` | Web検索でヒットした記事を取得して処理 |
 | `/generate-test-item` | 因子・水準組み合わせに基づくテスト項目書を作成 |
@@ -41,8 +40,9 @@ ai-toolkit/
 | `/inspire-action` | 退屈な時にユーザーの目標や記録を踏まえて次のアクションを提案 |
 | `/install-apk` | Android端末へのAPKインストールを支援 |
 | `/research-play-console-update` | Google Play Consoleの更新情報を収集・調査 |
-| `/retrospective-monthly` | 振り返りスペシャリストとして月次レトロスペクティブを実施（時間管理・家計・4つの人生カテゴリ分析） |
-| `/retrospective-weekly` | 振り返りスペシャリストとして週次レトロスペクティブを実施（時間管理・日次記録・週間目標分析） |
+| `/retrospective-monthly` | 振り返りスペシャリストとして月次レトロスペクティブを実施（時間管理・家計・日次記録分析） |
+| `/retrospective-weekly` | 振り返りスペシャリストとして週次レトロスペクティブを実施（時間管理・日次記録分析） |
+| `/retrospective-yearly` | 振り返りスペシャリストとして年次レトロスペクティブを実施（時間管理・家計・日次記録・年間目標達成度分析） |
 | `/review-document` | Google Drive文書/シート/スライド、またはGitHub PRを適切にレビュー |
 | `/solve-problem` | 問題解決のスペシャリストとして7フェーズの構造化された問題解決プロセスをガイド |
 | `/update-command` | 既存のカスタムスラッシュコマンドを対話形式で更新・改善 |
@@ -116,6 +116,15 @@ ai-toolkit/
 | `calendar-register-schedule` | イベントタイプに基づく色分けでGoogleカレンダーにイベントを登録(仕事・アイデア・生活・スキル・コード・本など) |
 | `install-apk` | デバイス選択とエラーハンドリング付きで接続されたAndroid端末にAPKをインストール |
 | `write-letter-of-gratitude` | 文書構造と条件に基づいて感謝の手紙のドラフトを作成 |
+
+### 振り返り (5)
+| タスク名 | 説明 |
+|---------|------|
+| `retrospective-common` | 振り返りタスク共通の前提条件（ユーザープロフィール・世帯状況・管理カテゴリ） |
+| `retrospective-analyze-lifegraph` | LifeGraphデータを読み取り、時間の使い方を分析してレポート作成 |
+| `retrospective-analyze-money` | 金銭管理データを読み取り、収支・予算・住宅ローン試算を分析（月次・年次） |
+| `retrospective-analyze-daily` | 日々の振り返りノートを読み取り、カテゴリ別に分析してレポート作成 |
+| `retrospective-analyze-yearly-goals` | 年間目標の達成度を分析し、カテゴリ別の成長と課題をレポート作成（年次のみ） |
 
 ## 使用方法
 

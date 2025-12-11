@@ -8,16 +8,12 @@
 ### Phase 1: 対象コマンドの選択
 
 1. 既存のスラッシュコマンド一覧を表示する
-   - `~/Documents/Git/ai-toolkit/slash-commands/` 配下のファイルをGlobで取得
-   - 各ファイルを読み込み、descriptionを抽出して一覧表示
+   - `~/Documents/Git/ai-toolkit/README.md` を読み込み、「## スラッシュコマンド一覧」セクションの表を抽出して表示する
 
    ```
    ## 既存コマンド一覧
 
-   | No. | コマンド名 | 説明 |
-   |-----|-----------|------|
-   | 1 | {command_name} | {description} |
-   | 2 | ... | ... |
+   （README.mdから抽出した表を表示）
 
    更新したいコマンドの番号またはコマンド名を入力してください。
    ```
@@ -138,7 +134,12 @@
 
 ### Phase 6: 完了
 
-11. 更新完了の報告をする
+11. README.mdのスラッシュコマンド一覧を更新する
+    - `~/Documents/Git/ai-toolkit/README.md` を読み込む
+    - 「## スラッシュコマンド一覧」セクション内の該当コマンドの説明を更新する
+    - descriptionが変更された場合のみ更新を行う
+
+12. 更新完了の報告をする
 
     ```
     ## 更新完了
@@ -146,6 +147,7 @@
     以下のファイルを更新しました：
     - slash-commands/{command_name}.md
     - task/{command_name}.md
+    - README.md（descriptionが変更された場合）
 
     ### コマンドの使用方法
     `/{command_name}` で呼び出せます。
