@@ -57,7 +57,7 @@ model: haiku
 ### 4. PR作成
 - **PRテンプレート読み込み**:
   - Readツールで `pr_template_path` のファイル内容を読み取る
-  - テンプレート内の `#xxxxx` を `https://redmine.work2.jp/issues/[ticket_number]` に置換
+  - テンプレート内の `#xxxxx` をチケットURLに置換
 
 - **PR作成**:
   - `mcp__mcp-github__create_pull_request` ツールを使用
