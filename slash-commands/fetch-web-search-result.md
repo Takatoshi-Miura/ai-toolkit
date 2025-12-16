@@ -11,4 +11,3 @@ description: Web検索でヒットした記事を取得する
 # 手順
 1. 2で読み取るmdファイルの内容を確認して全体像を把握し、TODOを作成してください
 2. ~/Documents/Git/ai-toolkit/task/fetch-web-search.md のタスクを実施する
-3. 上記のタスクが完了したら、総評として上記のmdファイルへのプロンプト修正提案を行う
