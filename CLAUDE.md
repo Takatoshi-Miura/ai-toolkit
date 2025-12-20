@@ -6,14 +6,15 @@
 
 ```
 ai-toolkit/
-├── slash-commands/   # カスタムスラッシュコマンド定義
-├── agents/           # エージェント設定・定義
-├── task/             # タスク定義ファイル（スラッシュコマンドから参照）
-├── templates/        # 定型テンプレート・応答フォーマット
-├── rules/            # ルールファイル・ポリシー
-├── output-style/     # 出力スタイル設定
-├── scripts/          # 自動化スクリプト（Python等）
-└── .github/workflows/ # GitHub Actions ワークフロー（定期実行タスク用）
+├── .claude/           # Claude Code ローカル設定（settings.local.json等）
+├── .github/workflows/ # GitHub Actions ワークフロー（定期実行タスク用）
+├── agents/            # Task tool用サブエージェント定義
+├── output-style/      # 出力スタイル設定（キャラクター別応答スタイル）
+├── rules/             # コード生成ルール・ポリシー
+├── scripts/           # 自動化スクリプト（Python等）
+├── slash-commands/    # カスタムスラッシュコマンド定義
+├── task/              # タスク定義ファイル（スラッシュコマンドから参照）
+└── templates/         # テンプレート・リファレンス資料
 ```
 
 ## ファイル命名規則
@@ -26,4 +27,6 @@ ai-toolkit/
 ## 開発時の注意事項
 
 - スラッシュコマンドは日本語で記述することが多い
-- スラッシュコマンド定義内からタスクファイルのファイルパスを参照する形式をとっている
+- スラッシュコマンド定義内から`task/`のファイルパスを参照する形式をとっている
+- 新しいスラッシュコマンドを作成する際は`templates/slash-command-template.md`を参照
+- 新しいタスクを作成する際は`templates/task-template.md`を参照

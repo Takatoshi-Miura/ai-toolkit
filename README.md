@@ -28,9 +28,11 @@ ai-toolkit/
 |-----------|------|
 | `/add-mcp-tool` | 既存のMCPサーバに新しいMCPツールを追加 |
 | `/auto-task` | ユーザーの要望を分析し、適切なタスクを自動選択して実行 |
+| `/check-drive-template-updates` | Google Driveのファイルの変更有無を日付指定で確認 |
 | `/coding` | モバイルアプリ開発のスペシャリストとして実装タスクを実施（Git ワークフロー・計画含む） |
 | `/create-command` | カスタムスラッシュコマンドとタスクファイルを対話形式で作成 |
 | `/create-mcp-server` | 要件に基づくMCPサーバを構築 |
+| `/create-todo-issue` | 開発中に思いついたTODOをGitHub Issueとして素早く登録 |
 | `/fetch-news` | 最新ニュース記事を取得して提供 |
 | `/fetch-web-search-result` | Web検索でヒットした記事を取得して処理 |
 | `/generate-test-item` | 因子・水準組み合わせに基づくテスト項目書を作成 |
@@ -46,13 +48,15 @@ ai-toolkit/
 | `/review-document` | Google Drive文書/シート/スライド、またはGitHub PRを適切にレビュー |
 | `/solve-problem` | 問題解決のスペシャリストとして7フェーズの構造化された問題解決プロセスをガイド |
 | `/update-command` | 既存のカスタムスラッシュコマンドを対話形式で更新・改善 |
+| `/update-mcp-tool` | 既存のMCPサーバー内のMCPツールを修正・改善 |
 | `/write-letter-of-gratitude` | 手紙作成のスペシャリストとして、感謝の手紙のドラフト作成を支援 |
 
 ## タスクファイル一覧
 
-### Git & バージョン管理 (6)
+### Git & バージョン管理 (7)
 | タスク名 | 説明 |
 |---------|------|
+| `create-todo-issue` | 開発中のTODOを1回の質問で収集し、テンプレートに従ってGitHub Issueを作成 |
 | `git-create-branch` | [prefix]/[ticket]/[implementation-name]形式でfeatureブランチを作成 |
 | `git-create-empty-commit` | [prefix]/[title] refs #[ticket]形式で空コミットを作成 |
 | `git-create-pull-request` | テンプレート付きドラフトPRを作成し、Redmine参照を置換してPRリンクをチケットに追加 |
@@ -83,8 +87,8 @@ ai-toolkit/
 | タスク名 | 説明 |
 |---------|------|
 | `read-google-drive` | シート/タブ指定オプション付きでGoogle Driveスプレッドシートや文書を読み取り |
-| `read-life-graph` | LifeGraphスプレッドシートのGoogleカレンダー集計シート(A-O列)を読み取り |
-| `read-money-sheet` | 予算・財務計画シートを含む家計管理スプレッドシート(A-AN列)を読み取り |
+| `read-life-graph` | LifeGraphスプレッドシートのGoogleカレンダー集計シートを読み取り |
+| `read-money-sheet` | 予算・マネープランシートを含む家計管理スプレッドシートを読み取り |
 | `read-note` | 年間目標と当月進捗タブを含むユーザーのノート文書を読み取り |
 | `read-redmine-ticket` | 提供されたURLからmcp-redmineツールを使用してRedmineチケット詳細を読み取り |
 
@@ -95,11 +99,12 @@ ai-toolkit/
 | `generate-test-plan` | 機能仕様とテスト観点を分析してテスト計画を自動生成し、スプレッドシート更新 |
 | `review-document` | フレームワーク固有のレビュー観点でGitHub PRまたはGoogle Drive文書をレビュー |
 
-### MCP開発 (2)
+### MCP開発 (3)
 | タスク名 | 説明 |
 |---------|------|
 | `add-mcp-tool` | 要件分析と実装を通じて既存MCPサーバに新しいツールを追加 |
 | `create-mcp-server` | MCP-GoogleDriveパターンに従ってゼロから完全なMCPサーバを構築 |
+| `update-mcp-tool` | 既存MCPツールの現状分析、後方互換性確認を経て修正・改善を実施 |
 
 ### 情報収集 (4)
 | タスク名 | 説明 |
@@ -120,7 +125,7 @@ ai-toolkit/
 ### 振り返り (5)
 | タスク名 | 説明 |
 |---------|------|
-| `retrospective-common` | 振り返りタスク共通の前提条件（ユーザープロフィール・世帯状況・管理カテゴリ） |
+| `retrospective-common` | 振り返りタスク共通の前提条件 |
 | `retrospective-analyze-lifegraph` | LifeGraphデータを読み取り、時間の使い方を分析してレポート作成 |
 | `retrospective-analyze-money` | 金銭管理データを読み取り、収支・予算・住宅ローン試算を分析（月次・年次） |
 | `retrospective-analyze-daily` | 日々の振り返りノートを読み取り、カテゴリ別に分析してレポート作成 |
