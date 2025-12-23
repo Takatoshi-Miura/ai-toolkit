@@ -28,7 +28,7 @@ ai-toolkit/
 |-----------|------|
 | `/add-mcp-tool` | 既存のMCPサーバに新しいMCPツールを追加 |
 | `/auto-task` | ユーザーの要望を分析し、適切なタスクを自動選択して実行 |
-| `/check-drive-template-updates` | Google Driveのファイルの変更有無を日付指定で確認 |
+| `/check-drive-document-updates` | Google Driveのファイルの変更有無を日付指定で確認 |
 | `/coding` | モバイルアプリ開発のスペシャリストとして実装タスクを実施（Git ワークフロー・計画含む） |
 | `/create-command` | カスタムスラッシュコマンドとタスクファイルを対話形式で作成 |
 | `/create-mcp-server` | 要件に基づくMCPサーバを構築 |
