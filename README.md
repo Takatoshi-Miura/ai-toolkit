@@ -53,25 +53,23 @@ ai-toolkit/
 
 ## タスクファイル一覧
 
-### Git & バージョン管理 (7)
+タスクファイルは、スラッシュコマンドから参照される再利用可能な手順定義です。
+1つのスラッシュコマンドからのみ参照されるタスクは、コマンドファイルに統合されています。
+
+### Git & バージョン管理 (4)
 | タスク名 | 説明 |
 |---------|------|
-| `create-todo-issue` | 開発中のTODOを1回の質問で収集し、テンプレートに従ってGitHub Issueを作成 |
 | `git-create-branch` | [prefix]/[ticket]/[implementation-name]形式でfeatureブランチを作成 |
 | `git-create-empty-commit` | [prefix]/[title] refs #[ticket]形式で空コミットを作成 |
 | `git-create-pull-request` | テンプレート付きドラフトPRを作成し、Redmine参照を置換してPRリンクをチケットに追加 |
-| `git-force-push` | ブランチ名確認とユーザー承認後、現在のブランチを強制プッシュ |
-| `git-get-code-diff` | 指定期間とユーザーのコミット情報と変更ファイルを抽出 |
 | `git-push-current-branch` | `git push -u origin <branch_name>`で現在のブランチをリモートにプッシュ |
 
-### コーディング & 実装 (5)
+### コーディング & 実装 (3)
 | タスク名 | 説明 |
 |---------|------|
 | `coding-english-resources` | スプレッドシートの英語テキストをアプリの言語リソースファイルに追加（日本語ファイルの順序に合わせる） |
 | `coding-implementation` | 計画に従って実装、ビルド、テスト作成（必要に応じて）、動作確認 |
 | `coding-plan` | Planサブエージェントを使用してコード分析と実現可能性評価を含む実装計画を作成 |
-| `create-command` | 対話形式でカスタムスラッシュコマンドを設計、ファイル生成、検証 |
-| `update-command` | 既存スラッシュコマンドの現状分析と変更適用、検証を実施 |
 
 ### 問題解決 (6)
 | タスク名 | 説明 |
@@ -92,35 +90,21 @@ ai-toolkit/
 | `read-note` | 年間目標と当月進捗タブを含むユーザーのノート文書を読み取り |
 | `read-redmine-ticket` | 提供されたURLからmcp-redmineツールを使用してRedmineチケット詳細を読み取り |
 
-### テスト & 品質保証 (3)
+### テスト & 品質保証 (1)
 | タスク名 | 説明 |
 |---------|------|
 | `command-validation` | kebab-case命名規則に準拠しているかスラッシュコマンドとタスクファイルをチェック |
-| `generate-test-plan` | 機能仕様とテスト観点を分析してテスト計画を自動生成し、スプレッドシート更新 |
-| `review-document` | フレームワーク固有のレビュー観点でGitHub PRまたはGoogle Drive文書をレビュー |
 
-### MCP開発 (3)
+### データ読み取り補助 (2)
 | タスク名 | 説明 |
 |---------|------|
-| `add-mcp-tool` | 要件分析と実装を通じて既存MCPサーバに新しいツールを追加 |
-| `create-mcp-server` | MCP-GoogleDriveパターンに従ってゼロから完全なMCPサーバを構築 |
-| `update-mcp-tool` | 既存MCPツールの現状分析、後方互換性確認を経て修正・改善を実施 |
-
-### 情報収集 (4)
-| タスク名 | 説明 |
-|---------|------|
-| `fetch-web-search` | Web検索を実行し、タイトルとリンク付きで上位10件の記事結果を取得 |
-| `fetch-yahoo-news` | Yahoo News(国内・国際・ビジネス)から最新ニュースを各8記事取得 |
 | `inspire-action` | 4カテゴリから次のアクションを提案: 目標達成・業務効率・リフレッシュ・余暇(1時間圏内) |
-| `research-play-console-update` | automata-androidアプリに影響するPlay Consoleの過去30日間の更新を調査 |
+| `write-letter-of-gratitude` | 文書構造と条件に基づいて感謝の手紙のドラフトを作成 |
 
-### 自動化 & その他 (4)
+### 自動化 & その他 (1)
 | タスク名 | 説明 |
 |---------|------|
-| `auto-task` | ユーザーリクエストを分析し、単一確認で適切なタスク/コマンドを自動選択 |
 | `calendar-register-schedule` | イベントタイプに基づく色分けでGoogleカレンダーにイベントを登録(仕事・アイデア・生活・スキル・コード・本など) |
-| `install-apk` | デバイス選択とエラーハンドリング付きで接続されたAndroid端末にAPKをインストール |
-| `write-letter-of-gratitude` | 文書構造と条件に基づいて感謝の手紙のドラフトを作成 |
 
 ### 振り返り (5)
 | タスク名 | 説明 |
