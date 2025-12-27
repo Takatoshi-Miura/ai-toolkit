@@ -39,9 +39,7 @@ PCに接続されたAndroid端末にAPKファイルをインストールする�
    - パス: `/Users/takatoshi.miura/Downloads/app-develop-debugOptimized.apk`
 2. ファイルが存在するか確認する（`ls -la` でファイル情報を取得）
 3. **ファイルが存在する場合**:
-   - ファイル名、サイズ、更新日時をユーザーに表示
-   - 「このAPKをインストールしますか？」と確認
-   - 別のAPKを使用したい場合はパスを指定してもらう
+   - 「Step 4: インストールの実行」に進む
 4. **ファイルが存在しない場合**:
    - `/Users/takatoshi.miura/Downloads/` 内の `.apk` ファイルを検索して一覧表示
    - 見つかった場合は選択させる

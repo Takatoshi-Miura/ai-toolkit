@@ -90,6 +90,12 @@ ai-toolkit/
 | `read-note` | 年間目標と当月進捗タブを含むユーザーのノート文書を読み取り |
 | `read-redmine-ticket` | 提供されたURLからmcp-redmineツールを使用してRedmineチケット詳細を読み取り |
 
+### レビュー (2)
+| タスク名 | 説明 |
+|---------|------|
+| `review-pull-request` | GitHub PRをコード品質・設計・セキュリティ等の観点でレビュー |
+| `review-google-drive` | Google Drive資料（ドキュメント/スプレッドシート/スライド）をレビュー |
+
 ### テスト & 品質保証 (1)
 | タスク名 | 説明 |
 |---------|------|
