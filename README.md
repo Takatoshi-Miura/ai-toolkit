@@ -42,6 +42,7 @@ ai-toolkit/
 | `/inspire-action` | 退屈な時にユーザーの目標や記録を踏まえて次のアクションを提案 |
 | `/install-apk` | Android端末へのAPKインストールを支援 |
 | `/research-play-console-update` | Google Play Consoleの更新情報を収集・調査 |
+| `/retrospective-chipoyo-money` | ちいぽよの金銭管理スペシャリストとして月次の収支分析とアドバイスを実施 |
 | `/retrospective-monthly` | 振り返りスペシャリストとして月次レトロスペクティブを実施（時間管理・家計・日次記録分析） |
 | `/retrospective-weekly` | 振り返りスペシャリストとして週次レトロスペクティブを実施（時間管理・日次記録分析） |
 | `/retrospective-yearly` | 振り返りスペシャリストとして年次レトロスペクティブを実施（時間管理・家計・日次記録・年間目標達成度分析） |
@@ -112,10 +113,11 @@ ai-toolkit/
 |---------|------|
 | `calendar-register-schedule` | イベントタイプに基づく色分けでGoogleカレンダーにイベントを登録(仕事・アイデア・生活・スキル・コード・本など) |
 
-### 振り返り (5)
+### 振り返り (6)
 | タスク名 | 説明 |
 |---------|------|
 | `retrospective-common` | 振り返りタスク共通の前提条件 |
+| `retrospective-analyze-chipoyo-money` | ちいぽよの金銭管理データを読み取り、月次の収支を分析してレポート作成 |
 | `retrospective-analyze-lifegraph` | LifeGraphデータを読み取り、時間の使い方を分析してレポート作成 |
 | `retrospective-analyze-money` | 金銭管理データを読み取り、収支・予算・住宅ローン試算を分析（月次・年次） |
 | `retrospective-analyze-daily` | 日々の振り返りノートを読み取り、カテゴリ別に分析してレポート作成 |
