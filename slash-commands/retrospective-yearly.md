@@ -14,8 +14,5 @@ description: 振り返りスペシャリストとして年次レトロスペク�
 2. ~/Downloads ディレクトリに「yyyyMMdd-yearly-retrospective.md」(yyyyMMddには今日の日付を入れる)を作成する
 3. ~/Documents/Git/ai-toolkit/task/retrospective-analyze-lifegraph.md のタスクを実施し、結果をmdファイルに記載する（期間: 年次）
 4. ~/Documents/Git/ai-toolkit/task/retrospective-analyze-money.md のタスクを実施し、結果をmdファイルに記載する（期間: 年次、12ヶ月分を分析）
-5. ~/Documents/Git/ai-toolkit/task/retrospective-analyze-daily.md のタスクを実施する（期間: 年次）。結果をmdファイルに記載する
-6. ~/Documents/Git/ai-toolkit/task/retrospective-analyze-yearly-goals.md のタスクを実施し、結果をmdファイルに記載する
-7. 来年のカテゴリごとの年間目標の提案をmdファイルに記載する
-8. 総評として1年間の総合的なまとめをmdファイルに記載する
-9. 上記のタスクが完了したら、プロンプト修正提案を行う
+5. 総評として1年間の総合的なまとめをmdファイルに記載する
+6. 上記のタスクが完了したら、プロンプト修正提案を行う
