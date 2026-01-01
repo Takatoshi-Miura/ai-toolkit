@@ -42,9 +42,11 @@ ai-toolkit/
 | `/install-apk` | Android端末へのAPKインストールを支援 |
 | `/research-play-console-update` | Google Play Consoleの更新情報を収集・調査 |
 | `/retrospective-chipoyo-money` | ちいぽよの金銭管理スペシャリストとして月次の収支分析とアドバイスを実施 |
+| `/retrospective-claude-usage-daily` | Claude Codeセッション分析のスペシャリストとして前日の活動履歴をレポート化 |
 | `/retrospective-monthly` | 振り返りスペシャリストとして月次レトロスペクティブを実施（時間管理・家計・日次記録分析） |
 | `/retrospective-weekly` | 振り返りスペシャリストとして週次レトロスペクティブを実施（時間管理・日次記録分析） |
 | `/retrospective-yearly` | 振り返りスペシャリストとして年次レトロスペクティブを実施（時間管理・家計・日次記録・年間目標達成度分析） |
+| `/review-competency-daily` | コンピテンシー評価のスペシャリストとして前日のClaude Code活動からコンピテンシー評価につながる行動を抽出 |
 | `/review-document` | Google Drive文書/シート/スライド、またはGitHub PRを適切にレビュー |
 | `/solve-problem` | 問題解決のスペシャリストとして7フェーズの構造化された問題解決プロセスをガイド |
 | `/update-command` | 既存のカスタムスラッシュコマンドを対話形式で更新・改善 |
@@ -89,9 +91,10 @@ ai-toolkit/
 | `read-note` | 年間目標と当月進捗タブを含むユーザーのノート文書を読み取り |
 | `read-redmine-ticket` | 提供されたURLからmcp-redmineツールを使用してRedmineチケット詳細を読み取り |
 
-### レビュー (2)
+### レビュー (3)
 | タスク名 | 説明 |
 |---------|------|
+| `review-competency-daily` | 前日のClaude Code使用履歴をコンピテンシー評価基準に照らし合わせ、エビデンスをレポート化 |
 | `review-pull-request` | GitHub PRをコード品質・設計・セキュリティ等の観点でレビュー |
 | `review-google-drive` | Google Drive資料（ドキュメント/スプレッドシート/スライド）をレビュー |
 
@@ -110,7 +113,7 @@ ai-toolkit/
 |---------|------|
 | `calendar-register-schedule` | イベントタイプに基づく色分けでGoogleカレンダーにイベントを登録(仕事・アイデア・生活・スキル・コード・本など) |
 
-### 振り返り (6)
+### 振り返り (7)
 | タスク名 | 説明 |
 |---------|------|
 | `retrospective-common` | 振り返りタスク共通の前提条件 |
@@ -119,6 +122,7 @@ ai-toolkit/
 | `retrospective-analyze-money` | 金銭管理データを読み取り、収支・予算・住宅ローン試算を分析（月次・年次） |
 | `retrospective-analyze-daily` | 日々の振り返りノートを読み取り、カテゴリ別に分析してレポート作成 |
 | `retrospective-analyze-yearly-goals` | 年間目標の達成度を分析し、カテゴリ別の成長と課題をレポート作成（年次のみ） |
+| `retrospective-claude-usage-daily` | history.jsonlから前日のClaude Code利用状況を抽出・分析してレポート作成 |
 
 ## 使用方法
 
