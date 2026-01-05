@@ -46,7 +46,7 @@ ai-toolkit/
 | `/retrospective-monthly` | 振り返りスペシャリストとして月次レトロスペクティブを実施（時間管理・家計・日次記録分析） |
 | `/retrospective-weekly` | 振り返りスペシャリストとして週次レトロスペクティブを実施（時間管理・日次記録分析） |
 | `/retrospective-yearly` | 振り返りスペシャリストとして年次レトロスペクティブを実施（時間管理・家計・日次記録・年間目標達成度分析） |
-| `/review-competency-daily` | コンピテンシー評価のスペシャリストとして前日のClaude Code活動からコンピテンシー評価につながる行動を抽出 |
+| `/retrospective-competency` | コンピテンシー評価のスペシャリストとして前日の活動とノート記録からコンピテンシー評価のエビデンスを抽出 |
 | `/review-document` | Google Drive文書/シート/スライド、またはGitHub PRを適切にレビュー |
 | `/solve-problem` | 問題解決のスペシャリストとして7フェーズの構造化された問題解決プロセスをガイド |
 | `/update-command` | 既存のカスタムスラッシュコマンドを対話形式で更新・改善 |
@@ -94,7 +94,7 @@ ai-toolkit/
 ### レビュー (3)
 | タスク名 | 説明 |
 |---------|------|
-| `review-competency-daily` | 前日のClaude Code使用履歴をコンピテンシー評価基準に照らし合わせ、エビデンスをレポート化 |
+| `retrospective-competency` | 前日のClaude Code使用履歴とノート記録をコンピテンシー評価基準に照らし合わせ、エビデンスをレポート化 |
 | `review-pull-request` | GitHub PRをコード品質・設計・セキュリティ等の観点でレビュー |
 | `review-google-drive` | Google Drive資料（ドキュメント/スプレッドシート/スライド）をレビュー |
 
