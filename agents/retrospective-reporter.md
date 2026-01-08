@@ -1,7 +1,7 @@
 ---
 name: retrospective-reporter
 description: 指定された資料を読み取り、分析観点に従ってレポートを作成する汎用レポーター
-tools: mcp__mcp-google-drive__*, Read
+tools: mcp__mcp-google-drive__g_drive_read_file, mcp__mcp-google-drive__g_drive_read_file_part, mcp__mcp-google-drive__g_drive_get_file_structure, Read
 model: sonnet
 ---
 
@@ -43,8 +43,10 @@ model: sonnet
 data_source に従ってデータを取得する。
 
 **Google Driveファイルの場合:**
-- g_drive_read_file または g_drive_read_file_part を使用
+- `mcp__mcp-google-drive__g_drive_read_file` または `mcp__mcp-google-drive__g_drive_read_file_part` を使用
 - 指定された範囲・シート・タブを正確に読み取る
+- スプレッドシートの場合: `fileType: "sheets"`, `range: "シート名!A:Z"` 形式で指定
+- ドキュメントの場合: `fileType: "docs"`, `tabId` または省略で全体を読み取り
 
 ### 3. データ分析
 
