@@ -1,5 +1,5 @@
 ---
-allowed-tools: mcp__mcp-google-drive__*, mcp__mcp-github__*
+allowed-tools: mcp__mcp-google-drive__*, Bash
 description: レビューのスペシャリストとしてGoogle Drive資料またはGitHub PRのレビューを実施
 ---
 

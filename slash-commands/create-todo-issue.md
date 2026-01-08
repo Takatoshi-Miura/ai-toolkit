@@ -1,5 +1,5 @@
 ---
-allowed-tools: Read, mcp__mcp-github__create_issue
+allowed-tools: Read, Bash
 description: 開発中に思いついたTODOをGitHub Issueとして素早く登録する
 ---
 
@@ -52,11 +52,16 @@ description: 開発中に思いついたTODOをGitHub Issueとして素早く登
     - 任意項目が未入力の場合は該当セクションを省略
     - AIが内容を補完・整形してもよい（ただし元の意図を変えない）
 
-4. `mcp__mcp-github__create_issue` を使用してIssueを作成する
-    - owner: リポジトリのオーナー
-    - repo: リポジトリ名
+4. `gh issue create` コマンドを使用してIssueを作成する
+    ```bash
+    gh issue create --repo owner/repo --title "タイトル" --body "$(cat <<'EOF'
+    本文をここに記載
+    EOF
+    )"
+    ```
+    - owner/repo: ユーザーが指定したリポジトリ
     - title: ユーザーが指定したタイトル
-    - body: テンプレートから生成した本文
+    - body: テンプレートから生成した本文（HEREDOCで複数行対応）
 
 ## Phase 3: 結果報告
 

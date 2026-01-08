@@ -1,5 +1,5 @@
 ---
-allowed-tools: mcp__mcp-github__*, Bash, Read
+allowed-tools: Bash, Read
 description: 指定期間内のユーザーのコード変更ファイル取得とコードカバレッジを計測
 ---
 

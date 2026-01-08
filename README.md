@@ -31,14 +31,26 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 |---------|---------|------|
 | データ読み取り | `read-google-drive-skill` | Google Driveファイル（スプレッドシート/ドキュメント/スライド）を適切に読み取り。シート名・タブ名・ページ番号指定時は構造確認後に部分読み取り |
 | レビュー | `review-document-skill` | GitHub PRまたはGoogle Drive資料を自動レビュー。URLとレビュー依頼キーワードで自動発動 |
+| GitHub操作 | `github-cli-skill` | GitHub CLI (gh) を使った Issue/PR 操作ガイド。MCP を使わずコマンドで直接操作するためコンテキスト節約 |
+
+## サブエージェント一覧
+
+サブエージェントは、Taskツールから呼び出される専門特化したエージェントです。
+独立したコンテキスト窓を持ち、特定のタスクに集中して処理を行います。
+
+| カテゴリ | エージェント名 | 説明 | モデル |
+|---------|--------------|------|--------|
+| Git操作 | `git-workflow-setup` | ブランチ作成、空コミット、プッシュ、PR作成、Redmineコメント追加を自動実行 | haiku |
+| コーディング | `code-implementer` | 承認された実装計画に従ってコードを実装、ビルド確認まで実施 | sonnet |
+| テスト | `test-writer` | テスト計画の作成、テストコード実装、テスト実行を担当 | haiku |
+| テスト | `test-item-generator` | 因子・水準組み合わせに基づくテスト項目書をスプレッドシートに作成 | - |
+| 振り返り | `retrospective-reporter` | 指定された資料を読み取り、分析観点に従ってレポートを作成する汎用レポーター | sonnet |
 
 ## スラッシュコマンド一覧
 
 | カテゴリ | コマンド名 | 説明 |
 |---------|-----------|------|
-| 振り返り | `/retrospective-weekly` | 振り返りスペシャリストとして週次レトロスペクティブを実施（時間管理・日次記録分析） |
-| 振り返り | `/retrospective-monthly` | 振り返りスペシャリストとして月次レトロスペクティブを実施（時間管理・家計・日次記録分析） |
-| 振り返り | `/retrospective-yearly` | 振り返りスペシャリストとして年次レトロスペクティブを実施（時間管理・家計・日次記録・年間目標達成度分析） |
+| 振り返り | `/retrospective` | 振り返りスペシャリストとして週次/月次のレトロスペクティブを並列実行 |
 | 振り返り | `/retrospective-claude-usage-daily` | Claude Codeセッション分析のスペシャリストとして前日の活動履歴をレポート化 |
 | 振り返り | `/retrospective-competency` | コンピテンシー評価のスペシャリストとして前日の活動とノート記録からコンピテンシー評価のエビデンスを抽出 |
 | 振り返り | `/retrospective-chipoyo-money` | ちいぽよの金銭管理スペシャリストとして月次の収支分析とアドバイスを実施 |
@@ -48,20 +60,17 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | 開発・コーディング | `/install-apk` | Android端末へのAPKインストールを支援 |
 | Git操作 | `/git-force-push` | 現在のブランチを強制プッシュ（確認プロセス付き） |
 | Git操作 | `/git-get-code-diff-and-test-coverage` | 指定期間内のコード変更を取得し、変更ファイルのテストカバレッジを計測 |
-| MCP・CLI開発 | `/create-mcp-server` | 要件に基づくMCPサーバを構築 |
-| MCP・CLI開発 | `/add-mcp-tool` | 既存のMCPサーバに新しいMCPツールを追加 |
-| MCP・CLI開発 | `/update-mcp-tool` | 既存のMCPサーバー内のMCPツールを修正・改善 |
+| MCP・CLI開発 | `/coding-mcp` | MCP開発のスペシャリストとしてサーバー新規作成・ツール追加・ツール更新を実施 |
 | MCP・CLI開発 | `/create-command` | カスタムスラッシュコマンド、サブエージェント、Skillsを対話形式で作成 |
 | MCP・CLI開発 | `/update-command` | 既存のカスタムスラッシュコマンド、サブエージェント、Skillsを対話形式で更新・改善 |
+| メンテナンス | `/maintain-prompts` | AI-Toolkitのプロンプトを責務分離の原則とベストプラクティスに沿ってメンテナンス・リファクタリング |
 | 情報収集 | `/fetch-news` | 最新ニュース記事を取得して提供 |
 | 情報収集 | `/fetch-web-search-result` | Web検索でヒットした記事を取得して処理 |
 | 情報収集 | `/research-play-console-update` | Google Play Consoleの更新情報を収集・調査 |
 | 情報収集 | `/check-drive-document-updates` | Google Driveのファイルの変更有無を日付指定で確認 |
 | レビュー・問題解決 | `/review-document` | Google Drive文書/シート/スライド、またはGitHub PRを適切にレビュー |
 | レビュー・問題解決 | `/solve-problem` | 問題解決のスペシャリストとして7フェーズの構造化された問題解決プロセスをガイド |
-| その他 | `/auto-task` | ユーザーの要望を分析し、適切なタスクを自動選択して実行 |
 | その他 | `/inspire-action` | 退屈な時にユーザーの目標や記録を踏まえて次のアクションを提案 |
-| その他 | `/create-release-handbook` | リリース作業のハンドブックを作成 |
 
 ## タスクファイル一覧
 
@@ -70,37 +79,23 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 
 | カテゴリ | タスク名 | 説明 |
 |---------|---------|------|
-| 振り返り | `retrospective-common` | 振り返りタスク共通の前提条件 |
-| 振り返り | `retrospective-analyze-lifegraph` | LifeGraphデータを読み取り、時間の使い方を分析してレポート作成 |
-| 振り返り | `retrospective-analyze-money` | 金銭管理データを読み取り、収支・予算・住宅ローン試算を分析（月次・年次） |
-| 振り返り | `retrospective-analyze-daily` | 日々の振り返りノートを読み取り、カテゴリ別に分析してレポート作成 |
-| 振り返り | `retrospective-analyze-yearly-goals` | 年間目標の達成度を分析し、カテゴリ別の成長と課題をレポート作成（年次のみ） |
-| 振り返り | `retrospective-claude-usage-daily` | history.jsonlから前日のClaude Code利用状況を抽出・分析してレポート作成 |
-| 振り返り | `retrospective-analyze-chipoyo-money` | ちいぽよの金銭管理データを読み取り、月次の収支を分析してレポート作成 |
-| 振り返り | `retrospective-competency` | 前日のClaude Code使用履歴とノート記録をコンピテンシー評価基準に照らし合わせ、エビデンスをレポート化 |
 | コーディング・実装 | `coding-plan` | Planサブエージェントを使用してコード分析と実現可能性評価を含む実装計画を作成 |
-| コーディング・実装 | `coding-implementation` | 計画に従って実装、ビルド、テスト作成（必要に応じて）、動作確認 |
 | コーディング・実装 | `coding-english-resources` | スプレッドシートの英語テキストをアプリの言語リソースファイルに追加（日本語ファイルの順序に合わせる） |
 | Git・バージョン管理 | `git-create-branch` | [prefix]/[ticket]/[implementation-name]形式でfeatureブランチを作成 |
 | Git・バージョン管理 | `git-create-empty-commit` | [prefix]/[title] refs #[ticket]形式で空コミットを作成 |
 | Git・バージョン管理 | `git-push-current-branch` | `git push -u origin <branch_name>`で現在のブランチをリモートにプッシュ |
 | Git・バージョン管理 | `git-create-pull-request` | テンプレート付きドラフトPRを作成し、Redmine参照を置換してPRリンクをチケットに追加 |
-| 問題解決 | `solve-problem` | 問題定義からリスク計画まで7フェーズの問題解決プロセス全体を実行 |
 | 問題解決 | `solve-problem-define` | フェーズ1-2: 問題の定義(What)と発生箇所の特定(Where) |
 | 問題解決 | `solve-problem-analyze` | フェーズ3: 5-Why法による根本原因の掘り下げ(Why)とタスク設定 |
 | 問題解決 | `solve-problem-solution` | フェーズ4: 解決策のブレインストーミングと評価基準に基づく最適案選択 |
 | 問題解決 | `solve-problem-planning` | フェーズ5-6: 解決策をタスクに分解し、マイルストーン付き実行スケジュールを作成 |
 | 問題解決 | `solve-problem-risk` | フェーズ7: リスク特定、予防・軽減策の定義、トリガー設定 |
 | データ読み取り | `read-google-drive` | シート/タブ指定オプション付きでGoogle Driveスプレッドシートや文書を読み取り |
-| データ読み取り | `read-life-graph` | LifeGraphスプレッドシートのGoogleカレンダー集計シートを読み取り |
-| データ読み取り | `read-money-sheet` | 予算・マネープランシートを含む家計管理スプレッドシートを読み取り |
 | データ読み取り | `read-note` | 年間目標と当月進捗タブを含むユーザーのノート文書を読み取り |
 | データ読み取り | `read-redmine-ticket` | 提供されたURLからmcp-redmineツールを使用してRedmineチケット詳細を読み取り |
 | レビュー | `review-pull-request` | GitHub PRをコード品質・設計・セキュリティ等の観点でレビュー |
 | レビュー | `review-google-drive` | Google Drive資料（ドキュメント/スプレッドシート/スライド）をレビュー |
 | その他 | `command-validation` | kebab-case命名規則に準拠しているかスラッシュコマンドとタスクファイルをチェック |
-| その他 | `inspire-action` | 4カテゴリから次のアクションを提案: 目標達成・業務効率・リフレッシュ・余暇(1時間圏内) |
-| その他 | `calendar-register-schedule` | イベントタイプに基づく色分けでGoogleカレンダーにイベントを登録(仕事・アイデア・生活・スキル・コード・本など) |
 
 ## 使用方法
 

@@ -1,7 +1,7 @@
 ---
 name: git-workflow-setup
 description: Git操作専門エージェント(ブランチ作成、空コミット、プッシュ、PR作成、Redmineコメント追加)
-tools: Bash, Read, mcp__mcp-github__create_pull_request, mcp__mcp-redmine__*
+tools: Bash, Read, mcp__mcp-redmine__*
 model: haiku
 ---
 
@@ -59,23 +59,27 @@ model: haiku
   - Readツールで `pr_template_path` のファイル内容を読み取る
   - テンプレート内の `#xxxxx` をチケットURLに置換
 
-- **PR作成**:
-  - `mcp__mcp-github__create_pull_request` ツールを使用
-  - パラメータ:
-    - `owner`: リポジトリオーナー（git remoteから取得）
-    - `repo`: リポジトリ名（git remoteから取得）
-    - `title`: 手順2で作成したコミットメッセージと同じ内容
-    - `head`: 手順1で作成したブランチ名
-    - `base`: `merge_target_branch`
-    - `body`: 置換後のPRテンプレート内容
-    - `draft`: true（ドラフト状態で作成）
-
 - **リポジトリ情報の取得方法**:
   ```bash
-  git remote get-url origin
+  git remote get-url origin | sed -E 's/.*[:/]([^/]+)\/([^/.]+)(\.git)?$/\1\/\2/'
   ```
-  - 出力例: `git@github.com:username/repo.git`
-  - パース: `username`がowner、`repo`がリポジトリ名
+  - 出力例: `username/repo`
+
+- **PR作成**:
+  - `gh pr create` コマンドを使用
+  ```bash
+  gh pr create --repo owner/repo --title "タイトル" --base merge_target_branch --head ブランチ名 --draft --body "$(cat <<'EOF'
+  PR本文をここに記載
+  EOF
+  )"
+  ```
+  - パラメータ:
+    - `--repo`: owner/repo形式（git remoteから取得）
+    - `--title`: 手順2で作成したコミットメッセージと同じ内容
+    - `--head`: 手順1で作成したブランチ名
+    - `--base`: `merge_target_branch`
+    - `--body`: 置換後のPRテンプレート内容（HEREDOCで複数行対応）
+    - `--draft`: ドラフト状態で作成
 
 ### 5. Redmineコメント追加
 - `mcp__mcp-redmine__redmine_add_comment` ツールを使用

@@ -18,7 +18,14 @@ GitHub PRをレビューする。コード変更の品質・設計・セキュ�
 
 2. PRレビュー対象のブランチにチェックアウトされているか確認し、されていなければユーザーに要求する
 
-3. PRを `mcp-github__get_pull_request` で読み取る
+3. PRを `gh pr view` コマンドで読み取る
+    ```bash
+    # PR情報の取得（タイトル、説明、状態など）
+    gh pr view <PR番号> --repo owner/repo
+
+    # 変更差分の取得
+    gh pr diff <PR番号> --repo owner/repo
+    ```
 
 4. 1で追加情報が提供されていれば、mcpを使用して情報を読み取る
     - **Google Drive の場合**: ~/Documents/Git/ai-toolkit/task/read-google-drive.md の手順で読み取る
