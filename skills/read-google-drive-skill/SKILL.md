@@ -2,6 +2,13 @@
 name: read-google-drive-skill
 description: Read Google Drive files. When a specific part name is mentioned (in quotes, brackets, or as a distinct phrase like "read 〇〇"), check structure first to find matching sheet/tab/page, then read that part. Otherwise read the entire file.
 allowed-tools: mcp__mcp-google-drive__g_drive_read_file, mcp__mcp-google-drive__g_drive_read_file_part, mcp__mcp-google-drive__g_drive_get_file_structure
+hooks:
+  PreToolUse:
+    - matcher: "mcp__mcp-google-drive__.*"
+      hooks:
+        - type: command
+          command: "cd ~/Documents/Git/MCP-GoogleDrive/mcp-google-drive && npm run check-oauth"
+          once: true
 ---
 
 # Google Drive ファイル読み取りスキル
