@@ -12,7 +12,7 @@ Claude CodeのカスタムスラッシュコマンドやAI活用のためのリ�
 ai-toolkit/
 ├── .github/
 │   └── workflows/     <- GitHub Actions ワークフロー定義
-├── slash-commands/     <- Claude Codeのカスタムスラッシュコマンド用
+├── slash-commands/    <- Claude Codeのカスタムスラッシュコマンド用
 ├── skills/            <- Claude Code Skills（自動発動する専門スキル）
 ├── agents/            <- サブエージェント関連の定義や設定
 ├── rules/             <- ルールファイルやポリシー、ワークフロー
@@ -32,6 +32,7 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | データ読み取り | `read-google-drive-skill` | Google Driveファイル（スプレッドシート/ドキュメント/スライド）を適切に読み取り。シート名・タブ名・ページ番号指定時は構造確認後に部分読み取り |
 | レビュー | `review-document-skill` | GitHub PRまたはGoogle Drive資料を自動レビュー。URLとレビュー依頼キーワードで自動発動 |
 | GitHub操作 | `github-cli-skill` | GitHub CLI (gh) を使った Issue/PR 操作ガイド。MCP を使わずコマンドで直接操作するためコンテキスト節約 |
+| パーソナライズ | `personal-context-aware-response` | パーソナルコンテキストを考慮した回答を提供。技術的意思決定、振り返り分析、アドバイス依頼などで自動発動し、PREP法による構造化された回答を生成 |
 
 ## サブエージェント一覧
 
