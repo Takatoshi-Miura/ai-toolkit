@@ -33,6 +33,7 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | レビュー | `review-document-skill` | GitHub PRまたはGoogle Drive資料を自動レビュー。URLとレビュー依頼キーワードで自動発動 |
 | GitHub操作 | `github-cli-skill` | GitHub CLI (gh) を使った Issue/PR 操作ガイド。MCP を使わずコマンドで直接操作するためコンテキスト節約 |
 | パーソナライズ | `personal-context-aware-response` | パーソナルコンテキストを考慮した回答を提供。技術的意思決定、振り返り分析、アドバイス依頼などで自動発動し、PREP法による構造化された回答を生成 |
+| 目標設定 | `smart-goal-setting` | SMARTフレームワークを活用した目標設定支援。目標設定・KPI策定・OKR作成などの依頼で自動発動し、5観点での分析とリーダー行動計画を提案 |
 
 ## サブエージェント一覧
 
@@ -46,6 +47,11 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | テスト | `test-writer` | テスト計画の作成、テストコード実装、テスト実行を担当 | haiku |
 | テスト | `test-item-generator` | 因子・水準組み合わせに基づくテスト項目書をスプレッドシートに作成 | - |
 | 振り返り | `retrospective-reporter` | 指定された資料を読み取り、分析観点に従ってレポートを作成する汎用レポーター | sonnet |
+| 問題解決 | `solve-problem-define` | 問題解決Phase 1-2: 問題の定義（What）と所在の特定（Where） | sonnet |
+| 問題解決 | `solve-problem-analyze` | 問題解決Phase 3: 原因追及・課題設定（Why） | sonnet |
+| 問題解決 | `solve-problem-solution` | 問題解決Phase 4: 解決策立案（How） | sonnet |
+| 問題解決 | `solve-problem-planning` | 問題解決Phase 5-6: タスク分解・スケジュール作成 | sonnet |
+| 問題解決 | `solve-problem-risk` | 問題解決Phase 7: リスク計画 | sonnet |
 
 ## スラッシュコマンド一覧
 
@@ -86,11 +92,6 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | Git・バージョン管理 | `git-create-empty-commit` | [prefix]/[title] refs #[ticket]形式で空コミットを作成 |
 | Git・バージョン管理 | `git-push-current-branch` | `git push -u origin <branch_name>`で現在のブランチをリモートにプッシュ |
 | Git・バージョン管理 | `git-create-pull-request` | テンプレート付きドラフトPRを作成し、Redmine参照を置換してPRリンクをチケットに追加 |
-| 問題解決 | `solve-problem-define` | フェーズ1-2: 問題の定義(What)と発生箇所の特定(Where) |
-| 問題解決 | `solve-problem-analyze` | フェーズ3: 5-Why法による根本原因の掘り下げ(Why)とタスク設定 |
-| 問題解決 | `solve-problem-solution` | フェーズ4: 解決策のブレインストーミングと評価基準に基づく最適案選択 |
-| 問題解決 | `solve-problem-planning` | フェーズ5-6: 解決策をタスクに分解し、マイルストーン付き実行スケジュールを作成 |
-| 問題解決 | `solve-problem-risk` | フェーズ7: リスク特定、予防・軽減策の定義、トリガー設定 |
 | データ読み取り | `read-google-drive` | シート/タブ指定オプション付きでGoogle Driveスプレッドシートや文書を読み取り |
 | データ読み取り | `read-note` | 年間目標と当月進捗タブを含むユーザーのノート文書を読み取り |
 | データ読み取り | `read-redmine-ticket` | 提供されたURLからmcp-redmineツールを使用してRedmineチケット詳細を読み取り |
