@@ -31,6 +31,7 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 |---------|---------|------|
 | データ読み取り | `read-google-drive-skill` | Google Driveファイル（スプレッドシート/ドキュメント/スライド）を適切に読み取り。シート名・タブ名・ページ番号指定時は構造確認後に部分読み取り |
 | レビュー | `review-document-skill` | GitHub PRまたはGoogle Drive資料を自動レビュー。URLとレビュー依頼キーワードで自動発動 |
+| レビュー | `android-code-review` | Androidプロジェクト専用のコードレビュー。PRや差分にAndroidファイル（.kt/.java/.xml）が含まれる場合に自動発動し、ライフサイクル・状態管理・パフォーマンス等のAndroid固有観点で包括的にレビュー |
 | GitHub操作 | `github-cli-skill` | GitHub CLI (gh) を使った Issue/PR 操作ガイド。MCP を使わずコマンドで直接操作するためコンテキスト節約 |
 | パーソナライズ | `personal-context-aware-response` | パーソナルコンテキストを考慮した回答を提供。技術的意思決定、振り返り分析、アドバイス依頼などで自動発動し、PREP法による構造化された回答を生成 |
 | 目標設定 | `smart-goal-setting` | SMARTフレームワークを活用した目標設定支援。目標設定・KPI策定・OKR作成などの依頼で自動発動し、5観点での分析とリーダー行動計画を提案 |
@@ -47,6 +48,7 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | テスト | `test-writer` | テスト計画の作成、テストコード実装、テスト実行を担当 | haiku |
 | テスト | `test-item-generator` | 因子・水準組み合わせに基づくテスト項目書をスプレッドシートに作成 | - |
 | 振り返り | `retrospective-reporter` | 指定された資料を読み取り、分析観点に従ってレポートを作成する汎用レポーター | sonnet |
+| 問題解決 | `solve-problem-executor` | 問題解決Phase 1-7: 全フェーズを一括実行 | sonnet |
 | 問題解決 | `solve-problem-define` | 問題解決Phase 1-2: 問題の定義（What）と所在の特定（Where） | sonnet |
 | 問題解決 | `solve-problem-analyze` | 問題解決Phase 3: 原因追及・課題設定（Why） | sonnet |
 | 問題解決 | `solve-problem-solution` | 問題解決Phase 4: 解決策立案（How） | sonnet |
