@@ -100,7 +100,13 @@ def load_best_practices(repo_path: Path) -> dict[str, dict]:
 
 
 def find_task_references(content: str) -> list[str]:
-    """コンテンツ内のtask/への参照を検出する"""
+    """コンテンツ内のtask/への参照を検出する
+
+    NOTE: コードブロック内の参照は例示の可能性が高いため除外する
+    """
+    # コードブロック（```で囲まれた部分）を除去
+    content_without_codeblocks = re.sub(r'```[\s\S]*?```', '', content)
+
     # task/ または ~/Documents/Git/ai-toolkit/task/ への参照を検出
     patterns = [
         r'task/([a-z0-9-]+\.md)',
@@ -108,7 +114,7 @@ def find_task_references(content: str) -> list[str]:
     ]
     references = set()
     for pattern in patterns:
-        matches = re.findall(pattern, content)
+        matches = re.findall(pattern, content_without_codeblocks)
         references.update(matches)
     return list(references)
 
@@ -265,14 +271,17 @@ def check_skill_quality(
                 })
 
         # 発動条件チェック
-        if '発動条件' in item:
-            if '## 発動条件' not in content and '## Trigger' not in content.lower():
-                issues.append({
-                    "check": "trigger_section",
-                    "status": "missing",
-                    "recommendation": item,
-                    "source": "best-practice-checklist"
-                })
+        # NOTE: Claude公式ドキュメントでは「発動条件」セクションは推奨されていない
+        # 発動条件は description フィールドに含めるべき
+        # このチェックは廃止（2026-01-20）
+        # if '発動条件' in item:
+        #     if '## 発動条件' not in content and '## Trigger' not in content.lower():
+        #         issues.append({
+        #             "check": "trigger_section",
+        #             "status": "missing",
+        #             "recommendation": item,
+        #             "source": "best-practice-checklist"
+        #         })
 
     return issues
 

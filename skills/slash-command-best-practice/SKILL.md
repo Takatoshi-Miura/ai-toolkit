@@ -42,7 +42,7 @@ $ARGUMENTSを使用して引数を受け取る
 
 ```markdown
 # 手順
-1. ~/Documents/Git/ai-toolkit/task/some-task.md の手順でファイルを読み取る
+1. ~/Documents/Git/ai-toolkit/task/example-task.md の手順でファイルを読み取る  <!-- 架空のファイル名 -->
 2. 処理を実行
 ```
 
