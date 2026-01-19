@@ -28,7 +28,7 @@ GitHub PRをレビューする。コード変更の品質・設計・セキュ�
     ```
 
 4. 1で追加情報が提供されていれば、mcpを使用して情報を読み取る
-    - **Google Drive の場合**: ~/Documents/Git/ai-toolkit/task/read-google-drive.md の手順で読み取る
+    - **Google Drive の場合**: `/read-google-drive-skill` で読み取る
     - **注意**: `g_drive_search_files`は使用しない(ファイルIDがURLから取得可能なため)
 
 ### Phase 2: コードレビュー

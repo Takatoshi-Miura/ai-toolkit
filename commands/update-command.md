@@ -24,7 +24,7 @@ description: 既存のカスタムスラッシュコマンド、サブエージ�
 
    | # | タイプ | 説明 | 配置先 |
    |---|--------|------|--------|
-   | 1 | スラッシュコマンド | `/command` で明示的に呼び出す | slash-commands/{name}.md |
+   | 1 | スラッシュコマンド | `/command` で明示的に呼び出す | commands/{name}.md |
    | 2 | サブエージェント | Taskツール経由で専門タスクを委譲 | agents/{name}.md |
    | 3 | Skill | Claudeが自動判断で適用 | skills/{name}/SKILL.md |
 
@@ -79,7 +79,7 @@ description: 既存のカスタムスラッシュコマンド、サブエージ�
 4. 選択されたリソースの関連ファイルを読み込む
 
 ### スラッシュコマンドの場合
-   - スラッシュコマンドファイル: `~/Documents/Git/ai-toolkit/slash-commands/{command_name}.md`
+   - スラッシュコマンドファイル: `~/Documents/Git/ai-toolkit/commands/{command_name}.md`
    - タスクファイル: `~/Documents/Git/ai-toolkit/task/{command_name}.md`（存在する場合）
      - **注意**: 1つのコマンドからのみ参照されるタスクはコマンドファイルに統合済み。タスクファイルがない場合は正常。
 
@@ -269,7 +269,7 @@ description: 既存のカスタムスラッシュコマンド、サブエージ�
    {change_summary}
 
    ### スラッシュコマンドの変更
-   ファイル: slash-commands/{command_name}.md
+   ファイル: commands/{command_name}.md
 
    ```diff
    - 変更前の行
@@ -371,7 +371,7 @@ description: 既存のカスタムスラッシュコマンド、サブエージ�
     ## 更新完了
 
     以下のファイルを更新しました：
-    - slash-commands/{command_name}.md
+    - commands/{command_name}.md
     - task/{command_name}.md（該当する場合）
     - README.md（descriptionが変更された場合）
 
@@ -423,15 +423,10 @@ description: 既存のカスタムスラッシュコマンド、サブエージ�
 - サブエージェント: `~/Documents/Git/ai-toolkit/templates/agent-template.md`
 - Skill: `~/Documents/Git/ai-toolkit/templates/skill-template.md`
 
-## テンプレート整合性チェック
-
-更新時に以下のタスクを実施してテンプレート整合性を確認すること：
-- `~/Documents/Git/ai-toolkit/task/command-validation.md`
-
 ## タスクファイル分離の判断基準（スラッシュコマンドの場合）
 
 以下の場合はタスクファイルを分離して管理する：
-- 複数のスラッシュコマンドから参照される共通タスク（例: read-google-drive.md）
+- 複数のスラッシュコマンドから参照される共通タスク（例: read-redmine-ticket.md）
 - サブタスクとして段階的に実行されるタスク群（例: solve-problem-*.md）
 
 以下の場合はスラッシュコマンドに統合する：
@@ -445,5 +440,6 @@ description: 既存のカスタムスラッシュコマンド、サブエージ�
 - 更新後は `git diff` で変更内容を確認できることを案内する
 - 既存のリソースと重複する名前への変更は避ける
 - Skillの `description` を変更する場合は、自動発動への影響を説明すること
-- 内部で他のタスクファイル（`read-google-drive.md`等）を参照しているコマンドを更新する場合、参照先タスクも確認すること
+- 内部で他のタスクファイルやSkillsを参照しているコマンドを更新する場合、参照先も確認すること
 - 複数タスクを参照するコマンドの構造を変更する場合は、参照先との整合性を保つこと
+- **更新後は必ず `/maintain-prompts` を実行し、整合性を確認すること**

@@ -20,6 +20,7 @@
 ---
 allowed-tools: {allowed_tools}
 description: {description}
+argument-hint: {argument_hint}
 ---
 
 # 役割
@@ -63,6 +64,7 @@ description: {description}
 |--------|------|-----|
 | `{allowed_tools}` | 使用するツール | `mcp__mcp-google-drive__*`, `Read, Write, Glob` |
 | `{description}` | コマンドの説明（1行） | モバイルアプリ開発のスペシャリストとしてPRのコードレビューを実施 |
+| `{argument_hint}` | 期待する引数（下記参照） | `[pr-number]`, `[file-path] [output-format]` |
 | `{role}` | AIの役割 | あなたはモバイルアプリ開発のスペシャリストです |
 | `{prerequisites}` | 前提条件（参照ファイル、URL等） | `task/retrospective-common.md` の内容を把握していること |
 | `{phase_N_title}` | フェーズのタイトル | データ収集、分析、レポート作成 |
@@ -80,6 +82,7 @@ description: {description}
 ---
 allowed-tools: {allowed_tools}
 description: {description}
+argument-hint: {argument_hint}
 ---
 
 # 役割
@@ -93,14 +96,98 @@ description: {description}
 3. タスク完了後、必要に応じて結果をまとめる
 ```
 
-### 変数の説明
+---
 
-| 変数名 | 説明 | 例 |
-|--------|------|-----|
-| `{allowed_tools}` | 使用するツール | `mcp__mcp-google-drive__*` |
-| `{description}` | コマンドの説明（1行） | 問題解決のスペシャリストとして問題解決のサポートを行う |
-| `{role}` | AIの役割 | あなたは問題解決のスペシャリストです |
-| `{task_name}` | 参照するタスクファイル名（kebab-case） | `solve-problem`, `review-pull-request` |
+## フロントマターのフィールド
+
+| フィールド | 必須 | 説明 |
+|-----------|------|------|
+| `description` | ✅ | コマンドの説明（Skillツール経由での呼び出しに必要） |
+| `allowed-tools` | ❌ | 使用可能なツール（省略時は会話から継承） |
+| `argument-hint` | ❌ | 期待する引数の表示（例: `[pr-number] [priority]`） |
+| `model` | ❌ | 使用するモデル（省略時は会話から継承） |
+| `disable-model-invocation` | ❌ | Skillツール経由の呼び出しを禁止（デフォルト: false） |
+| `hooks` | ❌ | コマンド実行時のフック |
+
+---
+
+## 引数の受け取り方
+
+### $ARGUMENTS - 全引数を一括取得
+
+```markdown
+Issue #$ARGUMENTS を修正してください
+```
+
+**使用例**: `/fix-issue 123 high-priority`
+→ `$ARGUMENTS` = "123 high-priority"
+
+### 位置パラメータ ($1, $2, $3...)
+
+個別の引数にアクセスする場合：
+
+```markdown
+---
+argument-hint: [pr-number] [priority] [assignee]
+description: PRをレビュー
+---
+
+PR #$1 をレビュー。優先度: $2、担当: $3
+```
+
+**使用例**: `/review-pr 456 high alice`
+→ `$1`="456", `$2`="high", `$3`="alice"
+
+---
+
+## 特殊構文
+
+### Bash実行 (!`command`)
+
+コマンド実行前にBashを実行し、結果を埋め込む：
+
+```markdown
+---
+allowed-tools: Bash(git:*)
+description: コミット作成
+---
+
+## 現在の状態
+- git status: !`git status`
+- git diff: !`git diff HEAD`
+- 現在のブランチ: !`git branch --show-current`
+- 最近のコミット: !`git log --oneline -10`
+
+## タスク
+上記の変更に基づいてコミットを作成: $ARGUMENTS
+```
+
+### ファイル参照 (@filepath)
+
+ファイル内容をプロンプトに含める：
+
+```markdown
+@src/old-version.js の実装を確認し、
+@src/new-version.js と比較してください。
+```
+
+---
+
+## Allowed-Tools パターン
+
+```yaml
+# 特定コマンドのみ許可
+allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*)
+
+# 読み取り専用
+allowed-tools: Read, Grep, Glob
+
+# MCP全ツール
+allowed-tools: mcp__mcp-google-drive__*
+
+# フルアクセス
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob
+```
 
 ---
 
@@ -110,7 +197,7 @@ description: {description}
 
 | セクション | 必須 | 説明 |
 |-----------|------|------|
-| フロントマター | ✅ | `allowed-tools`, `description` |
+| フロントマター | ✅ | `description`（allowed-toolsは任意） |
 | `# 役割` | ✅ | AIの専門性・ペルソナを定義 |
 | `日本語で回答すること。` | ✅ | 役割セクション内に記載 |
 | `# 手順` | ✅ | 実行手順をPhase分けで記載 |
@@ -122,7 +209,6 @@ description: {description}
 | `# 前提条件` | 中 | 必要な事前準備・参照ファイル |
 | `# 出力フォーマット` | 高 | 期待する出力形式の具体例 |
 | `# 注意事項` | 高 | 制約・エラーハンドリング |
-| `# 技術的な考慮事項` | 低 | 実装上の注意点 |
 
 ### Claude公式ベストプラクティス準拠ポイント
 
@@ -134,7 +220,29 @@ description: {description}
 
 ---
 
+## Skill との使い分け
+
+| 用途 | 推奨 |
+|------|------|
+| 簡潔で頻繁に使うプロンプト | **スラッシュコマンド** |
+| 単一ファイルの指示 | **スラッシュコマンド** |
+| 明示的な呼び出し（`/command`） | **スラッシュコマンド** |
+| 複雑なマルチステップワークフロー | Skill |
+| 複数のサポートファイルが必要 | Skill |
+| 自動発動させたい | Skill |
+
+---
+
 ## 命名規則
 
 - ファイル名: `kebab-case`（例: `review-code.md`, `analyze-performance.md`）
-- 配置先: `~/Documents/Git/ai-toolkit/slash-commands/`
+- 配置先: `~/Documents/Git/ai-toolkit/commands/`
+
+## チェックリスト
+
+- [ ] descriptionを設定（Skillツール経由で呼び出す場合は必須）
+- [ ] argument-hintで期待する引数を明示（引数がある場合）
+- [ ] allowed-toolsは必要最小限
+- [ ] $ARGUMENTSまたは$1, $2で引数を適切に受け取る
+- [ ] !`command`でコンテキスト情報を取得（必要な場合）
+- [ ] 役割セクションに「日本語で回答すること。」を記載

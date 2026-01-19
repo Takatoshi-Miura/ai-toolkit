@@ -45,7 +45,7 @@ AskUserQuestionツールを使用して、前提条件に記載した必要情�
 - チケット番号、タイトル、詳細を取得
 
 **概要設計書・テスト項目書**:
-- `~/Documents/Git/ai-toolkit/task/read-google-drive.md` の手順で読み取り
+- `/read-google-drive-skill` で読み取り
 
 ### 1-4. タスクファイルへの記録
 収集した全情報を `coding-task.md` の基本情報セクションに記録する。

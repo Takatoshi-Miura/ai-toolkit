@@ -12,7 +12,7 @@ Claude CodeのカスタムスラッシュコマンドやAI活用のためのリ�
 ai-toolkit/
 ├── .github/
 │   └── workflows/     <- GitHub Actions ワークフロー定義
-├── slash-commands/    <- Claude Codeのカスタムスラッシュコマンド用
+├── commands/          <- Claude Codeのカスタムスラッシュコマンド用
 ├── skills/            <- Claude Code Skills（自動発動する専門スキル）
 ├── agents/            <- サブエージェント関連の定義や設定
 ├── rules/             <- ルールファイルやポリシー、ワークフロー
@@ -35,6 +35,10 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | GitHub操作 | `github-cli-skill` | GitHub CLI (gh) を使った Issue/PR 操作ガイド。MCP を使わずコマンドで直接操作するためコンテキスト節約 |
 | パーソナライズ | `personal-context-aware-response` | パーソナルコンテキストを考慮した回答を提供。技術的意思決定、振り返り分析、アドバイス依頼などで自動発動し、PREP法による構造化された回答を生成 |
 | 目標設定 | `smart-goal-setting` | SMARTフレームワークを活用した目標設定支援。目標設定・KPI策定・OKR作成などの依頼で自動発動し、5観点での分析とリーダー行動計画を提案 |
+| リソース作成支援 | `skill-best-practice` | Skill作成時にClaude公式ドキュメントのベストプラクティスを自動提供。description・allowed-tools・プログレッシブディスクロージャーなどの推奨事項を参照可能 |
+| リソース作成支援 | `slash-command-best-practice` | スラッシュコマンド作成時にClaude公式ドキュメントのベストプラクティスを自動提供。$ARGUMENTS・!`bash`実行・@ファイル参照などの推奨事項を参照可能 |
+| リソース作成支援 | `subagent-best-practice` | サブエージェント作成時にClaude公式ドキュメントのベストプラクティスを自動提供。description・tools・model選択基準などの推奨事項を参照可能 |
+| メンテナンス | `maintain-prompts` | AI-Toolkitのプロンプトを責務分離の原則とベストプラクティスに沿ってメンテナンス・リファクタリング。分析スクリプト内蔵でコンテキスト節約 |
 
 ## サブエージェント一覧
 
@@ -60,8 +64,6 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | カテゴリ | コマンド名 | 説明 |
 |---------|-----------|------|
 | 振り返り | `/retrospective` | 振り返りスペシャリストとして週次/月次のレトロスペクティブを並列実行 |
-| 振り返り | `/retrospective-claude-usage-daily` | Claude Codeセッション分析のスペシャリストとして前日の活動履歴をレポート化 |
-| 振り返り | `/retrospective-competency` | コンピテンシー評価のスペシャリストとして前日の活動とノート記録からコンピテンシー評価のエビデンスを抽出 |
 | 振り返り | `/retrospective-chipoyo-money` | ちいぽよの金銭管理スペシャリストとして月次の収支分析とアドバイスを実施 |
 | 開発・コーディング | `/coding` | モバイルアプリ開発のスペシャリストとして実装タスクを実施（Git ワークフロー・計画含む） |
 | 開発・コーディング | `/create-todo-issue` | 開発中に思いついたTODOをGitHub Issueとして素早く登録 |
@@ -72,14 +74,12 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | MCP・CLI開発 | `/coding-mcp` | MCP開発のスペシャリストとしてサーバー新規作成・ツール追加・ツール更新を実施 |
 | MCP・CLI開発 | `/create-command` | カスタムスラッシュコマンド、サブエージェント、Skillsを対話形式で作成 |
 | MCP・CLI開発 | `/update-command` | 既存のカスタムスラッシュコマンド、サブエージェント、Skillsを対話形式で更新・改善 |
-| メンテナンス | `/maintain-prompts` | AI-Toolkitのプロンプトを責務分離の原則とベストプラクティスに沿ってメンテナンス・リファクタリング |
 | 情報収集 | `/fetch-news` | 最新ニュース記事を取得して提供 |
 | 情報収集 | `/fetch-web-search-result` | Web検索でヒットした記事を取得して処理 |
 | 情報収集 | `/research-play-console-update` | Google Play Consoleの更新情報を収集・調査 |
 | 情報収集 | `/check-drive-document-updates` | Google Driveのファイルの変更有無を日付指定で確認 |
 | レビュー・問題解決 | `/review-document` | Google Drive文書/シート/スライド、またはGitHub PRを適切にレビュー |
 | レビュー・問題解決 | `/solve-problem` | 問題解決のスペシャリストとして7フェーズの構造化された問題解決プロセスをガイド |
-| その他 | `/inspire-action` | 退屈な時にユーザーの目標や記録を踏まえて次のアクションを提案 |
 
 ## タスクファイル一覧
 
@@ -90,16 +90,9 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 |---------|---------|------|
 | コーディング・実装 | `coding-plan` | Planサブエージェントを使用してコード分析と実現可能性評価を含む実装計画を作成 |
 | コーディング・実装 | `coding-english-resources` | スプレッドシートの英語テキストをアプリの言語リソースファイルに追加（日本語ファイルの順序に合わせる） |
-| Git・バージョン管理 | `git-create-branch` | [prefix]/[ticket]/[implementation-name]形式でfeatureブランチを作成 |
-| Git・バージョン管理 | `git-create-empty-commit` | [prefix]/[title] refs #[ticket]形式で空コミットを作成 |
-| Git・バージョン管理 | `git-push-current-branch` | `git push -u origin <branch_name>`で現在のブランチをリモートにプッシュ |
-| Git・バージョン管理 | `git-create-pull-request` | テンプレート付きドラフトPRを作成し、Redmine参照を置換してPRリンクをチケットに追加 |
-| データ読み取り | `read-google-drive` | シート/タブ指定オプション付きでGoogle Driveスプレッドシートや文書を読み取り |
-| データ読み取り | `read-note` | 年間目標と当月進捗タブを含むユーザーのノート文書を読み取り |
 | データ読み取り | `read-redmine-ticket` | 提供されたURLからmcp-redmineツールを使用してRedmineチケット詳細を読み取り |
 | レビュー | `review-pull-request` | GitHub PRをコード品質・設計・セキュリティ等の観点でレビュー |
 | レビュー | `review-google-drive` | Google Drive資料（ドキュメント/スプレッドシート/スライド）をレビュー |
-| その他 | `command-validation` | kebab-case命名規則に準拠しているかスラッシュコマンドとタスクファイルをチェック |
 
 ## 使用方法
 

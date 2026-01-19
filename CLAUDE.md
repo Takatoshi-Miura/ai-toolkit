@@ -13,14 +13,14 @@ ai-toolkit/
 ├── rules/             # コード生成ルール・ポリシー
 ├── scripts/           # 自動化スクリプト（Python等）
 ├── skills/            # Skills定義（自動起動プロンプト）
-├── slash-commands/    # カスタムスラッシュコマンド定義
+├── commands/          # カスタムスラッシュコマンド定義
 ├── task/              # タスク定義ファイル（スラッシュコマンドから参照）
 └── templates/         # テンプレート・リファレンス資料
 ```
 
 ## ファイル命名規則
 
-- スラッシュコマンド: `slash-commands/<command-name>.md`
+- スラッシュコマンド: `commands/<command-name>.md`
 - タスク定義: `task/<task-name>.md`
 - エージェント: `agents/<agent-name>.md`
 - スキル: `skills/<skill-name>/SKILL.md`
