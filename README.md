@@ -29,7 +29,8 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 
 | カテゴリ | スキル名 | 説明 |
 |---------|---------|------|
-| データ読み取り | `read-google-drive-skill` | Google Driveファイル（スプレッドシート/ドキュメント/スライド）を適切に読み取り。シート名・タブ名・ページ番号指定時は構造確認後に部分読み取り |
+| データ読み取り | `read-google-drive-skill` | Google Driveファイル（スプレッドシート/ドキュメント/スライド）を読み取り。チェックリスト形式のワークフローでURL解析から結果確認まで実行。部分読み取り対応 |
+| データ読み取り | `read-redmine-skill` | RedmineチケットのURLから詳細情報を自動読み取り。URLとチケット確認キーワードで自動発動 |
 | レビュー | `review-document-skill` | GitHub PRまたはGoogle Drive資料を自動レビュー。URLとレビュー依頼キーワードで自動発動 |
 | レビュー | `android-code-review` | Androidプロジェクト専用のコードレビュー。PRや差分にAndroidファイル（.kt/.java/.xml）が含まれる場合に自動発動し、ライフサイクル・状態管理・パフォーマンス等のAndroid固有観点で包括的にレビュー |
 | GitHub操作 | `github-cli-skill` | GitHub CLI (gh) を使った Issue/PR 操作ガイド。MCP を使わずコマンドで直接操作するためコンテキスト節約 |
@@ -78,7 +79,6 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | 情報収集 | `/fetch-web-search-result` | Web検索でヒットした記事を取得して処理 |
 | 情報収集 | `/research-play-console-update` | Google Play Consoleの更新情報を収集・調査 |
 | 情報収集 | `/check-drive-document-updates` | Google Driveのファイルの変更有無を日付指定で確認 |
-| レビュー・問題解決 | `/review-document` | Google Drive文書/シート/スライド、またはGitHub PRを適切にレビュー |
 | レビュー・問題解決 | `/solve-problem` | 問題解決のスペシャリストとして7フェーズの構造化された問題解決プロセスをガイド |
 
 ## タスクファイル一覧
@@ -90,9 +90,6 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 |---------|---------|------|
 | コーディング・実装 | `coding-plan` | Planサブエージェントを使用してコード分析と実現可能性評価を含む実装計画を作成 |
 | コーディング・実装 | `coding-english-resources` | スプレッドシートの英語テキストをアプリの言語リソースファイルに追加（日本語ファイルの順序に合わせる） |
-| データ読み取り | `read-redmine-ticket` | 提供されたURLからmcp-redmineツールを使用してRedmineチケット詳細を読み取り |
-| レビュー | `review-pull-request` | GitHub PRをコード品質・設計・セキュリティ等の観点でレビュー |
-| レビュー | `review-google-drive` | Google Drive資料（ドキュメント/スプレッドシート/スライド）をレビュー |
 
 ## 使用方法
 

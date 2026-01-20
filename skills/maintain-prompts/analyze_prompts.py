@@ -350,7 +350,8 @@ def check_agent_quality(
         # システムプロンプト/手順チェック
         if '手順' in item or 'システムプロンプト' in item:
             # 手順セクションの存在確認
-            has_steps = bool(re.search(r'(##?\s*(手順|Steps|When invoked))', content, re.IGNORECASE))
+            # NOTE: 「## 実行手順」「## 手順」「## Steps」などにマッチ
+            has_steps = bool(re.search(r'(##?\s*.*手順|##?\s*Steps|##?\s*When invoked)', content, re.IGNORECASE))
             if not has_steps:
                 issues.append({
                     "check": "steps_section",

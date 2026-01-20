@@ -69,7 +69,7 @@ Androidプロジェクト（Kotlin/Java/XML）のコードレビューを専門�
 
 5. **レビュー観点チェック**
 
-   ~/Documents/Git/ai-toolkit/task/review-pull-request.md の観点に従い、特に以下のAndroid固有項目を重点的にレビュー:
+   [REVIEW-GUIDE.md](REVIEW-GUIDE.md) の観点に従い、特に以下のAndroid固有項目を重点的にレビュー:
 
    #### Androidプラットフォーム／ライフサイクル
    - Activity/Fragment/Serviceのライフサイクル管理
@@ -166,4 +166,4 @@ Androidプロジェクト（Kotlin/Java/XML）のコードレビューを専門�
 - PRレビューの場合、対象ブランチにチェックアウトされているか確認が必要
 - 追加のコンテキスト（PBI、概要設計書、テスト項目書など）が提供された場合は、それも考慮してレビューする
 - 日本語で回答すること
-- 詳細なレビュー観点は ~/Documents/Git/ai-toolkit/task/review-pull-request.md を参照
+- 詳細なレビュー観点は [REVIEW-GUIDE.md](REVIEW-GUIDE.md) を参照

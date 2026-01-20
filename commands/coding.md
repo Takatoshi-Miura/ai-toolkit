@@ -41,7 +41,7 @@ AskUserQuestionツールを使用して、前提条件に記載した必要情�
 収集した情報に基づき、以下を読み取る:
 
 **Redmineチケット**:
-- `~/Documents/Git/ai-toolkit/task/read-redmine-ticket.md` の手順で読み取り
+- `/read-redmine-skill` で読み取り
 - チケット番号、タイトル、詳細を取得
 
 **概要設計書・テスト項目書**:

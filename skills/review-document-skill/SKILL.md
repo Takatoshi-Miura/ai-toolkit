@@ -29,7 +29,7 @@ GitHub PRまたはGoogle Drive資料（ドキュメント、スプレッドシ�
 
 ### 2A. GitHub PRレビュー（GitHub URLの場合）
 
-~/Documents/Git/ai-toolkit/task/review-pull-request.md の手順に従ってレビューを実施する。
+[PR-REVIEW-GUIDE.md](PR-REVIEW-GUIDE.md) の手順に従ってレビューを実施する。
 
 **主なレビュー観点:**
 - 変更の目的・スコープ
@@ -44,7 +44,7 @@ GitHub PRまたはGoogle Drive資料（ドキュメント、スプレッドシ�
 
 ### 2B. Google Driveレビュー（Google Drive URLの場合）
 
-~/Documents/Git/ai-toolkit/task/review-google-drive.md の手順に従ってレビューを実施する。
+[DRIVE-REVIEW-GUIDE.md](DRIVE-REVIEW-GUIDE.md) の手順に従ってレビューを実施する。
 
 **主なレビュー観点:**
 - 内容の要約
@@ -55,7 +55,7 @@ GitHub PRまたはGoogle Drive資料（ドキュメント、スプレッドシ�
 
 ## 出力形式
 
-レビュー結果は各タスクファイルで定義されたテンプレートに従って出力する。
+レビュー結果は各ガイドファイルで定義されたテンプレートに従って出力する。
 
 ## 注意事項
 

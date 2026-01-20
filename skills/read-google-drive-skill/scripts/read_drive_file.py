@@ -2,15 +2,12 @@
 """
 Google Drive ファイル読み取りCLI
 
-環境変数で認証ファイルパスを指定可能。配布対応。
-
 使用方法:
     python scripts/read_drive_file.py <fileId> <fileType> [partName]
 
-環境変数:
-    GOOGLE_DRIVE_CONFIG_DIR  - 認証ファイルのディレクトリ（デフォルト: ~/.config/read-google-drive/）
-    GOOGLE_CREDENTIALS_PATH  - client_secret.jsonのパス
-    GOOGLE_TOKEN_PATH        - token.jsonのパス
+認証ファイル:
+    ~/.config/google-drive-skills/client_secret.json
+    ~/.config/google-drive-skills/token.json
 
 引数:
     fileId   - Google DriveのファイルID
@@ -35,24 +32,12 @@ from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 
 
-# パス設定（環境変数対応）
+# パス設定
 def get_config_paths() -> tuple[str, str]:
     """認証ファイルのパスを取得"""
-    config_dir = os.environ.get(
-        "GOOGLE_DRIVE_CONFIG_DIR",
-        os.path.join(os.path.expanduser("~"), ".config", "read-google-drive")
-    )
-
-    credentials_path = os.environ.get(
-        "GOOGLE_CREDENTIALS_PATH",
-        os.path.join(config_dir, "client_secret.json")
-    )
-
-    token_path = os.environ.get(
-        "GOOGLE_TOKEN_PATH",
-        os.path.join(config_dir, "token.json")
-    )
-
+    config_dir = os.path.join(os.path.expanduser("~"), ".config", "google-drive-skills")
+    credentials_path = os.path.join(config_dir, "client_secret.json")
+    token_path = os.path.join(config_dir, "token.json")
     return credentials_path, token_path
 
 
