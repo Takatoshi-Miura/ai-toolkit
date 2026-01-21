@@ -27,10 +27,11 @@ model: haiku
 ## 実行手順
 
 ### 0. 実装内容の説明を自動生成
-- `implementation_description`を自動生成:
+- **必須**: `implementation_description`を自動生成:
   - `ticket_title`から実装内容を推測
   - 簡潔な英語のスネークケース形式で生成（例: fix_close_button_position）
   - 4〜6単語程度の説明的な名前にする
+  - **この値がないとブランチ作成に進めない**
 
 ### 1. ブランチ作成
 - Bashツールで以下のコマンドを実行:
@@ -38,6 +39,7 @@ model: haiku
   git checkout -b [branch_prefix]/[ticket_number]/[implementation_description]
   ```
 - 例: `git checkout -b camera_capture/12345/fix_close_button_position`
+- **重要**: 必ず3階層（prefix/ticket_number/description）の形式にすること。2階層で作成しない
 
 ### 2. 空コミット作成
 - Bashツールで以下のコマンドを実行:
@@ -46,6 +48,7 @@ model: haiku
   ```
 - 例: `git commit --allow-empty -m "撮影対応／閉じるボタンの位置を修正 refs #12345"`
 - **注意**: コミットメッセージは日本語を含むため、HEREDOCを使用して正確に記述すること
+- **重要**: 角括弧`[]`で囲まない。チケット番号は必ず末尾に`refs #番号`の形式で配置する
 
 ### 3. ブランチプッシュ
 - Bashツールで以下のコマンドを実行:
