@@ -3,6 +3,7 @@ name: coding
 description: モバイルアプリ開発の実装タスクを統括するオーケストレーター。情報収集からGit準備、実装計画、コード実装、テストまでの一連のワークフローを専門サブエージェントを活用して効率的に進行。「実装したい」「コーディング」「開発タスク」などで使用。
 allowed-tools: Task, AskUserQuestion, Read, Bash
 user-invocable: true
+disable-model-invocation: true
 ---
 
 # 実装タスク オーケストレーター

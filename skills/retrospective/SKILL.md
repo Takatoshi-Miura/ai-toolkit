@@ -3,6 +3,7 @@ name: retrospective
 description: 振り返りスペシャリストとして週次/月次のレトロスペクティブを実行。「振り返り」「レトロスペクティブ」「今週どうだった」「月次レビュー」「1週間まとめ」「反省会」などの表現を含む依頼で自動的に発動します。LifeGraph、日次記録、金銭データをスクリプトで取得・分析してレポートを作成。
 allowed-tools: Bash, AskUserQuestion, Write, Read
 user-invocable: true
+disable-model-invocation: true
 ---
 
 # 振り返りスキル
