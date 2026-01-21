@@ -36,10 +36,8 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | GitHub操作 | `github-cli-skill` | GitHub CLI (gh) を使った Issue/PR 操作ガイド。MCP を使わずコマンドで直接操作するためコンテキスト節約 |
 | パーソナライズ | `personal-context-aware-response` | パーソナルコンテキストを考慮した回答を提供。技術的意思決定、振り返り分析、アドバイス依頼などで自動発動し、PREP法による構造化された回答を生成 |
 | 目標設定 | `smart-goal-setting` | SMARTフレームワークを活用した目標設定支援。目標設定・KPI策定・OKR作成などの依頼で自動発動し、5観点での分析とリーダー行動計画を提案 |
-| リソース作成支援 | `skill-best-practice` | Skill作成時にClaude公式ドキュメントのベストプラクティスを自動提供。description・allowed-tools・プログレッシブディスクロージャーなどの推奨事項を参照可能 |
-| リソース作成支援 | `slash-command-best-practice` | スラッシュコマンド作成時にClaude公式ドキュメントのベストプラクティスを自動提供。$ARGUMENTS・!`bash`実行・@ファイル参照などの推奨事項を参照可能 |
-| リソース作成支援 | `subagent-best-practice` | サブエージェント作成時にClaude公式ドキュメントのベストプラクティスを自動提供。description・tools・model選択基準などの推奨事項を参照可能 |
-| メンテナンス | `maintain-prompts` | AI-Toolkitのプロンプトを責務分離の原則とベストプラクティスに沿ってメンテナンス・リファクタリング。分析スクリプト内蔵でコンテキスト節約 |
+| メンテナンス・ベストプラクティス | `maintain-prompts` | AI-Toolkitのプロンプトをメンテナンス・リファクタリング。スラッシュコマンド・Skill・サブエージェント作成時にClaude公式ベストプラクティスも自動提供（$ARGUMENTS、description、model選択基準など） |
+| 振り返り | `retrospective` | 週次/月次のレトロスペクティブを実行。LifeGraph、日次記録、金銭データを分析してレポート作成。「振り返り」「レトロスペクティブ」などで自動発動 |
 
 ## サブエージェント一覧
 
@@ -52,7 +50,6 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | コーディング | `code-implementer` | 承認された実装計画に従ってコードを実装、ビルド確認まで実施 | sonnet |
 | テスト | `test-writer` | テスト計画の作成、テストコード実装、テスト実行を担当 | haiku |
 | テスト | `test-item-generator` | 因子・水準組み合わせに基づくテスト項目書をスプレッドシートに作成 | - |
-| 振り返り | `retrospective-reporter` | 指定された資料を読み取り、分析観点に従ってレポートを作成する汎用レポーター | sonnet |
 | 問題解決 | `solve-problem-executor` | 問題解決Phase 1-7: 全フェーズを一括実行 | sonnet |
 | 問題解決 | `solve-problem-define` | 問題解決Phase 1-2: 問題の定義（What）と所在の特定（Where） | sonnet |
 | 問題解決 | `solve-problem-analyze` | 問題解決Phase 3: 原因追及・課題設定（Why） | sonnet |
@@ -64,7 +61,6 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 
 | カテゴリ | コマンド名 | 説明 |
 |---------|-----------|------|
-| 振り返り | `/retrospective` | 振り返りスペシャリストとして週次/月次のレトロスペクティブを並列実行 |
 | 振り返り | `/retrospective-chipoyo-money` | ちいぽよの金銭管理スペシャリストとして月次の収支分析とアドバイスを実施 |
 | 開発・コーディング | `/coding` | モバイルアプリ開発のスペシャリストとして実装タスクを実施（Git ワークフロー・計画含む） |
 | 開発・コーディング | `/create-todo-issue` | 開発中に思いついたTODOをGitHub Issueとして素早く登録 |
