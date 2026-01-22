@@ -1,163 +1,134 @@
-# 初回セットアップ
+# Google Drive書き込みスキル - セットアップ
 
-このスキルを使用するための環境セットアップ手順。
+## 前提条件
+
+このスキルはGoogle Drive APIを使用するPythonスクリプトを含んでいます。
 
 ## 認証の共有について
 
-このスキルは `read-google-drive-skill` と認証設定を共有する。
-既に `read-google-drive-skill` をセットアップ済みの場合、追加の認証設定は不要。
+このスキルは `read-google-drive-skill` / `generate-test-item-skill` と認証設定を共有する。
+既にいずれかのスキルをセットアップ済みの場合、追加の認証設定は不要。
 
 **共有される認証ファイル**:
 - `~/.config/google-drive-skills/client_secret.json`
 - `~/.config/google-drive-skills/token.json`
 
-## セットアップワークフロー
+## セットアップ確認
 
-このチェックリストをコピーして進行状況を追跡：
-
-```
-セットアップ進捗：
-- [ ] ステップ1：依存関係をインストール
-- [ ] ステップ2：認証ファイルを配置（未設定の場合）
-- [ ] ステップ3：書き込み権限を確認
-- [ ] ステップ4：動作確認
-```
-
-### ステップ1：依存関係をインストール
+認証が正しく設定されているか確認：
 
 ```bash
-pip install google-api-python-client google-auth google-auth-oauthlib google-auth-httplib2
+# 書き込みテスト（テスト用のスプレッドシートIDで実行）
+python3 ~/.claude/skills/write-google-drive-skill/scripts/insert_value.py <fileId> sheets "Sheet1!A1" '[["テスト"]]'
 ```
 
-**検証**: エラーなく完了すればOK。`ModuleNotFoundError` が発生する場合は再実行。
+**成功時**: `"success": true` を含むJSONが出力される
 
-### ステップ2：認証ファイルを配置（未設定の場合）
+**エラー時**: 以下のセットアップを実行
 
-`read-google-drive-skill` を既にセットアップ済みならこのステップはスキップ。
+---
 
-以下の2つのファイルが必要：
+## 認証セットアップ（認証エラー時）
 
-| ファイル | 説明 |
-|---------|------|
-| `client_secret.json` | Google Cloud ConsoleのOAuth 2.0クライアントID |
-| `token.json` | 認証済みアクセストークン |
+認証エラーが発生した場合、以下の手順を**自動で**実行する。
 
-**配置先ディレクトリ**: `~/.config/google-drive-skills/`
+### Step 1: client_secret.json のパスを質問
+
+**AskUserQuestionツールで質問：**
+
+```json
+{
+  "questions": [
+    {
+      "question": "Google認証用のclient_secret.jsonファイルのパスを「その他」から入力してください",
+      "header": "認証設定",
+      "options": [
+        {"label": "パスを入力", "description": "「その他」を選択してファイルパスを入力"}
+      ],
+      "multiSelect": false
+    }
+  ]
+}
+```
+
+※ client_secret.jsonがない場合は、下記「client_secret.json の取得方法」を案内する。
+
+### Step 2: 認証ファイルを配置
 
 ```bash
 mkdir -p ~/.config/google-drive-skills
-cp /path/to/client_secret.json ~/.config/google-drive-skills/
-cp /path/to/token.json ~/.config/google-drive-skills/
+cp "<ユーザーが指定したパス>" ~/.config/google-drive-skills/client_secret.json
 ```
 
-### ステップ3：書き込み権限を確認
+### Step 3: 認証実行
 
-書き込み操作には適切なOAuthスコープが必要。以下のスコープが `token.json` に含まれていることを確認：
+```bash
+python3 ~/.claude/skills/write-google-drive-skill/scripts/insert_value.py <fileId> sheets "Sheet1!A1" '[["テスト"]]'
+```
+
+token.jsonがない場合、自動でブラウザが開き認証フローが開始される。ユーザーにGoogle認証を完了してもらう。認証成功後、スキル本体へ進む。
+
+---
+
+## 認証ファイルの配置先
+
+```
+~/.config/google-drive-skills/
+├── client_secret.json   # Google Cloud Console から取得
+└── token.json           # 初回認証時に自動生成
+```
+
+## client_secret.json の取得方法
+
+1. [Google Cloud Console](https://console.cloud.google.com/) にアクセス
+2. プロジェクトを作成または選択
+3. 「APIとサービス」→「認証情報」を開く
+4. 「認証情報を作成」→「OAuth クライアント ID」
+5. アプリケーションの種類: 「デスクトップアプリ」
+6. JSONをダウンロード
+
+## 必要なAPIの有効化
+
+Google Cloud Consoleで以下のAPIを有効化：
+- Google Sheets API
+- Google Docs API
+- Google Slides API
+- Google Drive API
+
+---
+
+## 書き込み権限について
+
+書き込み操作には以下のOAuthスコープが必要（auth.pyで自動設定済み）：
 
 | 操作 | 必要なスコープ |
 |------|---------------|
 | スプレッドシート書き込み | `https://www.googleapis.com/auth/spreadsheets` |
 | ドキュメント書き込み | `https://www.googleapis.com/auth/documents` |
 | スライド書き込み | `https://www.googleapis.com/auth/presentations` |
+| ドライブ全般 | `https://www.googleapis.com/auth/drive` |
 
 **注意**: 読み取り専用スコープ（`.readonly` サフィックス付き）では書き込み操作は失敗する。
+権限エラーが発生する場合は `token.json` を削除して再認証。
 
-スコープが不足している場合は `token.json` を削除し、適切なスコープで再認証を実行。
+---
 
-### ステップ4：動作確認
-
-任意のスプレッドシートで書き込みテストを実行：
+## 依存パッケージ
 
 ```bash
-# テスト用の値を挿入
-python3 scripts/insert_value.py <テスト用fileId> sheets "Sheet1!A1" '[["テスト"]]'
+pip install google-auth google-auth-oauthlib google-api-python-client
 ```
 
-**成功時**: `"success": true` を含むJSONが出力される
-**失敗時**: エラーメッセージを確認し、トラブルシューティングを参照
+---
 
 ## トラブルシューティング
 
-### python3: command not found
-
-```
-python3: command not found
-```
-
-**対応**（OS別）:
-
-| OS | インストール方法 |
-|----|-----------------|
-| macOS | `brew install python3` または [python.org](https://www.python.org/downloads/) からダウンロード |
-| Ubuntu/Debian | `sudo apt install python3` |
-| Windows | [python.org](https://www.python.org/downloads/) からダウンロード（「Add to PATH」にチェック） |
-
-**検証**: `python3 --version` でバージョンが表示されればOK
-
-### 認証に失敗しました
-
-```json
-{
-  "success": false,
-  "error": "認証に失敗しました"
-}
-```
-
-**対応**:
-1. `~/.config/google-drive-skills/` ディレクトリに認証ファイルがあるか確認
-2. `client_secret.json` と `token.json` の両方が存在するか確認
-3. ファイルの読み取り権限があるか確認
-
-### 権限エラー（書き込み不可）
-
-```json
-{
-  "success": false,
-  "error": "The caller does not have permission"
-}
-```
-
-**対応**:
-1. 対象ファイルへの編集権限があるか確認
-2. OAuth スコープが書き込み可能か確認（`.readonly` スコープでないこと）
-3. 必要に応じて `token.json` を再生成
-
-### トークンの有効期限切れ
-
-**対応**: スクリプトが自動でリフレッシュを試みる。失敗する場合は `token.json` を削除して再認証。
-
-### ModuleNotFoundError
-
-```
-ModuleNotFoundError: No module named 'google'
-```
-
-**対応**: ステップ1の依存関係インストールを再実行
-
-### シートが見つかりません
-
-```json
-{
-  "success": false,
-  "error": "シート \"Unknown\" が見つかりません",
-  "availableSheets": ["Sheet1", "売上"]
-}
-```
-
-**対応**: `availableSheets` に表示されている正しいシート名を使用
-
-## 認証ファイルの再生成
-
-書き込み権限を含む新しいトークンを生成する場合：
-
-1. `~/.config/google-drive-skills/token.json` を削除
-2. 以下のスコープを含むOAuth認証フローを実行：
-   ```
-   https://www.googleapis.com/auth/spreadsheets
-   https://www.googleapis.com/auth/documents
-   https://www.googleapis.com/auth/presentations
-   https://www.googleapis.com/auth/drive.readonly
-   ```
-3. 生成された `token.json` を配置
-
-**参考**: Google Cloud Consoleで作成するOAuthクライアントには「デスクトップアプリ」タイプを選択。
+| エラー | 対応 |
+|-------|------|
+| `python3: command not found` | `brew install python3` (macOS) または [python.org](https://www.python.org/downloads/) からダウンロード |
+| `ModuleNotFoundError` | 上記の `pip install` を実行 |
+| `Token has been expired` | token.json を削除して再認証 |
+| `invalid_grant` | token.json を削除して再認証 |
+| `Access denied` | Google Cloud Console でスコープを確認 |
+| `The caller does not have permission` | 対象ファイルへの編集権限があるか確認、またはtoken.jsonを削除して再認証 |
+| シートが見つかりません | `availableSheets` に表示されている正しいシート名を使用 |

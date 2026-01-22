@@ -19,9 +19,49 @@ python3 ~/.claude/skills/generate-test-item-skill/scripts/read_drive_file.py 1fp
 
 ---
 
-## 認証設定（エラー時のみ）
+## 認証セットアップ（認証エラー時）
 
-### 認証ファイルの配置先
+認証エラーが発生した場合、以下の手順を**自動で**実行する。
+
+### Step 1: client_secret.json のパスを質問
+
+**AskUserQuestionツールで質問：**
+
+```json
+{
+  "questions": [
+    {
+      "question": "Google認証用のclient_secret.jsonファイルのパスを「その他」から入力してください",
+      "header": "認証設定",
+      "options": [
+        {"label": "パスを入力", "description": "「その他」を選択してファイルパスを入力"}
+      ],
+      "multiSelect": false
+    }
+  ]
+}
+```
+
+※ client_secret.jsonがない場合は、下記「client_secret.json の取得方法」を案内する。
+
+### Step 2: 認証ファイルを配置
+
+```bash
+mkdir -p ~/.config/google-drive-skills
+cp "<ユーザーが指定したパス>" ~/.config/google-drive-skills/client_secret.json
+```
+
+### Step 3: 認証実行
+
+```bash
+python3 ~/.claude/skills/generate-test-item-skill/scripts/read_drive_file.py 1fpcWeiNCIefrUXN9567iopHxPGpB4VUKQ5uxr9CznVo docs
+```
+
+token.jsonがない場合、自動でブラウザが開き認証フローが開始される。ユーザーにGoogle認証を完了してもらう。認証成功後、スキル本体へ進む。
+
+---
+
+## 認証ファイルの配置先
 
 ```
 ~/.config/google-drive-skills/
@@ -29,16 +69,16 @@ python3 ~/.claude/skills/generate-test-item-skill/scripts/read_drive_file.py 1fp
 └── token.json           # 初回認証時に自動生成
 ```
 
-### client_secret.json の取得方法
+## client_secret.json の取得方法
 
 1. [Google Cloud Console](https://console.cloud.google.com/) にアクセス
 2. プロジェクトを作成または選択
 3. 「APIとサービス」→「認証情報」を開く
 4. 「認証情報を作成」→「OAuth クライアント ID」
 5. アプリケーションの種類: 「デスクトップアプリ」
-6. JSONをダウンロードして `~/.config/google-drive-skills/client_secret.json` に配置
+6. JSONをダウンロード
 
-### 必要なAPIの有効化
+## 必要なAPIの有効化
 
 Google Cloud Consoleで以下のAPIを有効化：
 - Google Sheets API
@@ -46,20 +86,13 @@ Google Cloud Consoleで以下のAPIを有効化：
 - Google Slides API
 - Google Drive API
 
-### トークン期限切れ時の対処
-
-```bash
-# 古いトークンを削除
-rm ~/.config/google-drive-skills/token.json
-
-# 再認証（ブラウザが開く）
-python3 ~/.claude/skills/generate-test-item-skill/scripts/read_drive_file.py <任意のfileId> docs
-```
-
 ---
 
 ## 依存パッケージ
 
+スクリプト実行時に未インストールの場合は**自動でインストール**されます。
+
+手動でインストールする場合：
 ```bash
 pip install google-auth google-auth-oauthlib google-api-python-client
 ```
@@ -70,7 +103,7 @@ pip install google-auth google-auth-oauthlib google-api-python-client
 
 | エラー | 対応 |
 |-------|------|
-| `ModuleNotFoundError` | 上記の `pip install` を実行 |
 | `Token has been expired` | token.json を削除して再認証 |
 | `invalid_grant` | token.json を削除して再認証 |
 | `Access denied` | Google Cloud Console でスコープを確認 |
+| pip インストール失敗 | ネットワーク接続を確認、または手動で上記コマンドを実行 |

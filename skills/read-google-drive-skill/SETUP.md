@@ -1,103 +1,109 @@
-# 初回セットアップ
+# Google Drive読み取りスキル - セットアップ
 
-このスキルを使用するための環境セットアップ手順。
+## 前提条件
 
-## セットアップワークフロー
+このスキルはGoogle Drive APIを使用するPythonスクリプトを含んでいます。
 
-このチェックリストをコピーして進行状況を追跡：
+## セットアップ確認
 
-```
-セットアップ進捗：
-- [ ] ステップ1：依存関係をインストール
-- [ ] ステップ2：認証ファイルを配置
-- [ ] ステップ3：動作確認
-```
-
-### ステップ1：依存関係をインストール
+認証が正しく設定されているか確認：
 
 ```bash
-pip install google-api-python-client google-auth google-auth-oauthlib google-auth-httplib2
+# 読み取りテスト（任意のGoogle DriveファイルIDで実行）
+python3 ~/.claude/skills/read-google-drive-skill/scripts/read_drive_file.py <fileId> sheets
 ```
 
-**検証**: エラーなく完了すればOK。`ModuleNotFoundError` が発生する場合は再実行。
+**成功時**: ファイル内容がJSON形式で出力される
 
-### ステップ2：認証ファイルを配置
+**エラー時**: 以下のセットアップを実行
 
-以下の2つのファイルが必要：
+---
 
-| ファイル | 説明 |
-|---------|------|
-| `client_secret.json` | Google Cloud ConsoleのOAuth 2.0クライアントID |
-| `token.json` | 認証済みアクセストークン |
+## 認証セットアップ（認証エラー時）
 
-**配置先ディレクトリ**: `~/.config/google-drive-skills/`
+認証エラーが発生した場合、以下の手順を**自動で**実行する。
+
+### Step 1: client_secret.json のパスを質問
+
+**AskUserQuestionツールで質問：**
+
+```json
+{
+  "questions": [
+    {
+      "question": "Google認証用のclient_secret.jsonファイルのパスを「その他」から入力してください",
+      "header": "認証設定",
+      "options": [
+        {"label": "パスを入力", "description": "「その他」を選択してファイルパスを入力"}
+      ],
+      "multiSelect": false
+    }
+  ]
+}
+```
+
+※ client_secret.jsonがない場合は、下記「client_secret.json の取得方法」を案内する。
+
+### Step 2: 認証ファイルを配置
 
 ```bash
 mkdir -p ~/.config/google-drive-skills
-cp /path/to/client_secret.json ~/.config/google-drive-skills/
-cp /path/to/token.json ~/.config/google-drive-skills/
+cp "<ユーザーが指定したパス>" ~/.config/google-drive-skills/client_secret.json
 ```
 
-この方法で配置すると、セッションをまたいでも設定が維持される。
-
-### ステップ3：動作確認
-
-任意のGoogle DriveファイルIDで実行：
+### Step 3: 認証実行
 
 ```bash
-python3 scripts/read_drive_file.py <任意のfileId> sheets
+python3 ~/.claude/skills/read-google-drive-skill/scripts/read_drive_file.py <fileId> sheets
 ```
 
-**成功時**: JSON形式でファイル内容が出力される
-**失敗時**: エラーメッセージを確認し、該当するトラブルシューティングを実行
+token.jsonがない場合、自動でブラウザが開き認証フローが開始される。ユーザーにGoogle認証を完了してもらう。認証成功後、スキル本体へ進む。
+
+---
+
+## 認証ファイルの配置先
+
+```
+~/.config/google-drive-skills/
+├── client_secret.json   # Google Cloud Console から取得
+└── token.json           # 初回認証時に自動生成
+```
+
+**注意**: このスキルは `write-google-drive-skill` / `generate-test-item-skill` と認証設定を共有する。
+
+## client_secret.json の取得方法
+
+1. [Google Cloud Console](https://console.cloud.google.com/) にアクセス
+2. プロジェクトを作成または選択
+3. 「APIとサービス」→「認証情報」を開く
+4. 「認証情報を作成」→「OAuth クライアント ID」
+5. アプリケーションの種類: 「デスクトップアプリ」
+6. JSONをダウンロード
+
+## 必要なAPIの有効化
+
+Google Cloud Consoleで以下のAPIを有効化：
+- Google Sheets API
+- Google Docs API
+- Google Slides API
+- Google Drive API
+
+---
+
+## 依存パッケージ
+
+```bash
+pip install google-auth google-auth-oauthlib google-api-python-client
+```
+
+---
 
 ## トラブルシューティング
 
-### python3: command not found
-
-```
-python3: command not found
-```
-
-**対応**（OS別）:
-
-| OS | インストール方法 |
-|----|-----------------|
-| macOS | `brew install python3` または [python.org](https://www.python.org/downloads/) からダウンロード |
-| Ubuntu/Debian | `sudo apt install python3` |
-| Windows | [python.org](https://www.python.org/downloads/) からダウンロード（「Add to PATH」にチェック） |
-
-**検証**: `python3 --version` でバージョンが表示されればOK
-
-### 認証情報ファイルが見つかりません
-
-```
-認証情報ファイルが見つかりません: /path/to/client_secret.json
-```
-
-**対応**:
-1. Google Cloud ConsoleでOAuth 2.0クライアントIDを作成
-2. 認証情報をダウンロード
-3. ステップ2の配置手順を実行
-
-### トークンファイルが見つかりません
-
-```
-トークンファイルが見つかりません: /path/to/token.json
-```
-
-**対応**:
-1. 既存の `token.json` がある場合はコピー
-2. ない場合は、Google OAuth認証フローを実行して生成
-
-### トークンの有効期限切れ
-
-**対応**: スクリプトが自動でリフレッシュを試みる。失敗する場合は `token.json` を再生成
-
-### ModuleNotFoundError
-
-```
-ModuleNotFoundError: No module named 'google'
-```
-
-**対応**: ステップ1の依存関係インストールを再実行
+| エラー | 対応 |
+|-------|------|
+| `python3: command not found` | `brew install python3` (macOS) または [python.org](https://www.python.org/downloads/) からダウンロード |
+| `ModuleNotFoundError` | 上記の `pip install` を実行 |
+| `Token has been expired` | token.json を削除して再認証 |
+| `invalid_grant` | token.json を削除して再認証 |
+| `Access denied` | Google Cloud Console でスコープを確認 |

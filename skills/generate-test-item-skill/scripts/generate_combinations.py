@@ -45,23 +45,23 @@ def parse_factors(factors_json: str) -> dict:
 
 
 def categorize_factors(factors: list[dict]) -> tuple[list[dict], list[dict], list[dict]]:
-    """因子を通常因子、ワンパス因子、期待値因子に分類する"""
+    """因子を通常因子、ワンパス因子、除外因子に分類する"""
     normal_factors = []
     onepass_factors = []
-    expected_factors = []
+    excluded_factors = []
 
     for factor in factors:
         name = factor.get("name", "")
         levels = factor.get("levels", [])
 
-        if "期待値" in name:
-            expected_factors.append(factor)
+        if "期待値" in name or "OS" in name:
+            excluded_factors.append(factor)
         elif "ワンパス" in name:
             onepass_factors.append(factor)
         else:
             normal_factors.append(factor)
 
-    return normal_factors, onepass_factors, expected_factors
+    return normal_factors, onepass_factors, excluded_factors
 
 
 def generate_cartesian_product(factors: list[dict]) -> list[list[str]]:

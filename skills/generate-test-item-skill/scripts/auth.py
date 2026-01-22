@@ -12,10 +12,48 @@ read-google-drive-skill / write-google-drive-skill と同じ認証設定を共�
 
 import json
 import os
+import subprocess
+import sys
 from typing import Optional
+
+
+def ensure_dependencies():
+    """依存パッケージがインストールされているか確認し、なければインストール"""
+    required_packages = [
+        ("google.oauth2.credentials", "google-auth"),
+        ("google.auth.transport.requests", "google-auth"),
+        ("google_auth_oauthlib.flow", "google-auth-oauthlib"),
+        ("googleapiclient.discovery", "google-api-python-client"),
+    ]
+
+    packages_to_install = set()
+    for module_name, package_name in required_packages:
+        try:
+            __import__(module_name.split(".")[0])
+        except ImportError:
+            packages_to_install.add(package_name)
+
+    if packages_to_install:
+        print(f"依存パッケージをインストールしています: {', '.join(packages_to_install)}")
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", "-q"] + list(packages_to_install)
+        )
+        print("インストール完了")
+
+
+ensure_dependencies()
 
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
+
+# Google Drive API のスコープ
+SCOPES = [
+    "https://www.googleapis.com/auth/drive",
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/documents",
+    "https://www.googleapis.com/auth/presentations",
+]
 
 
 def get_config_paths() -> tuple[str, str]:
@@ -46,11 +84,26 @@ def get_auth_client() -> Optional[Credentials]:
         return None
 
     if not os.path.exists(token_path):
-        print(f"トークンファイルが見つかりません: {token_path}")
-        print("\n以下のいずれかの方法でトークンファイルを設定してください：")
-        print("  1. GOOGLE_TOKEN_PATH環境変数でtoken.jsonのパスを指定")
-        print(f"  2. {os.path.dirname(token_path)}/token.json にファイルを配置")
-        return None
+        # token.jsonがない場合、OAuth認証フローを開始
+        print("トークンが見つかりません。ブラウザで認証を行います...")
+        try:
+            flow = InstalledAppFlow.from_client_secrets_file(credentials_path, SCOPES)
+            creds = flow.run_local_server(port=0)
+            # トークンを保存
+            token_data = {
+                "access_token": creds.token,
+                "refresh_token": creds.refresh_token,
+                "token_uri": creds.token_uri,
+                "client_id": creds.client_id,
+                "client_secret": creds.client_secret,
+            }
+            with open(token_path, "w") as f:
+                json.dump(token_data, f)
+            print(f"認証成功。トークンを保存しました: {token_path}")
+            return creds
+        except Exception as e:
+            print(f"認証フロー中にエラー: {e}")
+            return None
 
     try:
         with open(token_path, "r") as f:
