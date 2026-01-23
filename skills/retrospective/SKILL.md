@@ -1,6 +1,6 @@
 ---
 name: retrospective
-description: 振り返りスペシャリストとして週次/月次のレトロスペクティブを実行。「振り返り」「レトロスペクティブ」「今週どうだった」「月次レビュー」「1週間まとめ」「反省会」などの表現を含む依頼で自動的に発動します。LifeGraph、日次記録、金銭データをスクリプトで取得・分析してレポートを作成。
+description: 振り返りスペシャリストとして週次/月次のレトロスペクティブを実行。LifeGraph、日次記録、金銭データをスクリプトで取得・分析してレポートを作成。
 allowed-tools: Bash, AskUserQuestion, Write, Read
 user-invocable: true
 disable-model-invocation: true
@@ -10,21 +10,7 @@ disable-model-invocation: true
 
 週次または月次の振り返りを効率的にサポートし、スクリプトでデータを取得してレポートを作成します。
 
-## 発動条件
-
-このスキルは以下の状況で自動的に適用されます：
-
-- 「振り返り」「レトロスペクティブ」「retrospective」を含む依頼
-- 「今週どうだった」「先週の振り返り」などの表現
-- 「月次レビュー」「1ヶ月まとめ」などの表現
-- 「反省会」「週報」「月報」などの表現
-
 ## 前提条件
-
-### ユーザープロフィール
-- ITエンジニア（iOS/Android モバイルアプリ開発）、スペシャリスト思考
-- 4カテゴリ（仕事、人間関係、金銭、健康・メンタル）で人生を管理
-- 専業主婦との2人暮らし世帯
 
 ### データソース
 | データ | ファイルID | fileType | 用途 |
@@ -32,6 +18,7 @@ disable-model-invocation: true
 | LifeGraph | `1WF58VNM0lGfN-YKqR2ySXU_EKQQCpyrV4da8WiVtoBo` | sheets | 時間・パフォーマンス分析 |
 | ノート | `1iVeZ1EB5dahEZukuQQB4gSa5jIw3By-Gz8JaAysiAoA` | docs | 日次記録・目標 |
 | 金銭管理 | `1P519LiN0Tiu-NvWuYgek9jc4IfvXTzIukkVkuokAqY0` | sheets | 収支分析（月次のみ） |
+| パーソナルコンテキスト | `1hDcVtQ5wEz2rPGRrJGK8CspnqSujheAjeZ1PPAj2u6E` | docs | 価値観・思考スタイル（分析の参考） |
 
 ## 実行手順
 
@@ -54,20 +41,23 @@ AskUserQuestionツールで期間を質問：
 
 ```bash
 # スクリプトパス
-SCRIPT_PATH="skills/read-google-drive-skill/scripts/read_drive_file.py"
+SCRIPT_PATH="~/.claude/skills/retrospective/scripts/read_drive_file.py"
 
 # LifeGraph（スプレッドシート）
-python $SCRIPT_PATH 1WF58VNM0lGfN-YKqR2ySXU_EKQQCpyrV4da8WiVtoBo sheets "Googleカレンダー集計"
+python3 $SCRIPT_PATH 1WF58VNM0lGfN-YKqR2ySXU_EKQQCpyrV4da8WiVtoBo sheets "Googleカレンダー集計"
 
 # ノート（ドキュメント）- 今年の目標タブ
-python $SCRIPT_PATH 1iVeZ1EB5dahEZukuQQB4gSa5jIw3By-Gz8JaAysiAoA docs "今年の目標"
+python3 $SCRIPT_PATH 1iVeZ1EB5dahEZukuQQB4gSa5jIw3By-Gz8JaAysiAoA docs "今年の目標"
 
 # ノート（ドキュメント）- 今月タブ（yyyyMM形式、例: 202601）
-python $SCRIPT_PATH 1iVeZ1EB5dahEZukuQQB4gSa5jIw3By-Gz8JaAysiAoA docs "202601"
+python3 $SCRIPT_PATH 1iVeZ1EB5dahEZukuQQB4gSa5jIw3By-Gz8JaAysiAoA docs "202601"
 
 # 金銭管理（月次のみ）
-python $SCRIPT_PATH 1P519LiN0Tiu-NvWuYgek9jc4IfvXTzIukkVkuokAqY0 sheets "予算_給与負担"
-python $SCRIPT_PATH 1P519LiN0Tiu-NvWuYgek9jc4IfvXTzIukkVkuokAqY0 sheets "マネープラン"
+python3 $SCRIPT_PATH 1P519LiN0Tiu-NvWuYgek9jc4IfvXTzIukkVkuokAqY0 sheets "予算_給与負担"
+python3 $SCRIPT_PATH 1P519LiN0Tiu-NvWuYgek9jc4IfvXTzIukkVkuokAqY0 sheets "マネープラン"
+
+# パーソナルコンテキスト（価値観・思考スタイル）
+python3 $SCRIPT_PATH 1hDcVtQ5wEz2rPGRrJGK8CspnqSujheAjeZ1PPAj2u6E docs
 ```
 
 **出力形式:** JSON。`content` フィールドにデータが含まれる。
@@ -87,5 +77,5 @@ python $SCRIPT_PATH 1P519LiN0Tiu-NvWuYgek9jc4IfvXTzIukkVkuokAqY0 sheets "マネ�
 
 ## 注意事項
 
-- スクリプトがエラーを返した場合は `~/Documents/Git/MCP-GoogleDrive/README.md` の認証手順を案内
+- スクリプトがエラーを返した場合は [SETUP.md](SETUP.md) の認証手順を案内
 - 今月のタブ名は `yyyyMM` 形式（例: 202601）

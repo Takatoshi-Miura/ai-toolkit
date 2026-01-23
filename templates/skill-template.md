@@ -11,27 +11,89 @@ name: {skill_name}
 description: {description}
 allowed-tools: {allowed_tools}
 user-invocable: {user_invocable}
+disable-model-invocation: {disable_model_invocation}
 ---
 
 # {skill_title}
 
-## 概要
 {overview}
 
-## 発動条件
-このスキルは以下の状況で自動的に適用されます：
-{trigger_conditions}
+## 役割
 
-## 手順
+{role_description}
 
-### 1. {step_1_title}
-{step_1_description}
+## 重要：このスキルの使い方
 
-### 2. {step_2_title}
-{step_2_description}
+**各フェーズを順番に実行すること。フェーズを飛ばしてはならない。**
 
-### 3. {step_3_title}
-{step_3_description}
+**制約事項：**
+{constraints}
+
+---
+
+## Phase 0: Todo登録
+
+**TodoWriteツールで以下を登録：**
+
+```json
+[
+  {"content": "Phase 1: {phase1_title}", "activeForm": "{phase1_active}", "status": "pending"},
+  {"content": "Phase 2: {phase2_title}", "activeForm": "{phase2_active}", "status": "pending"},
+  {"content": "Phase 3: {phase3_title}", "activeForm": "{phase3_active}", "status": "pending"}
+]
+```
+
+各フェーズ開始時に`in_progress`、完了時に`completed`に更新する。
+
+---
+
+## Phase 1: {phase1_title}
+
+### 1-1. {substep_title}
+{substep_description}
+
+### 1-2. {substep_title}
+{substep_description}
+
+**成功確認**: {success_criteria} → Phase 2へ
+
+---
+
+## Phase 2: {phase2_title}
+
+### 2-1. {substep_title}
+{substep_description}
+
+**成功確認**: {success_criteria} → Phase 3へ
+
+---
+
+## Phase 3: {phase3_title}
+
+### 3-1. {substep_title}
+{substep_description}
+
+**成功確認**: {success_criteria} → 完了
+
+---
+
+## 詳細リファレンス
+
+- **詳細ワークフロー**: [WORKFLOW.md](WORKFLOW.md)
+- **セットアップ**: [SETUP.md](SETUP.md)
+
+## エラー対応
+
+| エラー | 対応 |
+|-------|------|
+| {error_type_1} | {error_handling_1} |
+| {error_type_2} | {error_handling_2} |
+
+**エラーフィードバックループ**:
+1. エラーメッセージを確認
+2. 上記の表に従って対応
+3. 該当フェーズを再実行
+4. 成功するまで繰り返す
 
 ## 出力形式
 {output_format}
@@ -48,9 +110,18 @@ user-invocable: {user_invocable}
 | `{description}` | スキルの説明（**最大1024文字、下記参照**） | 下記「descriptionの書き方」参照 |
 | `{allowed_tools}` | 許可なしで使用できるツール | `Read, Grep, Glob` |
 | `{user_invocable}` | スラッシュメニュー表示（デフォルト: true） | `true`, `false` |
+| `{disable_model_invocation}` | モデルによる自動発動を無効化 | `true`, `false` |
 | `{skill_title}` | スキルのタイトル | PDF処理スキル |
-| `{overview}` | スキルの概要説明 | PDFファイルからデータを抽出し、構造化された形式で出力します |
-| `{trigger_conditions}` | 発動条件のリスト | - PDFファイルの処理を依頼された時 |
+| `{overview}` | スキルの概要説明（1行） | PDFファイルからデータを抽出し、構造化された形式で出力する。 |
+| `{role_description}` | スキルの役割 | PDFデータ抽出のエキスパートとして... |
+| `{constraints}` | 制約事項のリスト | - 〜のみを使用する |
+| `{phaseN_title}` | フェーズのタイトル | 情報収集 |
+| `{phaseN_active}` | 進行中表示（〜中の形式） | 情報を収集中 |
+| `{substep_title}` | サブステップのタイトル | 必要情報の一括収集 |
+| `{substep_description}` | サブステップの説明 | AskUserQuestionツールを使用して... |
+| `{success_criteria}` | 成功確認の条件 | 必要な情報がすべて揃った |
+| `{error_type_N}` | エラーの種類 | 認証エラー |
+| `{error_handling_N}` | エラーの対応方法 | SETUP.mdを参照して再設定 |
 | `{output_format}` | 出力形式の説明 | マークダウン形式でデータを整形して出力 |
 | `{notes}` | 注意事項 | 大きなPDFは分割して処理する |
 
@@ -64,6 +135,7 @@ user-invocable: {user_invocable}
 | `model` | ❌ | 使用するモデル（sonnet/opus/haiku/inherit） |
 | `context` | ❌ | `fork`でサブエージェント実行 |
 | `user-invocable` | ❌ | スラッシュメニュー表示（デフォルト: true） |
+| `disable-model-invocation` | ❌ | モデルによる自動発動を無効化（デフォルト: false） |
 | `hooks` | ❌ | ライフサイクルフック定義 |
 
 ## descriptionの書き方（最重要）
@@ -96,6 +168,14 @@ description: Extract text and tables from PDF files, fill forms, merge documents
 description: PDFファイルからテキストや表を抽出し、フォーム入力やドキュメント結合を行う。PDFファイルの処理を依頼された時、または「PDF」「フォーム」「抽出」などのキーワードが含まれる場合に使用。
 ```
 
+## 可視性制御
+
+| 設定 | スラッシュメニュー | 自動検出 | 用途 |
+|------|-----------------|---------|------|
+| `user-invocable: true`（デフォルト） | 表示 | ○ | ユーザーが明示的に呼び出し可能 |
+| `user-invocable: false` | 非表示 | ○ | Claude自動判断のみ（前提知識の提供等） |
+| `disable-model-invocation: true` | 表示 | ✗ | ユーザー明示呼び出しのみ（自動発動させたくない場合） |
+
 ## プログレッシブディスクロージャー
 
 **SKILL.mdは500行以下に保つ**ことが推奨されています。詳細は別ファイルに分離してください。
@@ -105,6 +185,8 @@ description: PDFファイルからテキストや表を抽出し、フォーム�
 ```
 my-skill/
 ├── SKILL.md          # 概要とクイックスタート（500行以下）
+├── WORKFLOW.md       # 詳細ワークフロー
+├── SETUP.md          # セットアップ・トラブルシューティング
 ├── REFERENCE.md      # 詳細リファレンス
 ├── EXAMPLES.md       # 使用例
 └── scripts/          # ユーティリティスクリプト
@@ -119,13 +201,6 @@ my-skill/
 
 Claudeはリンク経由でサポートファイルを検出し、必要時にのみ読み込みます。
 
-## 可視性制御
-
-| 設定 | スラッシュメニュー | 自動検出 | 用途 |
-|------|-----------------|---------|------|
-| `user-invocable: true`（デフォルト） | 表示 | ○ | ユーザーが明示的に呼び出し可能 |
-| `user-invocable: false` | 非表示 | ○ | Claude自動判断のみ（前提知識の提供等） |
-
 ## 配置先
 
 `~/Documents/Git/ai-toolkit/skills/{skill_name}/SKILL.md`
@@ -136,4 +211,7 @@ Claudeはリンク経由でサポートファイルを検出し、必要時に�
 - [ ] descriptionは「何をするか＋いつ使うか＋トリガー用語」を含む（最大1024文字）
 - [ ] allowed-toolsは必要最小限の権限
 - [ ] SKILL.mdは500行以下
-- [ ] 発動条件が明確に記載されている
+- [ ] Phase構造で手順が明確に分かれている
+- [ ] 各Phaseに成功確認がある
+- [ ] エラー対応表がある
+- [ ] 詳細は別ファイルに分離されている
