@@ -7,10 +7,10 @@ AI-Toolkit プロンプト分析スクリプト
 
 対象: ai-toolkitリポジトリのみ（スクリプト配置場所から自動決定）
 
-品質チェック項目は各ベストプラクティスSkillから動的に読み取られます:
-- skills/skill-best-practice/SKILL.md
-- skills/slash-command-best-practice/SKILL.md
-- skills/subagent-best-practice/SKILL.md
+品質チェック項目は各ベストプラクティスファイルから動的に読み取られます:
+- skills/manage-resources/BEST-PRACTICES-SKILL.md
+- skills/manage-resources/BEST-PRACTICES-COMMAND.md
+- skills/manage-resources/BEST-PRACTICES-AGENT.md
 
 Usage:
     python3 ./analyze_prompts.py
@@ -73,17 +73,17 @@ def load_best_practices(repo_path: Path) -> dict[str, dict]:
     """ベストプラクティスSkillsを読み込み、チェックリストを抽出する"""
     best_practices = {
         "skills": {
-            "path": "skills/skill-best-practice/SKILL.md",
+            "path": "skills/manage-resources/BEST-PRACTICES-SKILL.md",
             "checklist": [],
             "content": ""
         },
         "slash_commands": {
-            "path": "skills/slash-command-best-practice/SKILL.md",
+            "path": "skills/manage-resources/BEST-PRACTICES-COMMAND.md",
             "checklist": [],
             "content": ""
         },
         "agents": {
-            "path": "skills/subagent-best-practice/SKILL.md",
+            "path": "skills/manage-resources/BEST-PRACTICES-AGENT.md",
             "checklist": [],
             "content": ""
         }
@@ -125,7 +125,7 @@ def check_slash_command_quality(
     content: str,
     best_practice: dict
 ) -> list[dict]:
-    """スラッシュコマンドの品質チェック（slash-command-best-practice準拠）
+    """スラッシュコマンドの品質チェック（BEST-PRACTICES-COMMAND準拠）
 
     ベストプラクティスから読み取ったチェックリストに基づいてチェックを実行
     """
@@ -177,7 +177,7 @@ def check_skill_quality(
     line_count: int,
     best_practice: dict
 ) -> list[dict]:
-    """Skillの品質チェック（skill-best-practice準拠）
+    """Skillの品質チェック（BEST-PRACTICES-SKILL準拠）
 
     ベストプラクティスから読み取ったチェックリストに基づいてチェックを実行
     """
@@ -292,7 +292,7 @@ def check_agent_quality(
     content: str,
     best_practice: dict
 ) -> list[dict]:
-    """サブエージェントの品質チェック（subagent-best-practice準拠）
+    """サブエージェントの品質チェック（BEST-PRACTICES-AGENT準拠）
 
     ベストプラクティスから読み取ったチェックリストに基づいてチェックを実行
     """
@@ -573,14 +573,14 @@ def analyze_repository(repo_path: Path) -> dict[str, Any]:
 def main():
     """ai-toolkitリポジトリのプロンプトを分析する（パス固定）"""
     # スクリプト配置場所から ai-toolkit リポジトリのルートを決定
-    # skills/maintain-prompts/analyze_prompts.py → 2階層上がリポジトリルート
+    # skills/manage-resources/analyze_prompts.py → 2階層上がリポジトリルート
     script_path = Path(__file__).resolve()
     repo_path = script_path.parent.parent.parent
 
     # ai-toolkitリポジトリであることを確認
     if not (repo_path / "CLAUDE.md").exists():
         print(f"Error: ai-toolkitリポジトリが見つかりません: {repo_path}", file=sys.stderr)
-        print("このスクリプトはai-toolkit/skills/maintain-prompts/に配置して実行してください", file=sys.stderr)
+        print("このスクリプトはai-toolkit/skills/manage-resources/に配置して実行してください", file=sys.stderr)
         sys.exit(1)
 
     result = analyze_repository(repo_path)

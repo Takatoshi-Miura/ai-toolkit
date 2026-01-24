@@ -37,7 +37,7 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | GitHub操作 | `github-cli-skill` | GitHub CLI (gh) を使った Issue/PR 操作ガイド。MCP を使わずコマンドで直接操作するためコンテキスト節約 | ✅ |
 | パーソナライズ | `personal-context-aware-response` | パーソナルコンテキストを考慮した回答を提供。技術的意思決定、振り返り分析、アドバイス依頼などで自動発動し、PREP法による構造化された回答を生成 | ✅ |
 | 目標設定 | `smart-goal-setting` | SMARTフレームワークを活用した目標設定支援。目標設定・KPI策定・OKR作成などの依頼で自動発動し、5観点での分析とリーダー行動計画を提案 | ✅ |
-| メンテナンス・ベストプラクティス | `maintain-prompts` | AI-Toolkitのプロンプトをメンテナンス・リファクタリング。スラッシュコマンド・Skill・サブエージェント作成時にClaude公式ベストプラクティスも自動提供（$ARGUMENTS、description、model選択基準など） | ✅ |
+| リソース管理 | `manage-resources` | Claude Codeリソース(スラッシュコマンド、サブエージェント、Skills)の新規作成・更新・メンテナンスを統括。条件分岐で操作タイプ選択後、適切なワークフローに誘導 | ✅ |
 | 振り返り | `retrospective` | 週次/月次のレトロスペクティブを実行。LifeGraph、日次記録、金銭データを分析してレポート作成。「振り返り」「レトロスペクティブ」などで自動発動 | ❌ |
 | 開発・コーディング | `coding` | モバイルアプリ開発の実装タスクを統括するオーケストレーター。情報収集からGit準備、実装計画、コード実装、テストまでの一連のワークフローを専門サブエージェントを活用して進行 | ❌ |
 | テスト | `generate-test-item-skill` | 因子水準組み合わせに基づくテスト項目書を作成。Pythonスクリプトでペアワイズ法を適用し、効率的なテストケースを生成 | ❌ |
@@ -72,8 +72,6 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | Git操作 | `/git-force-push` | 現在のブランチを強制プッシュ（確認プロセス付き） |
 | Git操作 | `/git-get-code-diff-and-test-coverage` | 指定期間内のコード変更を取得し、変更ファイルのテストカバレッジを計測 |
 | MCP・CLI開発 | `/coding-mcp` | MCP開発のスペシャリストとしてサーバー新規作成・ツール追加・ツール更新を実施 |
-| MCP・CLI開発 | `/create-command` | カスタムスラッシュコマンド、サブエージェント、Skillsを対話形式で作成 |
-| MCP・CLI開発 | `/update-command` | 既存のカスタムスラッシュコマンド、サブエージェント、Skillsを対話形式で更新・改善 |
 | 情報収集 | `/fetch-news` | 最新ニュース記事を取得して提供 |
 | 情報収集 | `/fetch-web-search-result` | Web検索でヒットした記事を取得して処理 |
 | 情報収集 | `/research-play-console-update` | Google Play Consoleの更新情報を収集・調査 |
