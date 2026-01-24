@@ -42,6 +42,7 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | 開発・コーディング | `coding` | モバイルアプリ開発の実装タスクを統括するオーケストレーター。情報収集からGit準備、実装計画、コード実装、テストまでの一連のワークフローを専門サブエージェントを活用して進行 | ❌ |
 | テスト | `generate-test-item-skill` | 因子水準組み合わせに基づくテスト項目書を作成。Pythonスクリプトでペアワイズ法を適用し、効率的なテストケースを生成 | ❌ |
 | ユーティリティ | `extract-pdf-images` | PDFファイルから画像を抽出して~/Downloads/に保存。pdfimagesコマンドを使用し、単一/複数PDF一括変換に対応。抽出後に各画像のサイズも報告 | ✅ |
+| ユーティリティ | `check-drive-document-updates-skill` | Google Driveファイルの変更有無を日付指定で確認。TARGET_FILES.mdで監視対象を管理し、指定日以降の更新をチェック | ✅ |
 
 ## サブエージェント一覧
 
@@ -76,7 +77,6 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | 情報収集 | `/fetch-news` | 最新ニュース記事を取得して提供 |
 | 情報収集 | `/fetch-web-search-result` | Web検索でヒットした記事を取得して処理 |
 | 情報収集 | `/research-play-console-update` | Google Play Consoleの更新情報を収集・調査 |
-| 情報収集 | `/check-drive-document-updates` | Google Driveのファイルの変更有無を日付指定で確認 |
 | レビュー・問題解決 | `/solve-problem` | 問題解決のスペシャリストとして7フェーズの構造化された問題解決プロセスをガイド |
 
 ## タスクファイル一覧
