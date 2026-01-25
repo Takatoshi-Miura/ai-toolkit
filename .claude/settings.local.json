@@ -15,7 +15,8 @@
       "Skill(retrospective-claude-usage-daily:*)",
       "Bash(npm run auto-auth:google-drive:*)",
       "Bash(npm run:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(xargs:*)"
     ],
     "deny": [],
     "ask": []

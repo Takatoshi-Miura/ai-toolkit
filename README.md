@@ -39,6 +39,7 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | 目標設定 | `smart-goal-setting` | SMARTフレームワークを活用した目標設定支援。目標設定・KPI策定・OKR作成などの依頼で自動発動し、5観点での分析とリーダー行動計画を提案 | ✅ |
 | リソース管理 | `manage-resources` | Claude Codeリソース(スラッシュコマンド、サブエージェント、Skills)の新規作成・更新・メンテナンスを統括。条件分岐で操作タイプ選択後、適切なワークフローに誘導 | ✅ |
 | 振り返り | `retrospective` | 週次/月次のレトロスペクティブを実行。LifeGraph、日次記録、金銭データを分析してレポート作成。「振り返り」「レトロスペクティブ」などで自動発動 | ❌ |
+| レビュー・問題解決 | `solve-problem` | 問題解決のスペシャリストとして7フェーズ（問題定義、所在特定、原因追及、解決策立案、タスク分解、スケジュール、リスク計画）の構造化プロセスで、現状とあるべき姿のギャップを分析し実行可能な解決策を策定 | ❌ |
 | 開発・コーディング | `coding` | モバイルアプリ開発の実装タスクを統括するオーケストレーター。情報収集からGit準備、実装計画、コード実装、テストまでの一連のワークフローを専門サブエージェントを活用して進行 | ❌ |
 | テスト | `generate-test-item-skill` | 因子水準組み合わせに基づくテスト項目書を作成。Pythonスクリプトでペアワイズ法を適用し、効率的なテストケースを生成 | ❌ |
 | ユーティリティ | `extract-pdf-images` | PDFファイルから画像を抽出して~/Downloads/に保存。pdfimagesコマンドを使用し、単一/複数PDF一括変換に対応。抽出後に各画像のサイズも報告 | ✅ |
@@ -56,11 +57,6 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | テスト | `test-writer` | テスト計画の作成、テストコード実装、テスト実行を担当 | haiku |
 | テスト | `test-item-writer` | 因子・水準組み合わせに基づくテスト項目書をスプレッドシートに作成（Pythonスクリプト版） | sonnet |
 | 問題解決 | `solve-problem-executor` | 問題解決Phase 1-7: 全フェーズを一括実行 | sonnet |
-| 問題解決 | `solve-problem-define` | 問題解決Phase 1-2: 問題の定義（What）と所在の特定（Where） | sonnet |
-| 問題解決 | `solve-problem-analyze` | 問題解決Phase 3: 原因追及・課題設定（Why） | sonnet |
-| 問題解決 | `solve-problem-solution` | 問題解決Phase 4: 解決策立案（How） | sonnet |
-| 問題解決 | `solve-problem-planning` | 問題解決Phase 5-6: タスク分解・スケジュール作成 | sonnet |
-| 問題解決 | `solve-problem-risk` | 問題解決Phase 7: リスク計画 | sonnet |
 
 ## スラッシュコマンド一覧
 
@@ -75,7 +71,6 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | 情報収集 | `/fetch-news` | 最新ニュース記事を取得して提供 |
 | 情報収集 | `/fetch-web-search-result` | Web検索でヒットした記事を取得して処理 |
 | 情報収集 | `/research-play-console-update` | Google Play Consoleの更新情報を収集・調査 |
-| レビュー・問題解決 | `/solve-problem` | 問題解決のスペシャリストとして7フェーズの構造化された問題解決プロセスをガイド |
 
 ## タスクファイル一覧
 
