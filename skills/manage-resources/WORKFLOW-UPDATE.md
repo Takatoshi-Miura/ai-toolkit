@@ -52,30 +52,24 @@
 
 #### サブエージェントの場合
 
-`~/Documents/Git/ai-toolkit/agents/` ディレクトリのファイル一覧を取得し、各ファイルのname/descriptionを読み取って表示する：
+`~/Documents/Git/ai-toolkit/README.md` を読み込み、「## サブエージェント一覧」セクションの表を抽出して表示する：
 
 ```
 ## 既存サブエージェント一覧
 
-| # | エージェント名 | 説明 |
-|---|---------------|------|
-| 1 | {agent_name} | {description} |
-| 2 | ... | ... |
+（README.mdから抽出した表を表示）
 
 更新したいエージェントの番号または名前を入力してください。
 ```
 
 #### Skillの場合
 
-`~/Documents/Git/ai-toolkit/skills/` ディレクトリのサブディレクトリ一覧を取得し、各SKILL.mdのname/descriptionを読み取って表示する：
+`~/Documents/Git/ai-toolkit/README.md` を読み込み、「## Skills一覧」セクションの表を抽出して表示する：
 
 ```
 ## 既存Skill一覧
 
-| # | スキル名 | 説明 |
-|---|---------|------|
-| 1 | {skill_name} | {description} |
-| 2 | ... | ... |
+（README.mdから抽出した表を表示）
 
 更新したいスキルの番号または名前を入力してください。
 ```
