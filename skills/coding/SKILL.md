@@ -1,6 +1,6 @@
 ---
 name: coding
-description: モバイルアプリ開発の実装タスクを統括するオーケストレーター。情報収集からGit準備、実装計画、コード実装、テストまでの一連のワークフローを専門サブエージェントを活用して効率的に進行。「実装したい」「コーディング」「開発タスク」などで使用。
+description: モバイルアプリ開発の実装タスクを統括するオーケストレーター。情報収集から実装計画、コード実装、テストまでの一連のワークフローを専門サブエージェントを活用して効率的に進行。「実装したい」「コーディング」「開発タスク」などで使用。
 allowed-tools: Task, AskUserQuestion, Read, Bash
 user-invocable: true
 disable-model-invocation: true
@@ -18,11 +18,10 @@ disable-model-invocation: true
 
 ```
 - Phase 1: 情報収集
-- Phase 2: Git準備
-- Phase 3: 実装計画
-- Phase 4: 実装
-- Phase 5: テスト（条件付き）
-- Phase 6: 完了処理
+- Phase 2: 実装計画
+- Phase 3: 実装
+- Phase 4: テスト（条件付き）
+- Phase 5: 完了処理
 ```
 
 ## 必要な入力情報
@@ -32,10 +31,6 @@ Phase 1でユーザーから以下を収集する：
 | 項目 | 必須 | 例 |
 |------|------|-----|
 | RedmineチケットURL | ✅ | https://redmine.example.com/issues/12345 |
-| ブランチ名prefix | ✅ | continuous_capture |
-| 空コミットprefix | ✅ | 外貨対応 |
-| PRテンプレートパス | ✅ | .github/pull_request_template.md |
-| PRマージ先ブランチ | ✅ | feature_camera |
 | 概要設計書URL | ❌ | Google Drive URL |
 | テスト項目書URL | ❌ | Google Drive URL（シート名指定可） |
 | 実装したいこと | ❌ | 追加の共有事項 |
@@ -46,25 +41,21 @@ Phase 1でユーザーから以下を収集する：
 ユーザーへの質問、Redmine/Google Driveからのデータ取得を行う。
 → 詳細: [REFERENCE.md#phase-1-情報収集](REFERENCE.md#phase-1-情報収集)
 
-### Phase 2: Git準備
-`git-workflow-setup` サブエージェントでブランチ作成〜PR作成を実行。
-→ 詳細: [REFERENCE.md#phase-2-git準備](REFERENCE.md#phase-2-git準備)
-
-### Phase 3: 実装計画
+### Phase 2: 実装計画
 `Plan` サブエージェントで実装計画を立案し、ユーザー承認を得る。
-→ 詳細: [REFERENCE.md#phase-3-実装計画](REFERENCE.md#phase-3-実装計画)
+→ 詳細: [REFERENCE.md#phase-2-実装計画](REFERENCE.md#phase-2-実装計画)
 
-### Phase 4: 実装
+### Phase 3: 実装
 `code-implementer` サブエージェントで実装を実行。
-→ 詳細: [REFERENCE.md#phase-4-実装](REFERENCE.md#phase-4-実装)
+→ 詳細: [REFERENCE.md#phase-3-実装](REFERENCE.md#phase-3-実装)
 
-### Phase 5: テスト（条件付き）
+### Phase 4: テスト（条件付き）
 新規ビジネスロジック追加時のみ `test-writer` サブエージェントでテスト作成。
-→ 詳細: [REFERENCE.md#phase-5-テスト](REFERENCE.md#phase-5-テスト)
+→ 詳細: [REFERENCE.md#phase-4-テスト](REFERENCE.md#phase-4-テスト)
 
-### Phase 6: 完了処理
+### Phase 5: 完了処理
 全Phaseの完了確認と総評を作成。
-→ 詳細: [REFERENCE.md#phase-6-完了処理](REFERENCE.md#phase-6-完了処理)
+→ 詳細: [REFERENCE.md#phase-5-完了処理](REFERENCE.md#phase-5-完了処理)
 
 ## 使用するサブエージェント・スキル
 
@@ -72,10 +63,9 @@ Phase 1でユーザーから以下を収集する：
 |---------|------|--------------|
 | `/read-redmine-skill` | Redmineチケット読み取り | Phase 1 |
 | `/read-google-drive-skill` | 概要設計書・テスト項目書読み取り | Phase 1 |
-| `git-workflow-setup` | ブランチ作成、空コミット、PR作成、Redmineコメント | Phase 2 |
-| `Plan` | 実装計画の立案 | Phase 3 |
-| `code-implementer` | コード実装、ビルド確認 | Phase 4 |
-| `test-writer` | テストコード作成（条件付き） | Phase 5 |
+| `Plan` | 実装計画の立案 | Phase 2 |
+| `code-implementer` | コード実装、ビルド確認 | Phase 3 |
+| `test-writer` | テストコード作成（条件付き） | Phase 4 |
 
 ## 出力フォーマット
 
