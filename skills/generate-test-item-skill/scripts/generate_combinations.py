@@ -7,23 +7,27 @@
 
 入力形式:
     {
-        "factors": [
-            {"name": "因子A", "levels": ["A1", "A2", "A3"]},
-            {"name": "因子B", "levels": ["B1", "B2"]},
-            {"name": "ワンパス", "levels": ["D1", "D2", "D3"]},
-            {"name": "期待値", "levels": ["E1", "E2"]}
-        ]
+        "因子A": ["A1", "A2", "A3"],
+        "因子B": ["B1", "B2"],
+        "ワンパス": ["D1", "D2", "D3"],
+        "期待値": ["E1", "E2"]
     }
 
 出力形式:
     {
         "success": true,
+        "factorNames": ["因子A", "因子B"],
         "combinations": [["A1", "B1"], ["A1", "B2"], ...],
         "onepassCases": [{"factor": "ワンパス", "level": "D1"}, ...],
         "excludedFactors": ["期待値"],
         "totalCount": 15,
         "warning": null
     }
+
+除外ルール:
+    - 因子名に「OS」を含む場合: excludedFactors に分類（組み合わせ対象外）
+    - 因子名に「期待値」を含む場合: excludedFactors に分類（組み合わせ対象外）
+    - 因子名に「ワンパス」を含む場合: onepassCases に分類（個別テスト項目）
 """
 
 import argparse
@@ -33,13 +37,25 @@ from itertools import product
 from typing import Any
 
 
-def parse_factors(factors_json: str) -> dict:
-    """因子JSONをパースする"""
+def parse_factors(factors_json: str) -> list[dict]:
+    """因子JSONをパースする
+
+    入力形式: {"因子名": ["水準1", "水準2"], ...}
+    出力形式: [{"name": "因子名", "levels": ["水準1", "水準2"]}, ...]
+    """
     try:
         data = json.loads(factors_json)
-        if "factors" not in data:
-            raise ValueError("'factors' キーが見つかりません")
-        return data
+        if not isinstance(data, dict):
+            raise ValueError("JSONオブジェクトである必要があります")
+
+        # シンプル形式を内部形式に変換（定義順を保持）
+        factors = []
+        for name, levels in data.items():
+            if not isinstance(levels, list):
+                raise ValueError(f"因子 '{name}' の水準はリストである必要があります")
+            factors.append({"name": name, "levels": levels})
+
+        return factors
     except json.JSONDecodeError as e:
         raise ValueError(f"JSON解析エラー: {e}")
 
@@ -111,9 +127,8 @@ def generate_combinations(
         組み合わせ結果の辞書
     """
     try:
-        # JSONをパース
-        data = parse_factors(factors_json)
-        factors = data.get("factors", [])
+        # JSONをパース（シンプル形式から内部形式に変換）
+        factors = parse_factors(factors_json)
 
         # 因子を分類
         normal_factors, onepass_factors, expected_factors = categorize_factors(factors)

@@ -83,9 +83,11 @@ def check_file_modified(drive_service, file_id: str, since_date: str) -> dict:
     """
     try:
         # ファイルのメタデータを取得
+        # 共有ドライブのファイルにもアクセスできるよう supportsAllDrives=True を指定
         file_metadata = drive_service.files().get(
             fileId=file_id,
-            fields="name,modifiedTime,lastModifyingUser"
+            fields="name,modifiedTime,lastModifyingUser",
+            supportsAllDrives=True
         ).execute()
 
         file_name = file_metadata.get("name", "不明")

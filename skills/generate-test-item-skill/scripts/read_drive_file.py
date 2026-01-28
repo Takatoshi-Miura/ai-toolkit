@@ -3,7 +3,11 @@
 Google Drive ファイル読み取りCLI
 
 使用方法:
+    # 単一ファイル読み取り
     python scripts/read_drive_file.py <fileId> <fileType> [partName]
+
+    # 複数ファイル一括読み取り
+    python scripts/read_drive_file.py --batch '<json>'
 
 認証ファイル:
     ~/.config/google-drive-skills/client_secret.json
@@ -17,8 +21,15 @@ Google Drive ファイル読み取りCLI
 例:
     python scripts/read_drive_file.py 1abc...xyz sheets          # 全体読み取り
     python scripts/read_drive_file.py 1abc...xyz sheets "売上"    # シート指定
+    python scripts/read_drive_file.py 1abc...xyz sheets "因子・水準,原本"  # 複数シート一括
     python scripts/read_drive_file.py 1abc...xyz docs "概要"      # タブ指定
     python scripts/read_drive_file.py 1abc...xyz presentations 3  # ページ指定
+
+    # 複数ファイル一括（認証1回、APIコール最適化）
+    python scripts/read_drive_file.py --batch '[
+      {"id": "xxx", "type": "docs", "label": "テストガイドライン"},
+      {"id": "yyy", "type": "sheets", "parts": "因子・水準,原本", "label": "テスト項目書"}
+    ]'
 """
 
 import json
@@ -97,22 +108,26 @@ def read_sheet_full(service: Any, file_id: str) -> dict[str, list]:
     return result
 
 
+def find_sheet_by_name(sheet_list: list[dict], sheet_name: str) -> Optional[dict]:
+    """シート名で検索（完全一致 → 部分一致）"""
+    # 完全一致で検索
+    for s in sheet_list:
+        if s["title"] == sheet_name:
+            return s
+
+    # 部分一致で検索
+    for s in sheet_list:
+        if sheet_name in s["title"]:
+            return s
+
+    return None
+
+
 def read_sheet_by_name(service: Any, file_id: str, sheet_name: str) -> dict:
     """スプレッドシートの特定シートを読み取り"""
     sheet_list = get_sheet_list(service, file_id)
 
-    # 完全一致 → 部分一致で検索
-    target_sheet = None
-    for s in sheet_list:
-        if s["title"] == sheet_name:
-            target_sheet = s
-            break
-
-    if not target_sheet:
-        for s in sheet_list:
-            if sheet_name in s["title"]:
-                target_sheet = s
-                break
+    target_sheet = find_sheet_by_name(sheet_list, sheet_name)
 
     if not target_sheet:
         return {
@@ -130,6 +145,45 @@ def read_sheet_by_name(service: Any, file_id: str, sheet_name: str) -> dict:
         "sheetId": target_sheet["sheetId"],
         "values": response.get("values", [])
     }
+
+
+def read_sheets_by_names(service: Any, file_id: str, sheet_names: list[str]) -> dict:
+    """スプレッドシートの複数シートを一括読み取り（batchGetで効率化）"""
+    sheet_list = get_sheet_list(service, file_id)
+
+    # 各シート名を解決
+    targets = []
+    not_found = []
+    for name in sheet_names:
+        found = find_sheet_by_name(sheet_list, name)
+        if found:
+            targets.append(found)
+        else:
+            not_found.append(name)
+
+    if not_found:
+        return {
+            "error": f'シートが見つかりません: {", ".join(not_found)}',
+            "availableSheets": [s["title"] for s in sheet_list]
+        }
+
+    # batchGet で一括取得
+    ranges = [f"'{t['title']}'!A1:ZZ10000" for t in targets]
+    response = service.spreadsheets().values().batchGet(
+        spreadsheetId=file_id,
+        ranges=ranges
+    ).execute()
+
+    value_ranges = response.get("valueRanges", [])
+
+    result = {}
+    for target, vr in zip(targets, value_ranges):
+        result[target["title"]] = {
+            "sheetId": target["sheetId"],
+            "values": vr.get("values", [])
+        }
+
+    return result
 
 
 def read_doc_tab(service: Any, file_id: str, tab_id: str) -> str:
@@ -301,7 +355,9 @@ def read_drive_file(file_id: str, file_type: str, part_name: Optional[str] = Non
             "success": False,
             "fileId": file_id,
             "fileType": file_type,
-            "error": "認証に失敗しました"
+            "error": "認証に失敗しました",
+            "hint": "SETUP.md の手順に従って再認証してください",
+            "setupCommand": "python3 ~/.claude/skills/generate-test-item-skill/scripts/auth.py --reauth"
         }
 
     try:
@@ -312,7 +368,12 @@ def read_drive_file(file_id: str, file_type: str, part_name: Optional[str] = Non
         if file_type == "sheets":
             service = build("sheets", "v4", credentials=creds)
             if part_name:
-                content = read_sheet_by_name(service, file_id, part_name)
+                # カンマ区切りで複数シート指定に対応
+                sheet_names = [n.strip() for n in part_name.split(",")]
+                if len(sheet_names) > 1:
+                    content = read_sheets_by_names(service, file_id, sheet_names)
+                else:
+                    content = read_sheet_by_name(service, file_id, sheet_names[0])
             else:
                 content = read_sheet_full(service, file_id)
 
@@ -364,11 +425,129 @@ def read_drive_file(file_id: str, file_type: str, part_name: Optional[str] = Non
         }
 
 
+def read_drive_file_with_creds(creds, file_id: str, file_type: str, part_name: Optional[str] = None) -> dict:
+    """認証情報を受け取って読み取り（内部用）"""
+    try:
+        # 構造を取得
+        structure = get_file_structure(creds, file_id, file_type)
+
+        # コンテンツを読み取り
+        if file_type == "sheets":
+            service = build("sheets", "v4", credentials=creds)
+            if part_name:
+                sheet_names = [n.strip() for n in part_name.split(",")]
+                if len(sheet_names) > 1:
+                    content = read_sheets_by_names(service, file_id, sheet_names)
+                else:
+                    content = read_sheet_by_name(service, file_id, sheet_names[0])
+            else:
+                content = read_sheet_full(service, file_id)
+
+        elif file_type == "docs":
+            service = build("docs", "v1", credentials=creds)
+            if part_name:
+                content = read_doc_by_tab_name(service, file_id, part_name)
+            else:
+                content = read_doc_full(service, file_id)
+
+        elif file_type == "presentations":
+            service = build("slides", "v1", credentials=creds)
+            if part_name:
+                try:
+                    page_num = int(part_name)
+                    content = read_slide_by_page(service, file_id, page_num)
+                except ValueError:
+                    content = {"error": "スライドにはページ番号を指定してください"}
+            else:
+                content = read_slides_full(service, file_id)
+
+        else:
+            return {
+                "success": False,
+                "fileId": file_id,
+                "fileType": file_type,
+                "error": "サポートされていないファイルタイプ"
+            }
+
+        result = {
+            "success": True,
+            "fileId": file_id,
+            "fileType": file_type,
+            "structure": structure,
+            "content": content
+        }
+        if part_name:
+            result["partName"] = part_name
+
+        return result
+
+    except Exception as e:
+        return {
+            "success": False,
+            "fileId": file_id,
+            "fileType": file_type,
+            "partName": part_name,
+            "error": str(e)
+        }
+
+
+def read_batch(batch_config: list[dict]) -> dict:
+    """
+    複数ファイルを一括読み取り
+
+    Args:
+        batch_config: [{"id": "xxx", "type": "docs", "parts": "...", "label": "..."}]
+
+    Returns:
+        {"success": True, "files": {"label": {...}, ...}}
+    """
+    creds = get_auth_client()
+    if not creds:
+        return {
+            "success": False,
+            "error": "認証に失敗しました",
+            "hint": "SETUP.md の手順に従って再認証してください",
+            "setupCommand": "python3 ~/.claude/skills/generate-test-item-skill/scripts/auth.py --reauth"
+        }
+
+    results = {}
+    errors = []
+
+    for item in batch_config:
+        file_id = item.get("id")
+        file_type = item.get("type")
+        parts = item.get("parts")
+        label = item.get("label", file_id)
+
+        if not file_id or not file_type:
+            errors.append({"label": label, "error": "id と type は必須です"})
+            continue
+
+        result = read_drive_file_with_creds(creds, file_id, file_type, parts)
+
+        if result.get("success"):
+            results[label] = result
+        else:
+            errors.append({"label": label, "error": result.get("error")})
+
+    return {
+        "success": len(errors) == 0,
+        "files": results,
+        "errors": errors if errors else None,
+        "summary": {
+            "total": len(batch_config),
+            "success": len(results),
+            "failed": len(errors)
+        }
+    }
+
+
 def print_usage():
     """使用方法を表示"""
     print("""
 使用方法:
     python scripts/read_drive_file.py <fileId> <fileType> [partName]
+    python scripts/read_drive_file.py --batch '<json>'
 
 引数:
     fileId   - Google DriveのファイルID
@@ -376,10 +555,18 @@ def print_usage():
     partName - (オプション) 読み取る部分の名前
 
 例:
+    # 単一ファイル
     python scripts/read_drive_file.py 1abc...xyz sheets          # 全体読み取り
     python scripts/read_drive_file.py 1abc...xyz sheets "売上"    # シート指定
+    python scripts/read_drive_file.py 1abc...xyz sheets "因子・水準,原本"  # 複数シート一括
     python scripts/read_drive_file.py 1abc...xyz docs "概要"      # タブ指定
     python scripts/read_drive_file.py 1abc...xyz presentations 3  # ページ指定
+
+    # 複数ファイル一括
+    python scripts/read_drive_file.py --batch '[
+      {"id": "xxx", "type": "docs", "label": "テストガイドライン"},
+      {"id": "yyy", "type": "sheets", "parts": "因子・水準,原本", "label": "テスト項目書"}
+    ]'
 """)
 
 
@@ -387,6 +574,40 @@ def main():
     """CLI エントリーポイント"""
     args = sys.argv[1:]
 
+    if len(args) < 1:
+        print_usage()
+        sys.exit(1)
+
+    # --batch モード（常にファイル出力）
+    if args[0] == "--batch":
+        if len(args) < 2:
+            print("--batch にはJSON設定が必要です", file=sys.stderr)
+            sys.exit(1)
+
+        try:
+            batch_config = json.loads(args[1])
+        except json.JSONDecodeError as e:
+            print(f"JSONパースエラー: {e}", file=sys.stderr)
+            sys.exit(1)
+
+        result = read_batch(batch_config)
+
+        # 常にファイル出力（大きなデータ対応）
+        output_path = "/tmp/drive_batch_result.json"
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(result, f, ensure_ascii=False, indent=2)
+
+        # ファイルパスとサマリーのみ出力
+        print(json.dumps({
+            "output_file": output_path,
+            "summary": result.get("summary", {}),
+            "success": result.get("success", False),
+            "errors": result.get("errors"),
+            "hint": f"Readツールで {output_path} を読み込んでください"
+        }, ensure_ascii=False, indent=2))
+        return
+
+    # 通常モード
     if len(args) < 2:
         print_usage()
         sys.exit(1)

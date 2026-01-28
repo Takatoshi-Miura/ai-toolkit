@@ -31,24 +31,22 @@ disable-model-invocation: true
 ```json
 [
   {"content": "Phase 1: 情報収集", "activeForm": "情報を収集中", "status": "pending"},
-  {"content": "Phase 2: スプレッドシート準備", "activeForm": "スプレッドシートを準備中", "status": "pending"},
+  {"content": "Phase 2: 資料一括読取", "activeForm": "資料一括読取", "status": "pending"},
   {"content": "Phase 3: 仕様確認", "activeForm": "仕様を確認中", "status": "pending"},
   {"content": "Phase 4: 計画立案・承認", "activeForm": "計画を立案中", "status": "pending"},
-  {"content": "Phase 5: テスト項目生成", "activeForm": "テスト項目を生成中", "status": "pending"},
-  {"content": "Phase 6: 完了確認", "activeForm": "完了を確認中", "status": "pending"}
+  {"content": "Phase 5-1: 組み合わせパターン生成", "activeForm": "組み合わせパターンを生成中", "status": "pending"},
+  {"content": "Phase 5-2: テスト項目書き込み", "activeForm": "テスト項目を書き込み中", "status": "pending"},
+  {"content": "Phase 6: 完了確認・クリーンアップ", "activeForm": "完了確認・クリーンアップ中", "status": "pending"}
 ]
 ```
-
-各フェーズ開始時に`in_progress`、完了時に`completed`に更新する。
 
 ---
 
 ## Phase 1: 情報収集
 
-
 ### 1-1. 必要情報の一括収集
 
-**AskUserQuestion ツールを使用して、以下の情報を一括で収集する。**
+**AskUserQuestion ツール**で以下を一括収集：
 
 ```json
 {
@@ -93,35 +91,83 @@ disable-model-invocation: true
 }
 ```
 
-### 1-2. テストガイドラインの読取
-
-ユーザーから必要情報を取得後、テストガイドラインを読み取る：
-
-```bash
-python3 ~/.claude/skills/generate-test-item-skill/scripts/read_drive_file.py 1fpcWeiNCIefrUXN9567iopHxPGpB4VUKQ5uxr9CznVo docs
-```
-
-「■単体テスト」と「■プレ結合テスト」のセクションから、それぞれの目的・スコープ・観点の違いを把握する。
-
 **成功確認**: 必要な情報がすべて揃った → Phase 2へ
 
 ---
 
-## Phase 2: スプレッドシート準備
+## Phase 2: 資料一括読取
 
+### 2-1. batch 構成の作成
 
-### 2-1. シート構造の読取（許可不要）
+Phase 1 で収集した情報から、`--batch` の JSON 配列を構成する：
 
-```bash
-# シート一覧取得
-python3 ~/.claude/skills/generate-test-item-skill/scripts/read_drive_file.py <spreadsheet_id> sheets
+**必須項目:**
+```json
+{"id": "1fpcWeiNCIefrUXN9567iopHxPGpB4VUKQ5uxr9CznVo", "type": "docs", "label": "テストガイドライン"},
+{"id": "<spreadsheet_id>", "type": "sheets", "parts": "因子・水準,原本", "label": "テスト項目書"}
 ```
 
-### 2-2. 「原本」シートの存在確認
+**参照資料の追加（Phase 1 で指定された Google Drive URL がある場合）:**
 
-シート一覧に「原本」シートが存在するか確認する。
+| URL パターン | type | 追加例 |
+|-------------|------|--------|
+| `docs.google.com/document/d/<id>` | docs | `{"id": "<id>", "type": "docs", "label": "設計書"}` |
+| `docs.google.com/spreadsheets/d/<id>` | sheets | `{"id": "<id>", "type": "sheets", "label": "仕様書"}` |
+| `docs.google.com/presentation/d/<id>` | presentations | `{"id": "<id>", "type": "presentations", "label": "資料"}` |
 
-**「原本」シートが存在しない場合:**
+> **💡 Tip**: label は識別しやすい名前を付ける
+
+### 2-2. 全資料の一括読取
+
+```bash
+python3 ~/.claude/skills/generate-test-item-skill/scripts/read_drive_file.py --batch '[
+  {"id": "1fpcWeiNCIefrUXN9567iopHxPGpB4VUKQ5uxr9CznVo", "type": "docs", "label": "テストガイドライン"},
+  {"id": "<spreadsheet_id>", "type": "sheets", "parts": "因子・水準,原本", "label": "テスト項目書"},
+  ... Phase 1 で指定された Google Drive 資料を追加 ...
+]'
+```
+
+> **💡 Note**: 結果は `/tmp/drive_batch_result.json` に自動保存される。
+
+### 2-3. 結果ファイルの読み込み
+
+**Read ツール**で結果ファイルを読み込む：
+
+```
+/tmp/drive_batch_result.json
+```
+
+> **💡 Note**: ファイル出力により大きなデータも一括で読み込める。
+
+### 2-4. GitHub Issue の読取（該当する場合）
+
+Phase 1 で GitHub Issue URL が指定された場合のみ：
+
+```
+mcp-gh-issue-mini MCPツール（例外的に使用）
+```
+
+### 2-5. 読取結果の確認
+
+**レスポンス構造:**
+```json
+{
+  "success": true,
+  "files": {
+    "テストガイドライン": {"content": [...], "structure": {...}},
+    "テスト項目書": {"content": {"因子・水準": {...}, "原本": {...}}, "structure": {...}},
+    "設計書": {"content": [...], "structure": {...}}
+  },
+  "summary": {"total": 3, "success": 3, "failed": 0}
+}
+```
+
+**確認ポイント:**
+- **テストガイドライン**: 「■単体テスト」「■プレ結合テスト」セクションから目的・スコープ・観点を把握
+- **テスト項目書**: 因子水準表の数と構成、原本シートの列構成と **sheetId（Phase 5で使用）**
+- **参照資料**: 機能仕様、画面遷移、期待動作などを把握
+
+**「原本」シートが存在しない場合：**
 
 > ⚠️ テスト項目書に「原本」シートが見つかりません。
 >
@@ -132,53 +178,18 @@ python3 ~/.claude/skills/generate-test-item-skill/scripts/read_drive_file.py <sp
 > 2. 新しいシートを作成し、名前を「原本」に設定
 > 3. テスト項目の列構成（№、因子水準列、前提条件、操作手順、期待結果など）を設定
 > 4. 追加が完了したらお知らせください
->
-> 追加完了後、続きの処理を実行します。
 
-**ユーザーから追加完了の報告を受けたら**、再度シート構造を読み取って続行する。
+ユーザーから追加完了の報告を受けたら、再度読み取って続行する。
 
-### 2-3. 因子水準シートの読取
-
-```bash
-python3 ~/.claude/skills/generate-test-item-skill/scripts/read_drive_file.py <spreadsheet_id> sheets '因子・水準'
-```
-
-因子水準表の数と各表のタイトルを特定する。
-
-### 2-4. 原本シートの構造把握
-
-```bash
-python3 ~/.claude/skills/generate-test-item-skill/scripts/read_drive_file.py <spreadsheet_id> sheets '原本'
-```
-
-各列に記載する項目を把握する。原本シートのIDも確認しておく（Phase 5で使用）。
-
-**成功確認**: シート構造と原本シートIDが把握できた → Phase 3へ
+**成功確認**: 全ての資料が読み取れた → Phase 3へ
 
 ---
 
 ## Phase 3: 仕様確認
 
+### 3-1. 不明点の質問
 
-### 3-1. 参考情報の読取
-
-**PBI/Issue（GitHub）の場合:**
-
-```bash
-# mcp-gh-issue-miniを使用（MCPツールのみ例外的に使用）
-```
-
-または read-redmine-skill が自動発動。
-
-**概要設計書（Google Docs）の場合:**
-
-```bash
-python3 ~/.claude/skills/generate-test-item-skill/scripts/read_drive_file.py <doc_id> docs
-```
-
-### 3-2. 不明点の質問
-
-操作手順や期待結果、仕様等の不明点について整理してユーザーに質問する。
+操作手順・期待結果・仕様等の不明点について整理してユーザーに質問する。
 不明点がなくなるまで繰り返し実施。
 
 **成功確認**: 不明点が解消された → Phase 4へ
@@ -187,10 +198,12 @@ python3 ~/.claude/skills/generate-test-item-skill/scripts/read_drive_file.py <do
 
 ## Phase 4: 計画立案・承認
 
+### 4-1. Planサブエージェントでテスト作成計画を立案
 
-### 4-1. テスト作成計画の立案
-
-Taskツールを使用してPlanサブエージェントを起動し、テスト作成計画を立案させる。
+**⚠️ 重要な制約事項：**
+- **ペアワイズ法・直交表・PICT等による組み合わせ削減は禁止**
+- 因子・水準の全組み合わせ（フルカバレッジ）を生成すること
+- 項目数が多くなっても削減提案はしないこと
 
 以下の情報をサブエージェントに渡す：
 - テストタイプ（単体テスト/プレ結合テスト）
@@ -198,12 +211,13 @@ Taskツールを使用してPlanサブエージェントを起動し、テスト
 - 因子・水準シートの構成
 - PBI/Issue や概要設計書から得た仕様情報
 - ユーザーとの質疑応答で確認した内容
+- **上記の制約事項（ペアワイズ法禁止、全組み合わせ必須）**
 
 ### 4-2. サンプルテスト項目の作成
 
 計画に基づいて、**各因子水準表から1〜2件のサンプルテスト項目**を作成する。
 
-サンプルは以下の要素を含めて提示：
+**サンプルフォーマット：**
 
 ```
 【サンプルテスト項目】<因子水準表タイトル>
@@ -226,15 +240,13 @@ Taskツールを使用してPlanサブエージェントを起動し、テスト
 ### 4-3. ユーザー承認
 
 計画案とサンプルテスト項目をユーザーに提示し、承認を要求する。
-
-ユーザーからフィードバックがあれば、サンプルを修正して再提示する。
+フィードバックがあれば、サンプルを修正して再提示する。
 
 **成功確認**: ユーザーから承認を得た → Phase 5へ
 
 ---
 
-## Phase 5: テスト項目生成（並列）
-
+## Phase 5: テスト項目生成
 
 ### 5-1. 組み合わせパターンの生成
 
@@ -242,19 +254,26 @@ Taskツールを使用してPlanサブエージェントを起動し、テスト
 python3 ~/.claude/skills/generate-test-item-skill/scripts/generate_combinations.py '<factors_json>'
 ```
 
+**factors_json の形式：**
+
+```json
+{
+  "因子A": ["A1", "A2", "A3"],
+  "因子B": ["B1", "B2"],
+  "ワンパス": ["D1", "D2", "D3"],
+  "期待値": ["E1", "E2"]
+}
+```
+
+> **💡 Note**: 因子名に「ワンパス」「期待値」「OS」を含む場合は特別扱いされる（スクリプト内で自動分類）
+
 ### 5-2. サブエージェントの並列起動
 
 因子水準表の数だけ **test-item-writer** サブエージェントを並列起動。
-各サブエージェントが「原本」シートを複製し、テスト項目を記載する。
 
-**⚠️ 重要: 並列実行の方法**
+**⚠️ 重要**: 1つのレスポンス内で複数のTaskツールを同時に呼び出すこと（`run_in_background`は使用しない）。
 
-**1つのレスポンス内で複数のTaskツールを同時に呼び出すこと。**
-`run_in_background` は使用しない（フォアグラウンドで並列実行）。
-
-例：因子水準表が3つある場合、1回のレスポンスで3つのTaskツールを呼び出す。
-
-**Taskツール呼び出しパラメータ（各因子水準表ごとに1つ）：**
+**Taskツール呼び出しパラメータ：**
 
 ```
 subagent_type: test-item-writer
@@ -273,7 +292,6 @@ prompt: |
   注意事項:
   - 最初に原本シートを複製してシート名を設定すること
   - A列の№は追加不要（既存の番号を使用）
-  - 因子水準の組み合わせ順序はエージェントのプロンプトに従う
   - サンプルテスト項目の記述スタイルに従って作成すること
   - 操作手順は番号付きではなく箇条書き（・）で記載すること
 ```
@@ -282,30 +300,36 @@ prompt: |
 
 ---
 
-## Phase 6: 完了確認
+## Phase 6: 完了確認・クリーンアップ
 
+### 6-1. 結果報告
 
 以下の情報を報告：
 - 処理対象シート数
 - 生成したテスト項目の総数
 - 発生した警告やエラー
 
+### 6-2. 一時ファイルの削除
+
+```bash
+rm -f /tmp/test_items*.json /tmp/drive_batch_result.json
+```
+
+**成功確認**: 一時ファイルが削除された → 完了
+
 ---
-
-## 詳細リファレンス
-
-- **詳細ワークフロー**: [WORKFLOW.md](WORKFLOW.md)
-- **セットアップ・トラブルシューティング**: [SETUP.md](SETUP.md)
 
 ## 使用スクリプト
 
 | 操作 | スクリプト |
 |------|-----------|
-| 読み取り | `~/.claude/skills/generate-test-item-skill/scripts/read_drive_file.py` |
-| 値挿入 | `~/.claude/skills/generate-test-item-skill/scripts/insert_value.py` |
-| シートコピー | `~/.claude/skills/generate-test-item-skill/scripts/copy_element.py` |
-| セル結合（一括） | `~/.claude/skills/generate-test-item-skill/scripts/merge_cells_batch.py` |
-| 組み合わせ生成 | `~/.claude/skills/generate-test-item-skill/scripts/generate_combinations.py` |
+| 読み取り | `read_drive_file.py` |
+| 組み合わせ生成 | `generate_combinations.py` |
+| テスト項目書き込み | `write_test_items.py` |
+
+スクリプトパス: `~/.claude/skills/generate-test-item-skill/scripts/`
+
+---
 
 ## エラー対応
 
@@ -315,8 +339,4 @@ prompt: |
 | ModuleNotFoundError | `pip install google-auth google-auth-oauthlib google-api-python-client` を実行 |
 | シート名が見つからない | エラーメッセージの `availableSheets` から正しい名前を使用 |
 
-**エラーフィードバックループ**:
-1. エラーメッセージを確認
-2. 上記の表に従って対応
-3. 該当フェーズを再実行
-4. 成功するまで繰り返す
+**エラーフィードバックループ**: エラー確認 → 対応 → 該当フェーズ再実行 → 成功まで繰り返す
