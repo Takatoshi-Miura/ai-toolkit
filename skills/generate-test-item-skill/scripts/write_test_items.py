@@ -205,6 +205,14 @@ def write_test_items(
 
         new_sheet_id = duplicate_response["replies"][0]["duplicateSheet"]["properties"]["sheetId"]
 
+        # 1.5. B1セルに「テスト項目 - AI Generated」を書き込み
+        service.spreadsheets().values().update(
+            spreadsheetId=spreadsheet_id,
+            range=f"'{sheet_name}'!B1",
+            valueInputOption="USER_ENTERED",
+            body={"values": [["テスト項目 - AI Generated"]]}
+        ).execute()
+
         # 2. 複製したシートの列構造を検出
         col_structure = detect_column_structure(service, spreadsheet_id, sheet_name)
         factor_columns_count = col_structure["factor_columns_count"]
