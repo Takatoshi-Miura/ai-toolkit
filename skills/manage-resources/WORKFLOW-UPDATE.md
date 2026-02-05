@@ -91,8 +91,6 @@
 #### スラッシュコマンドの場合
 
 - スラッシュコマンドファイル: `~/Documents/Git/ai-toolkit/commands/{command_name}.md`
-- タスクファイル: `~/Documents/Git/ai-toolkit/task/{command_name}.md`（存在する場合）
-  - **注意**: 1つのコマンドからのみ参照されるタスクはコマンドファイルに統合済み。タスクファイルがない場合は正常。
 
 #### サブエージェントの場合
 
@@ -115,11 +113,6 @@
 - allowed-tools: {tools}
 - description: {description}
 - 役割: {role}
-
-### タスクファイル
-- 存在: あり / なし
-- 概要: {task_description}
-- 手順数: {step_count}
 
 ### テンプレート整合性チェック
 - [OK/NG] フロントマター形式（---で囲まれている）
@@ -311,14 +304,6 @@ Taskツールを使用してPlanサブエージェントを起動し、タイプ
 + 変更後の行
 ```
 
-### タスクファイルの変更（該当する場合）
-ファイル: task/{command_name}.md
-
-```diff
-- 変更前の行
-+ 変更後の行
-```
-
 ### テンプレート整合性
 - [OK] 更新後もテンプレートに準拠しています
 
@@ -424,7 +409,6 @@ descriptionが変更された場合のみREADME.mdを更新する：
 
 以下のファイルを更新しました：
 - commands/{command_name}.md
-- task/{command_name}.md（該当する場合）
 - README.md（descriptionが変更された場合）
 
 ### コマンドの使用方法

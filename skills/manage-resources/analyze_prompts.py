@@ -99,26 +99,6 @@ def load_best_practices(repo_path: Path) -> dict[str, dict]:
     return best_practices
 
 
-def find_task_references(content: str) -> list[str]:
-    """コンテンツ内のtask/への参照を検出する
-
-    NOTE: コードブロック内の参照は例示の可能性が高いため除外する
-    """
-    # コードブロック（```で囲まれた部分）を除去
-    content_without_codeblocks = re.sub(r'```[\s\S]*?```', '', content)
-
-    # task/ または ~/Documents/Git/ai-toolkit/task/ への参照を検出
-    patterns = [
-        r'task/([a-z0-9-]+\.md)',
-        r'ai-toolkit/task/([a-z0-9-]+\.md)',
-    ]
-    references = set()
-    for pattern in patterns:
-        matches = re.findall(pattern, content_without_codeblocks)
-        references.update(matches)
-    return list(references)
-
-
 def check_slash_command_quality(
     path: Path,
     frontmatter: dict,
@@ -412,9 +392,6 @@ def analyze_file(
     file_info["description"] = frontmatter.get('description', '')
     file_info["allowed_tools"] = frontmatter.get('allowed-tools', [])
 
-    # task参照を検出
-    file_info["references_tasks"] = find_task_references(content)
-
     # 共通チェック
     file_info["quality_issues"].extend(check_common_quality(path, content))
 
@@ -437,30 +414,6 @@ def analyze_file(
     return file_info
 
 
-def build_reference_map(files: dict[str, list[dict]]) -> dict[str, list[str]]:
-    """task参照マップを構築する"""
-    reference_map: dict[str, list[str]] = {}
-
-    for resource_type, file_list in files.items():
-        for file_info in file_list:
-            for task_ref in file_info.get("references_tasks", []):
-                if task_ref not in reference_map:
-                    reference_map[task_ref] = []
-                reference_map[task_ref].append(file_info["name"])
-
-    return reference_map
-
-
-def find_orphan_tasks(tasks: list[dict], reference_map: dict[str, list[str]]) -> list[str]:
-    """参照されていないtaskを検出する"""
-    orphans = []
-    for task in tasks:
-        task_filename = f"{task['name']}.md"
-        if task_filename not in reference_map:
-            orphans.append(task_filename)
-    return orphans
-
-
 def analyze_repository(repo_path: Path) -> dict[str, Any]:
     """リポジトリ全体を分析する"""
 
@@ -470,7 +423,6 @@ def analyze_repository(repo_path: Path) -> dict[str, Any]:
     result = {
         "summary": {
             "slash_commands": 0,
-            "tasks": 0,
             "agents": 0,
             "skills": 0,
             "total": 0
@@ -487,16 +439,13 @@ def analyze_repository(repo_path: Path) -> dict[str, Any]:
         },
         "files": {
             "slash_commands": [],
-            "tasks": [],
             "agents": [],
             "skills": []
         },
-        "reference_map": {},
         "quality_issues": [],
         "refactoring_candidates": {
             "merge_candidates": [],
-            "extract_candidates": [],
-            "orphan_tasks": []
+            "extract_candidates": []
         }
     }
 
@@ -507,14 +456,6 @@ def analyze_repository(repo_path: Path) -> dict[str, Any]:
             file_info = analyze_file(path, "slash_commands", best_practices)
             result["files"]["slash_commands"].append(file_info)
             result["summary"]["slash_commands"] += 1
-
-    # task
-    task_dir = repo_path / "task"
-    if task_dir.exists():
-        for path in task_dir.glob("*.md"):
-            file_info = analyze_file(path, "tasks", best_practices)
-            result["files"]["tasks"].append(file_info)
-            result["summary"]["tasks"] += 1
 
     # agents
     agents_dir = repo_path / "agents"
@@ -538,18 +479,8 @@ def analyze_repository(repo_path: Path) -> dict[str, Any]:
     # 合計
     result["summary"]["total"] = (
         result["summary"]["slash_commands"] +
-        result["summary"]["tasks"] +
         result["summary"]["agents"] +
         result["summary"]["skills"]
-    )
-
-    # 参照マップ構築
-    result["reference_map"] = build_reference_map(result["files"])
-
-    # 孤立taskの検出
-    result["refactoring_candidates"]["orphan_tasks"] = find_orphan_tasks(
-        result["files"]["tasks"],
-        result["reference_map"]
     )
 
     # 品質問題の集約

@@ -254,9 +254,6 @@ Planサブエージェントの提案をユーザーに提示する。
 
 #### スラッシュコマンドの場合
 
-- タスクファイルを生成する（必要な場合）
-  - パス: `~/Documents/Git/ai-toolkit/task/{command_name}.md`
-  - テンプレート: `~/Documents/Git/ai-toolkit/templates/task-template.md`
 - スラッシュコマンドファイルを生成する
   - パス: `~/Documents/Git/ai-toolkit/commands/{command_name}.md`
   - テンプレート: `~/Documents/Git/ai-toolkit/templates/slash-command-template.md`
@@ -302,7 +299,6 @@ Planサブエージェントの提案をユーザーに提示する。
 
 以下のファイルを作成しました：
 - commands/{command_name}.md
-- task/{command_name}.md（該当する場合）
 - README.mdに追加
 
 ### コマンドの使用方法
