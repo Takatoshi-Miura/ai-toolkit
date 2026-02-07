@@ -44,6 +44,7 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | テスト | `generate-test-item-skill` | 因子水準組み合わせに基づくテスト項目書を作成。Pythonスクリプトでペアワイズ法を適用し、効率的なテストケースを生成 | ❌ |
 | ユーティリティ | `extract-pdf-images` | PDFファイルから画像を抽出して~/Downloads/に保存。pdfimagesコマンドを使用し、単一/複数PDF一括変換に対応。抽出後に各画像のサイズも報告 | ✅ |
 | ユーティリティ | `check-drive-document-updates-skill` | Google Driveファイルの変更有無を日付指定で確認。TARGET_FILES.mdで監視対象を管理し、指定日以降の更新をチェック | ✅ |
+| ユーティリティ | `sync-to-claude` | ai-toolkitリポジトリのcommands/agents/skillsを~/.claude/に一方向同期。差分のみコピーし、~/.claude/固有のファイルは保持 | ✅ |
 
 ## サブエージェント一覧
 

@@ -62,6 +62,11 @@ python3 $SCRIPT_PATH 1hDcVtQ5wEz2rPGRrJGK8CspnqSujheAjeZ1PPAj2u6E docs
 
 **出力形式:** JSON。`content` フィールドにデータが含まれる。
 
+### Phase 3.5: Insights取得（月次のみ）
+
+月次の場合、`/insights` コマンドを実行して過去の会話から得られた洞察を取得する。
+取得した結果はPhase 4の分析材料として活用する。
+
 ### Phase 4: 分析とレポート作成
 
 取得したデータを分析し、レポートに追記する。

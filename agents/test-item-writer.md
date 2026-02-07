@@ -17,6 +17,7 @@ skills: generate-test-item-skill
 - **完全汎用性**: あらゆるプロジェクト・ドメインで利用可能
 - **MCP不使用**: Pythonスクリプトのみを使用し、MCPツールは使用しない
 - **統合スクリプト使用**: `write_test_items.py` で一括処理
+- **1行1結果**: 各行には1つの期待結果を記載する（操作は期待結果に関わるものを含めてOK）
 
 ## 入力パラメータ
 ユーザーから以下の情報を受け取ります：
@@ -83,20 +84,37 @@ python3 ~/.claude/skills/generate-test-item-skill/scripts/write_test_items.py \
 ```json
 {
   "factors": ["因子1", "因子2"],
+  "column_positions": {
+    "precondition_col": 5,
+    "procedure_col": 7,
+    "expected_col": 8
+  },
   "items": [
     {
       "combination": ["水準1", "水準2"],
-      "precondition": "・前提条件1\n・前提条件2",
-      "procedure": "・操作1\n・操作2\n・操作3",
-      "expected": "・期待結果1\n・期待結果2"
+      "precondition": "前提条件",
+      "procedure": "操作を実施する",
+      "expected": "結果が表示されること"
+    },
+    {
+      "combination": ["水準1", "水準2"],
+      "precondition": "上記実施後",
+      "procedure": "次の操作を実施する",
+      "expected": "次の結果が表示されること"
+    },
+    {
+      "combination": ["水準1", "水準2"],
+      "precondition": "",
+      "procedure": "",
+      "expected": "確認事項が表示されていること"
     }
   ],
   "onepass_items": [
     {
       "label": "ワンパス項目名",
-      "precondition": "・前提条件",
-      "procedure": "・操作手順",
-      "expected": "・期待結果"
+      "precondition": "前提条件",
+      "procedure": "操作手順",
+      "expected": "期待結果"
     }
   ]
 }
@@ -106,46 +124,87 @@ python3 ~/.claude/skills/generate-test-item-skill/scripts/write_test_items.py \
 
 1. **factors**: 因子名の配列（「ワンパス」「期待値」を含む因子は除外）
 
-2. **items**: 各組み合わせのテスト項目
-   - `combination`: 水準の配列（因子の順序に対応）
-   - `precondition`: 前提条件（箇条書き、改行区切り）
-   - `procedure`: 操作手順（箇条書き、改行区切り）
-   - `expected`: 期待結果（箇条書き、改行区切り）
+2. **column_positions** (任意): 列位置の明示指定（0ベース: A=0, B=1, ...）
+   - `precondition_col`: 前提条件列の絶対位置
+   - `procedure_col`: 操作列の絶対位置
+   - `expected_col`: 期待結果列の絶対位置
+   - 省略時はテンプレートから自動検出（因子数に基づき自動調整あり）
+   - テンプレートの列構造と因子数がずれる場合は明示指定を推奨
 
-3. **onepass_items**: ワンパス項目（組み合わせ対象外の単独確認項目）
+3. **items**: 各行のテスト項目（**★ 1行 = 1つの期待結果**）
+   - `combination`: 水準の配列（因子の順序に対応）
+   - `precondition`: その行の前提条件
+   - `procedure`: その行の操作（期待結果に関わる操作であれば複数含めてOK）
+   - `expected`: その行の期待結果（**1つだけ**）
+
+4. **onepass_items**: ワンパス項目（組み合わせ対象外の単独確認項目）
    - `label`: 項目名
-   - `precondition`, `procedure`, `expected`: 同上
+   - `precondition`, `procedure`, `expected`: 同上（1行1結果）
+
+**★ 最重要: 1行1結果のルール**
+
+各アイテムの `expected` は **1つの期待結果** のみを持つ。
+1つの組み合わせに対して複数の期待結果がある場合、**同じ combination 値を繰り返して** 複数のアイテムに分割する。
+
+- `procedure` には、その期待結果に至るまでの操作を記載する。関連する操作が複数ある場合は1つのセルに含めてよい。
+- 操作なしの確認ステップでは `procedure` を空文字にする。
+
+**良い例（✓）:**
+```json
+// 組み合わせ: SSO有効 + 新規登録 → 期待結果が3つ → 3行に分割
+{"combination": ["有効", "新規登録"], "precondition": "前提条件...", "procedure": "ICカードを読み取る", "expected": "初回登録ダイアログが表示されること"},
+{"combination": ["有効", "新規登録"], "precondition": "上記実施後", "procedure": "「登録する」ボタンを押下する", "expected": "ICカード登録画面に遷移すること"},
+{"combination": ["有効", "新規登録"], "precondition": "", "procedure": "", "expected": "「シングルサインオン」ボタンが表示されていること"},
+{"combination": ["有効", "新規登録"], "precondition": "上記実施後", "procedure": "「シングルサインオン」ボタンを押下する", "expected": "外部ブラウザが立ち上がること"},
+{"combination": ["有効", "新規登録"], "precondition": "", "procedure": "", "expected": "IdPのログイン画面が表示されること"},
+{"combination": ["有効", "新規登録"], "precondition": "上記実施後", "procedure": "IdPのID/Passを入力してログインする", "expected": "「シングルサインオン完了」画面が表示されること"},
+{"combination": ["有効", "新規登録"], "precondition": "上記実施後", "procedure": "「続行」ボタンを押下する", "expected": "ICカード登録完了の文言が表示されること"}
+```
+
+**悪い例（✗）:**
+```json
+// 全操作と全結果を1つのセルに詰め込んでいる
+{"combination": ["有効", "新規登録"], "precondition": "前提条件...", "procedure": "・ICカードを読み取る\n・「登録する」ボタンを押下する\n・「シングルサインオン」ボタンを押下する", "expected": "・初回登録ダイアログが表示されること\n・ICカード登録画面に遷移すること\n・外部ブラウザが立ち上がること"}
+```
+
+**ステップ分割のルール:**
+- **操作ステップ**: `procedure` に操作を記載し、`expected` にその期待結果を記載。期待結果に至る操作が複数ある場合は1セルにまとめてよい
+- **確認ステップ**: 操作なしで確認だけの場合、`procedure` は空文字、`expected` に確認内容を記載
+- **前提条件**: 最初のステップに詳細な前提条件。2番目以降は `"上記実施後"` または空文字
+- combination の値は全ステップで同一にする（スクリプトが自動結合する）
 
 **前提条件の記載ルール:**
-- テストを実施するための各水準固有の前提条件を箇条書きで記載
+- テストを実施するための各水準固有の前提条件を記載
 - test_requirementsの制約事項を基本とする
 - ヘッダーに記載されている共通前提条件は除外
 - 同一画面での操作は「上記実施後」として前のテストから連続させる
 - 画面遷移が発生する場合のみ、新しい前提条件を記載
 
 **操作手順の記載ルール:**
-- 水準の組み合わせに対応した具体的な操作を記載
-- 実行可能な形で箇条書きにする
+- その行の期待結果に至るまでの操作を記載
+- 実行可能な形で記載する
 - 枚数や件数は具体的な数値で記載（「複数」ではなく「10枚」等）
 - sample_items の記述スタイルに従う
 
 **期待結果の記載ルール:**
+- 1行に1つの期待結果のみ
 - test_requirementsの目的を達成する期待値を記載
-- 検証可能な形で箇条書きにする
+- 検証可能な形で記載する
 - sample_items の記述スタイルに従う
 
 **組み合わせ順序のルール:**
 因子A(A1,A2,A3) × 因子B(B1,B2) × 因子C(C1,C2) の場合：
 ```
-A1 B1 C1
-A1 B1 C2
-A1 B2 C1
-A1 B2 C2
-A2 B1 C1
-A2 B1 C2
+A1 B1 C1 (ステップ1)
+A1 B1 C1 (ステップ2)
+...
+A1 B1 C2 (ステップ1)
+A1 B1 C2 (ステップ2)
+...
+A1 B2 C1 (ステップ1)
 ...
 ```
-（最後の因子から順に回す）
+（最後の因子から順に回す、同一組み合わせのステップは連続して配置）
 
 **成功確認**: JSONが正しく構築できた → 次のステップへ
 
@@ -189,7 +248,7 @@ python3 ~/.claude/skills/generate-test-item-skill/scripts/write_test_items.py \
 以下の情報を報告：
 - 処理対象シート名
 - 生成した因子数と組み合わせ数
-- 作成したテスト項目数（通常 + ワンパス）
+- 作成したテスト項目数（行数）
 - セル結合数
 - 発生した警告やエラー
 - スプレッドシートURL

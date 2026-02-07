@@ -70,60 +70,87 @@ def extract_file_id(url: str) -> Optional[str]:
     return match.group(1) if match else None
 
 
-def check_file_modified(drive_service, file_id: str, since_date: str) -> dict:
-    """ファイルの更新情報を取得
+def parse_file_metadata(file_metadata: dict, file_id: str, since_date: str) -> dict:
+    """APIレスポンスからファイル更新情報をパース
 
     Args:
-        drive_service: Google Drive APIサービス
+        file_metadata: Google Drive APIのレスポンス
         file_id: ファイルID
         since_date: 基準日（YYYY-MM-DD形式）
 
     Returns:
         dict: ファイル情報（name, modified, modifiedTime, lastModifyingUser）
     """
-    try:
-        # ファイルのメタデータを取得
-        # 共有ドライブのファイルにもアクセスできるよう supportsAllDrives=True を指定
-        file_metadata = drive_service.files().get(
-            fileId=file_id,
-            fields="name,modifiedTime,lastModifyingUser",
-            supportsAllDrives=True
-        ).execute()
+    file_name = file_metadata.get("name", "不明")
+    modified_time_str = file_metadata.get("modifiedTime", "")
+    last_user = file_metadata.get("lastModifyingUser", {})
+    last_user_email = last_user.get("emailAddress", "-")
 
-        file_name = file_metadata.get("name", "不明")
-        modified_time_str = file_metadata.get("modifiedTime", "")
-        last_user = file_metadata.get("lastModifyingUser", {})
-        last_user_email = last_user.get("emailAddress", "-")
+    # 更新日時をパース
+    if modified_time_str:
+        # ISO 8601形式: 2025-01-15T14:30:00.000Z
+        modified_time = datetime.fromisoformat(modified_time_str.replace("Z", "+00:00"))
+        since_datetime = datetime.fromisoformat(f"{since_date}T00:00:00+00:00")
+        is_modified = modified_time >= since_datetime
+        formatted_time = modified_time.strftime("%Y-%m-%d %H:%M")
+    else:
+        is_modified = False
+        formatted_time = "-"
 
-        # 更新日時をパース
-        if modified_time_str:
-            # ISO 8601形式: 2025-01-15T14:30:00.000Z
-            modified_time = datetime.fromisoformat(modified_time_str.replace("Z", "+00:00"))
-            since_datetime = datetime.fromisoformat(f"{since_date}T00:00:00+00:00")
-            is_modified = modified_time >= since_datetime
-            formatted_time = modified_time.strftime("%Y-%m-%d %H:%M")
+    return {
+        "fileId": file_id,
+        "name": file_name,
+        "modified": is_modified,
+        "modifiedTime": formatted_time,
+        "lastModifyingUser": last_user_email,
+        "error": None
+    }
+
+
+def check_files_modified_batch(drive_service, file_entries: list[dict], since_date: str) -> list[dict]:
+    """バッチリクエストで複数ファイルの更新情報を一括取得
+
+    Args:
+        drive_service: Google Drive APIサービス
+        file_entries: ファイル情報のリスト（各要素は url, file_id を含む dict）
+        since_date: 基準日（YYYY-MM-DD形式）
+
+    Returns:
+        list[dict]: 各ファイルの更新情報リスト
+    """
+    results = [None] * len(file_entries)
+
+    def callback(request_id, response, exception):
+        idx = int(request_id)
+        entry = file_entries[idx]
+        if exception:
+            results[idx] = {
+                "url": entry["url"],
+                "fileId": entry["file_id"],
+                "name": "取得失敗",
+                "modified": False,
+                "modifiedTime": "-",
+                "lastModifyingUser": "-",
+                "error": str(exception)
+            }
         else:
-            is_modified = False
-            formatted_time = "-"
+            result = parse_file_metadata(response, entry["file_id"], since_date)
+            result["url"] = entry["url"]
+            results[idx] = result
 
-        return {
-            "fileId": file_id,
-            "name": file_name,
-            "modified": is_modified,
-            "modifiedTime": formatted_time,
-            "lastModifyingUser": last_user_email,
-            "error": None
-        }
+    batch = drive_service.new_batch_http_request(callback=callback)
+    for i, entry in enumerate(file_entries):
+        batch.add(
+            drive_service.files().get(
+                fileId=entry["file_id"],
+                fields="name,modifiedTime,lastModifyingUser",
+                supportsAllDrives=True
+            ),
+            request_id=str(i)
+        )
 
-    except Exception as e:
-        return {
-            "fileId": file_id,
-            "name": "取得失敗",
-            "modified": False,
-            "modifiedTime": "-",
-            "lastModifyingUser": "-",
-            "error": str(e)
-        }
+    batch.execute()
+    return results
 
 
 def main():
@@ -156,16 +183,15 @@ def main():
     # Drive APIサービスを構築
     drive_service = build("drive", "v3", credentials=creds)
 
-    # 各ファイルの更新を確認
-    results = []
+    # URLからファイルIDを抽出し、バッチ対象とエラー分を分離
+    file_entries = []
+    error_results = []
     for url in urls:
         file_id = extract_file_id(url)
         if file_id:
-            result = check_file_modified(drive_service, file_id, since_date)
-            result["url"] = url
-            results.append(result)
+            file_entries.append({"url": url, "file_id": file_id})
         else:
-            results.append({
+            error_results.append({
                 "url": url,
                 "fileId": None,
                 "name": "ID抽出失敗",
@@ -174,6 +200,14 @@ def main():
                 "lastModifyingUser": "-",
                 "error": "URLからファイルIDを抽出できませんでした"
             })
+
+    # バッチリクエストで一括取得
+    if file_entries:
+        results = check_files_modified_batch(drive_service, file_entries, since_date)
+    else:
+        results = []
+
+    results.extend(error_results)
 
     # JSON形式で出力
     output = {
