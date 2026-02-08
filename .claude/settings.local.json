@@ -16,7 +16,8 @@
       "Bash(npm run auto-auth:google-drive:*)",
       "Bash(npm run:*)",
       "Bash(python3:*)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(head:*)"
     ],
     "deny": [],
     "ask": []
