@@ -22,9 +22,9 @@ import sys
 
 def get_repo_root() -> str:
     """ai-toolkitリポジトリのルートパスを取得"""
-    # このスクリプトは skills/sync-to-claude/scripts/sync.py にある
+    # このスクリプトは skills/manage-resources/sync.py にある
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.dirname(os.path.dirname(os.path.dirname(script_dir)))
+    return os.path.dirname(os.path.dirname(script_dir))
 
 
 def get_claude_dir() -> str:
@@ -162,6 +162,7 @@ def main():
         "destination": claude_dir,
         "commands": {},
         "agents": {},
+        "rules": {},
         "skills": {},
         "summary": {"totalCopied": 0, "totalSkipped": 0, "totalErrors": 0}
     }
@@ -182,6 +183,14 @@ def main():
         dry_run
     )
 
+    # rules/ の同期
+    output["rules"] = sync_flat_files(
+        os.path.join(repo_root, "rules"),
+        os.path.join(claude_dir, "rules"),
+        ".md",
+        dry_run
+    )
+
     # skills/ の同期
     output["skills"] = sync_skills(
         os.path.join(repo_root, "skills"),
@@ -191,7 +200,7 @@ def main():
 
     # サマリー集計
     total_only_in_dest = []
-    for category in ["commands", "agents"]:
+    for category in ["commands", "agents", "rules"]:
         data = output[category]
         output["summary"]["totalCopied"] += len(data.get("copied", []))
         output["summary"]["totalSkipped"] += len(data.get("skipped", []))
