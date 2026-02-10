@@ -9,27 +9,46 @@ ai-toolkit/
 ├── .claude/           # Claude Code ローカル設定（settings.local.json等）
 ├── .github/workflows/ # GitHub Actions ワークフロー（定期実行タスク用）
 ├── agents/            # Task tool用サブエージェント定義
+├── commands/          # カスタムスラッシュコマンド定義
 ├── output-style/      # 出力スタイル設定（キャラクター別応答スタイル）
-├── rules/             # コード生成ルール・ポリシー
+├── rules/             # ルールファイル（~/.claude/rules/に同期、paths指定で条件適用）
 ├── scripts/           # 自動化スクリプト（Python等）
 ├── skills/            # Skills定義（自動起動プロンプト）
-├── commands/          # カスタムスラッシュコマンド定義
 └── templates/         # テンプレート・リファレンス資料
 ```
 
-## ファイル命名規則
+## リソース作成ルール
 
-- スラッシュコマンド: `commands/<command-name>.md`
-- エージェント: `agents/<agent-name>.md`
-- スキル: `skills/<skill-name>/SKILL.md`
-- テンプレート: `templates/<template-name>.md`
+### 命名規則
 
-## 開発時の注意事項
+- コマンド: `commands/<name>.md`（kebab-case）
+- エージェント: `agents/<name>.md`（kebab-case）
+- スキル: `skills/<name>/SKILL.md`（kebab-case）
+- ルール: `rules/<name>.md`（kebab-case、pathsフロントマターで適用条件を指定）
+- テンプレート: `templates/<name>.md`
 
-- スラッシュコマンドは日本語で記述することが多い
-- 新しいスラッシュコマンドを作成する際は`templates/slash-command-template.md`を参照
-- 新しいエージェントを作成する際は`templates/agent-template.md`を参照
-- 新しいスキルを作成する際は`templates/skill-template.md`を参照
+### 作成前の必須手順
+
+新しいリソースを作成する際は、該当テンプレートを**必ず**参照すること:
+- コマンド → `templates/slash-command-template.md`
+- エージェント → `templates/agent-template.md`
+- スキル → `templates/skill-template.md`
+
+### 責務分離の判断基準
+
+| リソース | 用途 | 判断基準 |
+|---------|------|----------|
+| **Skill** | 自動発動のドメイン知識・ワークフロー | Claudeが文脈から自動判断して適用すべきもの |
+| **コマンド** | `/xxx` で明示的に呼び出す操作 | ユーザーが意図的にトリガーするもの |
+| **エージェント** | Task toolから委譲される専門タスク | 独立したコンテキストで実行すべきもの |
+| **ルール** | 横断プロジェクトで自動適用される規約 | pathsで特定ファイル種別にスコープすべきもの |
+
+## プロンプト記述ルール
+
+- 日本語で記述する（技術用語・コード識別子は英語のまま）
+- SKILL.mdは**500行以下**に保つ（詳細はWORKFLOW.md等に分離）
+- フロントマターの`description`は「何をするか + いつ使うか + トリガー用語」を必ず含める
+- 副作用のあるワークフローは `disable-model-invocation: true` を設定する
 
 ## 必須: 変更後のメンテナンス
 
