@@ -128,6 +128,32 @@ def read_sheet_by_name(service: Any, file_id: str, sheet_name: str) -> dict:
     }
 
 
+def extract_text_from_content(content: list) -> str:
+    """body.contentからテキストを再帰的に抽出（paragraph + table対応）"""
+    text = ""
+    for element in content:
+        # paragraph要素
+        paragraph = element.get("paragraph", {})
+        if paragraph:
+            for text_element in paragraph.get("elements", []):
+                text_run = text_element.get("textRun", {})
+                if "content" in text_run:
+                    text += text_run["content"]
+
+        # table要素
+        table = element.get("table", {})
+        if table:
+            for row in table.get("tableRows", []):
+                row_texts = []
+                for cell in row.get("tableCells", []):
+                    cell_content = cell.get("content", [])
+                    cell_text = extract_text_from_content(cell_content).strip()
+                    row_texts.append(cell_text)
+                text += " | ".join(row_texts) + "\n"
+
+    return text
+
+
 def read_doc_tab(service: Any, file_id: str, tab_id: str) -> str:
     """ドキュメントの特定タブを読み取り"""
     result = service.documents().get(
@@ -155,16 +181,7 @@ def read_doc_tab(service: Any, file_id: str, tab_id: str) -> str:
     body = doc_tab.get("body", {})
     content = body.get("content", [])
 
-    text = ""
-    for element in content:
-        paragraph = element.get("paragraph", {})
-        elements = paragraph.get("elements", [])
-        for text_element in elements:
-            text_run = text_element.get("textRun", {})
-            if "content" in text_run:
-                text += text_run["content"]
-
-    return text
+    return extract_text_from_content(content)
 
 
 def read_doc_full(service: Any, file_id: str) -> list[dict]:
