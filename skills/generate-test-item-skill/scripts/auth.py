@@ -7,7 +7,7 @@ Google Drive 認証モジュール
     ~/.config/google-drive-skills/token.json
 
 このモジュールは generate-test-item-skill の各スクリプトから使用される。
-read-google-drive-skill / write-google-drive-skill と同じ認証設定を共有する。
+google-drive-skill と同じ認証設定を共有する。
 """
 
 import json

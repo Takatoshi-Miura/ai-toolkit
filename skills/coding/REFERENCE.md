@@ -38,7 +38,7 @@ AskUserQuestionツールを使用して、以下の情報を収集する：
 - チケット番号、タイトル、詳細を取得
 
 **概要設計書・テスト項目書**（指定がある場合）:
-- `/read-google-drive-skill` で読み取り
+- `/google-drive-skill` で読み取り
 
 ### 1-3. 情報の整理
 

@@ -13,7 +13,7 @@ description: ちいぽよの金銭管理スペシャリストとして月次の�
 
 ## Phase 1: データ収集
 
-1. /read-google-drive-skill で以下のスプレッドシートから「ちいぽよ予算」「ちいぽよ収支」シートを読み取る
+1. /google-drive-skill で以下のスプレッドシートから「ちいぽよ予算」「ちいぽよ収支」シートを読み取る
    - URL: https://docs.google.com/spreadsheets/d/1P519LiN0Tiu-NvWuYgek9jc4IfvXTzIukkVkuokAqY0/edit?usp=sharing
    - 読み込むシート: 「ちいぽよ予算」「ちいぽよ収支」
 

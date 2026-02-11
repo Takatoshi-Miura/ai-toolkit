@@ -33,10 +33,10 @@ allowed-tools: Bash, Read
 
 ### 1. パーソナルコンテキストの取得
 
-read-google-drive-skillのスクリプトを使用してGoogle Driveからパーソナルコンテキストドキュメントを読み取る：
+google-drive-skillのスクリプトを使用してGoogle Driveからパーソナルコンテキストドキュメントを読み取る：
 
 ```bash
-python3 ~/.claude/skills/read-google-drive-skill/scripts/read_drive_file.py 1hDcVtQ5wEz2rPGRrJGK8CspnqSujheAjeZ1PPAj2u6E docs
+python3 ~/.claude/skills/google-drive-skill/scripts/read_drive_file.py 1hDcVtQ5wEz2rPGRrJGK8CspnqSujheAjeZ1PPAj2u6E docs
 ```
 
 以下の情報を抽出：
@@ -139,7 +139,7 @@ PREP法に基づいた構造化された回答を提供する。
 - **認証エラー時**: Google Drive認証エラーが発生した場合は、セットアップ手順を案内
   ```bash
   # セットアップ手順の参照
-  cat ~/.claude/skills/read-google-drive-skill/SETUP.md
+  cat ~/.claude/skills/google-drive-skill/SETUP.md
   ```
 - **コンテキスト更新**: ユーザーがコンテキストを更新した場合、最新の情報を反映するため再読み込みを実施
 - **プライバシー配慮**: パーソナルコンテキストの内容を他者と共有しない
