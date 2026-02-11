@@ -1,4 +1,4 @@
-# Google Drive書き込みスキル - セットアップ
+# Google Driveスキル - セットアップ
 
 ## 前提条件
 
@@ -6,8 +6,8 @@
 
 ## 認証の共有について
 
-このスキルは `read-google-drive-skill` / `generate-test-item-skill` と認証設定を共有する。
-既にいずれかのスキルをセットアップ済みの場合、追加の認証設定は不要。
+このスキルは `generate-test-item-skill` と認証設定を共有する。
+既にセットアップ済みの場合、追加の認証設定は不要。
 
 **共有される認証ファイル**:
 - `~/.config/google-drive-skills/client_secret.json`
@@ -18,11 +18,11 @@
 認証が正しく設定されているか確認：
 
 ```bash
-# 書き込みテスト（テスト用のスプレッドシートIDで実行）
-python3 ~/.claude/skills/write-google-drive-skill/scripts/insert_value.py <fileId> sheets "Sheet1!A1" '[["テスト"]]'
+# 読み取りテスト（任意のGoogle DriveファイルIDで実行）
+python3 ~/.claude/skills/google-drive-skill/scripts/read_drive_file.py <fileId> sheets
 ```
 
-**成功時**: `"success": true` を含むJSONが出力される
+**成功時**: ファイル内容がJSON形式で出力される
 
 **エラー時**: 以下のセットアップを実行
 
@@ -63,7 +63,7 @@ cp "<ユーザーが指定したパス>" ~/.config/google-drive-skills/client_se
 ### Step 3: 認証実行
 
 ```bash
-python3 ~/.claude/skills/write-google-drive-skill/scripts/insert_value.py <fileId> sheets "Sheet1!A1" '[["テスト"]]'
+python3 ~/.claude/skills/google-drive-skill/scripts/read_drive_file.py <fileId> sheets
 ```
 
 token.jsonがない場合、自動でブラウザが開き認証フローが開始される。ユーザーにGoogle認証を完了してもらう。認証成功後、スキル本体へ進む。
