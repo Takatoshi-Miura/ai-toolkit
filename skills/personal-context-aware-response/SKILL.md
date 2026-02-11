@@ -1,21 +1,14 @@
 ---
 name: personal-context-aware-response
 description: ユーザーのパーソナルコンテキスト(価値観、思考スタイル、専門性、コミュニケーション好み)を考慮した回答を提供します。技術的な意思決定の相談、優先順位判断、振り返り分析、アドバイス依頼、学習やキャリアに関する相談など、ユーザーの背景や価値観を理解する必要がある場面で自動的に発動します。「どちらがいいか」「どう実装すべきか」「どのアプローチが」「何から始めるべきか」「優先順位は」「振り返り」「分析して」「評価して」「どう思う」「考えを聞かせて」「アドバイスください」「提案して」「どうすればいい」「自分に合った」「価値観」「キャリア」「学習」「成長」「スキルアップ」などの表現を含む質問で適用されます。単純なコーディングタスク、情報検索、ファイル操作、デバッグ作業では発動しません。
-allowed-tools: mcp__mcp-google-drive__g_drive_read_file, Read
-hooks:
-  PreToolUse:
-    - matcher: "mcp__mcp-google-drive__.*"
-      hooks:
-        - type: command
-          command: "cd ~/Documents/Git/MCP-GoogleDrive/mcp-google-drive && npm run check-oauth"
-          once: true
+allowed-tools: Bash, Read
 ---
 
 # パーソナルコンテキスト対応スキル
 
 ## 概要
 
-このスキルは、Google Driveに保存されたパーソナルコンテキストドキュメントを読み取り、ユーザーの特性に合わせた回答を自動的に生成します。技術的意思決定、振り返り、アドバイス依頼など、深い思考を必要とする質問に対して発動します。
+このスキルは、Pythonスクリプト経由でGoogle Driveに保存されたパーソナルコンテキストドキュメントを読み取り、ユーザーの特性に合わせた回答を自動的に生成します。技術的意思決定、振り返り、アドバイス依頼など、深い思考を必要とする質問に対して発動します。
 
 ## 発動条件
 
@@ -40,11 +33,10 @@ hooks:
 
 ### 1. パーソナルコンテキストの取得
 
-Google Driveからパーソナルコンテキストドキュメントを読み取る：
+read-google-drive-skillのスクリプトを使用してGoogle Driveからパーソナルコンテキストドキュメントを読み取る：
 
-```
-ファイルID: 1hDcVtQ5wEz2rPGRrJGK8CspnqSujheAjeZ1PPAj2u6E
-ツール: g_drive_read_file(fileId, "docs")
+```bash
+python3 ~/.claude/skills/read-google-drive-skill/scripts/read_drive_file.py 1hDcVtQ5wEz2rPGRrJGK8CspnqSujheAjeZ1PPAj2u6E docs
 ```
 
 以下の情報を抽出：
@@ -144,9 +136,10 @@ PREP法に基づいた構造化された回答を提供する。
 
 ## 注意事項
 
-- **認証エラー時**: Google Drive認証エラーが発生した場合は、以下のコマンドで再認証を案内
+- **認証エラー時**: Google Drive認証エラーが発生した場合は、セットアップ手順を案内
   ```bash
-  cd ~/Documents/Git/MCP-GoogleDrive && npm run auth
+  # セットアップ手順の参照
+  cat ~/.claude/skills/read-google-drive-skill/SETUP.md
   ```
 - **コンテキスト更新**: ユーザーがコンテキストを更新した場合、最新の情報を反映するため再読み込みを実施
 - **プライバシー配慮**: パーソナルコンテキストの内容を他者と共有しない
