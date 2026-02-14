@@ -6,7 +6,7 @@ Redmineコメント追加スクリプト
     python3 add_redmine_comment.py <ticket_number> <pr_url>
 
 設定:
-    ~/.config/redmine-skills/config.json に設定が必要
+    ~/.config/redmine-skill/config.json に設定が必要
     設定がない場合はスキップ（エラーにならない）
 
 出力:

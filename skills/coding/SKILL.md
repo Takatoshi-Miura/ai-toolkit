@@ -61,7 +61,7 @@ Phase 1でユーザーから以下を収集する：
 
 | リソース | 用途 | 呼び出しPhase |
 |---------|------|--------------|
-| `/read-redmine-skill` | Redmineチケット読み取り | Phase 1 |
+| `/redmine-skill` | Redmineチケット読み取り | Phase 1 |
 | `/google-drive-skill` | 概要設計書・テスト項目書読み取り | Phase 1 |
 | `Plan` | 実装計画の立案 | Phase 2 |
 | `code-implementer` | コード実装、ビルド確認 | Phase 3 |

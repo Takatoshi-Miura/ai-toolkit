@@ -44,7 +44,7 @@ Redmineへのコメント追加機能を使用する場合、設定ファイル�
 ### 設定ファイルパス
 
 ```
-~/.config/redmine-skills/config.json
+~/.config/redmine-skill/config.json
 ```
 
 ### 設定ファイルの内容
@@ -61,13 +61,13 @@ Redmineへのコメント追加機能を使用する場合、設定ファイル�
 1. **設定ディレクトリを作成**
 
 ```bash
-mkdir -p ~/.config/redmine-skills
+mkdir -p ~/.config/redmine-skill
 ```
 
 2. **設定ファイルを作成**
 
 ```bash
-cat > ~/.config/redmine-skills/config.json << 'EOF'
+cat > ~/.config/redmine-skill/config.json << 'EOF'
 {
   "url": "https://your-redmine-server.com",
   "api_key": "your-api-key"
@@ -79,9 +79,9 @@ EOF
 
 ```bash
 # エディタで編集
-nano ~/.config/redmine-skills/config.json
+nano ~/.config/redmine-skill/config.json
 # または
-code ~/.config/redmine-skills/config.json
+code ~/.config/redmine-skill/config.json
 ```
 
 ### APIキーの取得方法
@@ -94,7 +94,7 @@ code ~/.config/redmine-skills/config.json
 ### 設定の確認
 
 ```bash
-cat ~/.config/redmine-skills/config.json
+cat ~/.config/redmine-skill/config.json
 ```
 
 ---

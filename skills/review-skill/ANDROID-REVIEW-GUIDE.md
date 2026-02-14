@@ -39,7 +39,7 @@ Android プロジェクト（Kotlin/Java/XML）のPull Requestをレビューす
 
 3. **追加資料の読み取り（提供された場合）**
    - Google Driveの場合: `g_drive_read_file` で読み取り
-   - Redmineの場合: `redmine_get_detail` で読み取り
+   - Redmineの場合: `/redmine-skill` で読み取り
 
 ### Phase 2: Androidコードレビュー
 

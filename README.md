@@ -29,10 +29,9 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | カテゴリ | スキル名 | 説明 | 自動呼び出し |
 |---------|---------|------|:------------:|
 | データ操作 | `google-drive-skill` | Google Driveファイル（スプレッドシート/ドキュメント/スライド）の読み取りと書き込み。値挿入、シート/スライド作成、要素コピー、セル結合に対応。Pythonスクリプトで実行 | ✅ |
-| データ読み取り | `read-redmine-skill` | RedmineチケットのURLから詳細情報を自動読み取り。URLとチケット確認キーワードで自動発動 | ✅ |
-| レビュー | `review-document-skill` | GitHub PRまたはGoogle Drive資料を自動レビュー。URLとレビュー依頼キーワードで自動発動 | ✅ |
-| レビュー | `android-code-review` | Androidプロジェクト専用のコードレビュー。PRや差分にAndroidファイル（.kt/.java/.xml）が含まれる場合に自動発動し、ライフサイクル・状態管理・パフォーマンス等のAndroid固有観点で包括的にレビュー | ✅ |
-| GitHub操作 | `github-cli-skill` | GitHub CLI (gh) を使った Issue/PR 操作ガイド。MCP を使わずコマンドで直接操作するためコンテキスト節約 | ✅ |
+| データ操作 | `redmine-skill` | Redmineチケットの読み取り・操作をPythonスクリプトで実行。URLとチケット確認キーワードで自動発動 | ✅ |
+| レビュー | `review-skill` | GitHub PRおよびGoogle Drive資料の統合レビュー。PR URLではAndroidファイル有無を自動判定し汎用/Android専門レビューに分岐。Drive URLでは資料レビューを実施。「レビューして」「PRレビュー」等で自動発動 | ✅ |
+| GitHub/Git操作 | `github-skill` | GitHub CLI (gh) とGit操作を統合したスキル。Issue/PR操作全般と強制プッシュに対応。目次型SKILL.mdから各操作別ガイド（ISSUE.md/PULL-REQUEST.md/GIT-PUSH.md/REFERENCE.md）に分岐 | ✅ |
 | Git操作 | `git-pr-setup` | ブランチ作成からPR作成までのGitワークフローを自動化。空コミット、プッシュ、ドラフトPR作成、Redmineコメント追加を一括処理。Pythonスクリプトで完全独立 | ✅ |
 | パーソナライズ | `personal-context-aware-response` | パーソナルコンテキストを考慮した回答を提供。技術的意思決定、振り返り分析、アドバイス依頼などで自動発動し、PREP法による構造化された回答を生成 | ✅ |
 | 目標設定 | `smart-goal-setting` | SMARTフレームワークを活用した目標設定支援。目標設定・KPI策定・OKR作成などの依頼で自動発動し、5観点での分析とリーダー行動計画を提案 | ✅ |
@@ -44,6 +43,7 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | テスト | `generate-test-item-skill` | 因子水準組み合わせに基づくテスト項目書を作成。Pythonスクリプトでペアワイズ法を適用し、効率的なテストケースを生成 | ❌ |
 | ユーティリティ | `extract-pdf-images` | PDFファイルから画像を抽出して~/Downloads/に保存。pdfimagesコマンドを使用し、単一/複数PDF一括変換に対応。抽出後に各画像のサイズも報告 | ✅ |
 | ユーティリティ | `check-drive-document-updates-skill` | Google Driveファイルの変更有無を日付指定で確認。TARGET_FILES.mdで監視対象を管理し、指定日以降の更新をチェック | ✅ |
+| コード品質 | `code-diff-and-coverage` | 指定期間のコード差分を取得し、変更ファイルのテストカバレッジ（JaCoCo）を計測。Pythonスクリプトでgit log解析とJaCoCoレポート抽出を自動化 | ❌ |
 
 
 ## サブエージェント一覧
@@ -65,8 +65,6 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | 振り返り | `/retrospective-chipoyo-money` | ちいぽよの金銭管理スペシャリストとして月次の収支分析とアドバイスを実施 |
 | 開発・コーディング | `/create-todo-issue` | 開発中に思いついたTODOをGitHub Issueとして素早く登録 |
 | 開発・コーディング | `/install-apk` | Android端末へのAPKインストールを支援 |
-| Git操作 | `/git-force-push` | 現在のブランチを強制プッシュ（確認プロセス付き） |
-| Git操作 | `/git-get-code-diff-and-test-coverage` | 指定期間内のコード変更を取得し、変更ファイルのテストカバレッジを計測 |
 | MCP・CLI開発 | `/coding-mcp` | MCP開発のスペシャリストとしてサーバー新規作成・ツール追加・ツール更新を実施 |
 | 情報収集 | `/fetch-web-search-result` | Web検索でヒットした記事を取得して処理 |
 | 情報収集 | `/research-play-console-update` | Google Play Consoleの更新情報を収集・調査 |
