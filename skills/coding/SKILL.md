@@ -1,63 +1,42 @@
 ---
 name: coding
-description: モバイルアプリ開発の実装タスクを統括するオーケストレーター。情報収集から実装計画、コード実装、テストまでの一連のワークフローを専門サブエージェントを活用して効率的に進行。「実装したい」「コーディング」「開発タスク」などで使用。
-allowed-tools: Task, AskUserQuestion, Read, Bash
+description: コーディングタスクを統括するオーケストレーター。モバイルアプリ開発（Redmineチケットベースの情報収集→実装計画→コード実装→テスト→完了処理）とMCP開発（新規サーバー作成・ツール追加・ツール更新）の両方に対応。「実装したい」「コーディング」「開発タスク」「MCP」「MCPサーバー」「ツール追加」「ツール更新」「サーバー作成」などで使用。
+allowed-tools: Task, AskUserQuestion, Read, Write, Glob, Grep, Edit, Bash
 user-invocable: true
 disable-model-invocation: true
 ---
 
-# 実装タスク オーケストレーター
+# コーディング オーケストレーター
 
-モバイルアプリ開発プロジェクトの実装タスクを統括し、情報収集から実装・テストまでの一連のワークフローを専門サブエージェントを活用して効率的に進行します。
+モバイルアプリ開発およびMCP開発のコーディングタスクを統括し、情報収集から実装・テストまでの一連のワークフローを効率的に進行します。
 
 日本語で回答すること。
 
-## ワークフロー概要
+---
 
-**TodoWriteで以下の項目を作成して進捗管理すること：**
+## Phase 0: 開発対象の選択
 
-```
-- Phase 1: 情報収集
-- Phase 2: 実装計画
-- Phase 3: 実装
-- Phase 4: テスト（条件付き）
-- Phase 5: 完了処理
-```
+### 0-1. ユーザーに開発対象を質問
 
-## 必要な入力情報
+AskUserQuestionツールで以下の選択肢を提示:
 
-Phase 1でユーザーから以下を収集する：
+| # | 開発対象 | 説明 |
+|---|---------|------|
+| 1 | モバイルアプリ開発 | Redmineチケットベースの実装タスク（情報収集→計画→実装→テスト→完了） |
+| 2 | MCP開発 | MCPサーバーの新規作成・ツール追加・ツール更新 |
 
-| 項目 | 必須 | 例 |
-|------|------|-----|
-| RedmineチケットURL | ✅ | https://redmine.example.com/issues/12345 |
-| 概要設計書URL | ❌ | Google Drive URL |
-| テスト項目書URL | ❌ | Google Drive URL（シート名指定可） |
-| 実装したいこと | ❌ | 追加の共有事項 |
+### 0-2. 選択に応じて分岐
 
-## Phase概要
+- **モバイルアプリ開発を選択** → [WORKFLOW-MOBILE.md](WORKFLOW-MOBILE.md) を参照して実行
+- **MCP開発を選択** → [WORKFLOW-MCP.md](WORKFLOW-MCP.md) を参照して実行
 
-### Phase 1: 情報収集
-ユーザーへの質問、Redmine/Google Driveからのデータ取得を行う。
-→ 詳細: [REFERENCE.md#phase-1-情報収集](REFERENCE.md#phase-1-情報収集)
+**重要**: 選択されたワークフローに記載されているTodoWriteチェックリストを使用して進捗管理すること。
 
-### Phase 2: 実装計画
-`Plan` サブエージェントで実装計画を立案し、ユーザー承認を得る。
-→ 詳細: [REFERENCE.md#phase-2-実装計画](REFERENCE.md#phase-2-実装計画)
-
-### Phase 3: 実装
-`code-implementer` サブエージェントで実装を実行。
-→ 詳細: [REFERENCE.md#phase-3-実装](REFERENCE.md#phase-3-実装)
-
-### Phase 4: テスト（条件付き）
-新規ビジネスロジック追加時のみ `test-writer` サブエージェントでテスト作成。
-→ 詳細: [REFERENCE.md#phase-4-テスト](REFERENCE.md#phase-4-テスト)
-
-### Phase 5: 完了処理
-全Phaseの完了確認と総評を作成。
-→ 詳細: [REFERENCE.md#phase-5-完了処理](REFERENCE.md#phase-5-完了処理)
+---
 
 ## 使用するサブエージェント・スキル
+
+### モバイルアプリ開発
 
 | リソース | 用途 | 呼び出しPhase |
 |---------|------|--------------|
@@ -67,22 +46,33 @@ Phase 1でユーザーから以下を収集する：
 | `code-implementer` | コード実装、ビルド確認 | Phase 3 |
 | `test-writer` | テストコード作成（条件付き） | Phase 4 |
 
-## 出力フォーマット
+### MCP開発
 
-各Phase完了時に以下の形式で報告：
+| リソース | 用途 |
+|---------|------|
+| `Plan` | 実装計画の立案 |
+| `scripts/analyze_mcp_server.py` | 既存MCPサーバーのツール一覧自動抽出 |
 
-```markdown
-## Phase X 完了報告
+---
 
-### 実施内容
-- （実施した内容を箇条書き）
+## エラー対応
 
-### 成果物
-- （生成されたファイル、URL等）
+| エラー | 対応 |
+|-------|------|
+| 情報不足 | AskUserQuestionで追加情報を収集 |
+| サブエージェント失敗 | エラーメッセージを分析し再試行（最大3回） |
+| ビルド失敗 | エラーメッセージを分析し修正支援 |
+| 参考実装が見つからない | パスの確認、エラーメッセージ表示 |
 
-### 次のPhaseへの引き継ぎ事項
-- （次のPhaseで必要な情報）
-```
+---
+
+## 詳細リファレンス
+
+- **モバイル開発ワークフロー**: [WORKFLOW-MOBILE.md](WORKFLOW-MOBILE.md)
+- **MCP開発ワークフロー**: [WORKFLOW-MCP.md](WORKFLOW-MCP.md)
+- **共通リファレンス**: [REFERENCE.md](REFERENCE.md)
+
+---
 
 ## 注意事項
 
@@ -90,3 +80,4 @@ Phase 1でユーザーから以下を収集する：
 - サブエージェントへの指示は具体的かつ明確に
 - エラー発生時は該当Phaseで停止し、ユーザーに報告
 - Phase完了ごとにTodoWriteで進捗を更新
+- 作成・変更前に必ずユーザーの承認を得る
