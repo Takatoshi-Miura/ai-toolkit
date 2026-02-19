@@ -28,7 +28,7 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 
 | カテゴリ | スキル名 | 説明 | 自動呼び出し |
 |---------|---------|------|:------------:|
-| データ操作 | `google-drive-skill` | Google Driveファイル（スプレッドシート/ドキュメント/スライド）の読み取りと書き込み。値挿入、シート/スライド作成、要素コピー、セル結合に対応。Pythonスクリプトで実行 | ✅ |
+| データ操作 | `google-drive-skill` | Google Driveファイル（スプレッドシート/ドキュメント/スライド）の読み取りと書き込み。値挿入、シート/スライド作成、要素コピー、セル結合、セルハイライト、行列操作、複数操作の一括実行に対応。Pythonスクリプトで実行 | ✅ |
 | データ操作 | `redmine-skill` | Redmineチケットの読み取り・操作をPythonスクリプトで実行。URLとチケット確認キーワードで自動発動 | ✅ |
 | レビュー | `review-skill` | GitHub PRおよびGoogle Drive資料の統合レビュー。PR URLではAndroidファイル有無を自動判定し汎用/Android専門レビューに分岐。Drive URLでは資料レビューを実施。「レビューして」「PRレビュー」等で自動発動 | ✅ |
 | GitHub/Git操作 | `github-skill` | GitHub CLI (gh) とGit操作を統合したスキル。Issue/PR操作全般と強制プッシュに対応。目次型SKILL.mdから各操作別ガイド（ISSUE.md/PULL-REQUEST.md/GIT-PUSH.md/REFERENCE.md）に分岐 | ✅ |

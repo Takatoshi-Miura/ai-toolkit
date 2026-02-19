@@ -128,6 +128,106 @@ python3 scripts/merge_cells_batch.py <fileId> '<json_ranges>'
 
 ---
 
+## セルハイライトワークフロー
+
+### ステップ1：URLからファイルIDを抽出（共通セクション参照）
+
+### ステップ2：ハイライト範囲と色を決定
+
+形式: `シート名!開始セル:終了セル`（例: `Sheet1!A1:B2`）
+
+色はオプション（デフォルト: yellow）。利用可能な色: yellow, light_yellow, green, light_green, blue, light_blue, red, light_red, orange, none（解除）
+
+### ステップ3：スクリプトを実行
+
+```bash
+python3 scripts/highlight_cells.py <fileId> <range> [--color <color_name>]
+```
+
+### ステップ4：結果を確認
+
+**成功時**: `"success": true` が出力される → 完了
+
+---
+
+## 行列操作ワークフロー
+
+### ステップ1：URLからファイルIDを抽出（共通セクション参照）
+
+### ステップ2：操作内容を決定
+
+| 項目 | 値 |
+|------|-----|
+| action | `insert`（挿入）または `delete`（削除） |
+| シート名 | 操作対象のシート名 |
+| dimension | `rows`（行）または `columns`（列） |
+| start | 開始位置（1ベース。行番号または列番号） |
+| end | 終了位置（1ベース、包括的。省略時はstartと同じで1行/1列のみ） |
+
+**列番号の対応表**: A=1, B=2, C=3, D=4, ...
+
+### ステップ3：スクリプトを実行
+
+```bash
+python3 scripts/manage_dimension.py <fileId> <action> <シート名> <dimension> <start> [end] [--no-inherit]
+```
+
+### ステップ4：結果を確認
+
+**成功時**: `"success": true` が出力される → 完了
+
+**エラー時**: 「エラー対応」セクションを参照
+
+---
+
+## シート一括操作ワークフロー（バッチ）
+
+同一スプレッドシートに対して**2つ以上の操作**を連続して行う場合に使用する。
+1回の API コールで複数操作をまとめて実行するため、認証とメタデータ取得のオーバーヘッドを最小化できる。
+
+### ステップ1：URLからファイルIDを抽出（共通セクション参照）
+
+### ステップ2：操作リストをJSON配列で構築
+
+各操作を以下の形式のオブジェクトで記述し、配列にまとめる：
+
+| type | 必須パラメータ | オプション |
+|------|--------------|-----------|
+| `merge` | `range` | -- |
+| `highlight` | `range` | `color`（デフォルト: yellow） |
+| `insert_dimension` | `sheet`, `dimension`, `start` | `end`（デフォルト: start）, `inheritFromBefore`（デフォルト: true） |
+| `delete_dimension` | `sheet`, `dimension`, `start` | `end`（デフォルト: start） |
+| `add_sheet` | `title` | -- |
+| `duplicate_sheet` | `sourceSheetId` | `newSheetName` |
+
+### ステップ3：スクリプトを実行
+
+```bash
+python3 scripts/batch_sheets.py <fileId> '<json_operations>'
+```
+
+### ステップ4：結果を確認
+
+**成功時**: `"success": true` と `totalOperations` が出力される → 完了
+
+**エラー時**: `validationErrors` で問題の操作を確認し、修正して再実行
+
+### 制約事項
+
+- `add_sheet` で作成した新規シートへの同バッチ内での後続操作は不可
+- 値の挿入（`insert_value.py` の sheets 機能）は別APIのためバッチに含められない
+- 操作は指定した順序通りに実行される。行挿入後のセル結合など、順序依存がある場合はインデックスのずれに注意
+
+### 使い分けガイド
+
+| ユースケース | 推奨 |
+|-------------|------|
+| 単一操作 | 各専用スクリプト |
+| 同種の複数操作（セル結合のみ） | `merge_cells_batch.py` または `batch_sheets.py` |
+| 異種の複数操作（結合＋ハイライト＋行挿入） | **`batch_sheets.py`** |
+
+---
+
 ## 使用例と出力形式
 
 ### 値挿入（insert_value.py）
@@ -363,6 +463,140 @@ python3 scripts/merge_cells_batch.py 1abc...xyz '["Sheet1!A4:A10","Sheet1!B4:B8"
 |-------------|---------------|
 | 1つの範囲のみ結合 | `merge_cells.py` |
 | 複数範囲を一括結合 | `merge_cells_batch.py` |
+
+---
+
+### セルハイライト（highlight_cells.py）
+
+```bash
+python3 scripts/highlight_cells.py 1abc...xyz "Sheet1!A1:B2"
+python3 scripts/highlight_cells.py 1abc...xyz "売上!C3:E5" --color light_green
+python3 scripts/highlight_cells.py 1abc...xyz "Sheet1!A1:B2" --color none
+```
+
+**成功時の出力:**
+```json
+{
+  "success": true,
+  "fileId": "1abc...xyz",
+  "fileType": "sheets",
+  "operation": "highlight",
+  "sheetName": "Sheet1",
+  "sheetId": 0,
+  "range": "Sheet1!A1:B2",
+  "color": "yellow",
+  "colorRgb": {"red": 1.0, "green": 1.0, "blue": 0.0},
+  "highlightedRange": {"startRow": 1, "endRow": 2, "startCol": 1, "endCol": 2}
+}
+```
+
+#### 色の指定
+
+| 色名 | 用途 |
+|------|------|
+| `yellow`（デフォルト） | 編集箇所の強調 |
+| `light_green` | 完了・正常を示す |
+| `light_red` | 要注意箇所の強調 |
+| `none` | ハイライト解除（白に戻す） |
+
+---
+
+### 行列操作（manage_dimension.py）
+
+#### 行の挿入（3行目の前に2行挿入）
+
+```bash
+python3 scripts/manage_dimension.py 1abc...xyz insert "Sheet1" rows 3 4
+```
+
+**成功時の出力:**
+```json
+{
+  "success": true,
+  "fileId": "1abc...xyz",
+  "fileType": "sheets",
+  "operation": "insert_dimension",
+  "action": "insert",
+  "sheetName": "Sheet1",
+  "sheetId": 0,
+  "dimension": "rows",
+  "start": 3,
+  "end": 4,
+  "count": 2,
+  "inheritFromBefore": true
+}
+```
+
+#### 列の挿入（B列の前に1列挿入）
+
+```bash
+python3 scripts/manage_dimension.py 1abc...xyz insert "Sheet1" columns 2
+```
+
+#### 行の削除（3行目から5行目を削除）
+
+```bash
+python3 scripts/manage_dimension.py 1abc...xyz delete "Sheet1" rows 3 5
+```
+
+**成功時の出力:**
+```json
+{
+  "success": true,
+  "fileId": "1abc...xyz",
+  "fileType": "sheets",
+  "operation": "delete_dimension",
+  "action": "delete",
+  "sheetName": "Sheet1",
+  "sheetId": 0,
+  "dimension": "rows",
+  "start": 3,
+  "end": 5,
+  "count": 3
+}
+```
+
+#### 列の削除（C列を削除）
+
+```bash
+python3 scripts/manage_dimension.py 1abc...xyz delete "Sheet1" columns 3
+```
+
+#### 書式継承なしで挿入
+
+```bash
+python3 scripts/manage_dimension.py 1abc...xyz insert "Sheet1" rows 3 4 --no-inherit
+```
+
+---
+
+### シート一括操作（batch_sheets.py）
+
+#### セル結合＋ハイライト＋行挿入を一括実行
+
+```bash
+python3 scripts/batch_sheets.py 1abc...xyz '[
+  {"type": "merge", "range": "Sheet1!A1:B2"},
+  {"type": "highlight", "range": "Sheet1!A1:B2", "color": "light_green"},
+  {"type": "insert_dimension", "sheet": "Sheet1", "dimension": "rows", "start": 5, "end": 6}
+]'
+```
+
+**成功時の出力:**
+```json
+{
+  "success": true,
+  "fileId": "1abc...xyz",
+  "fileType": "sheets",
+  "operation": "batch_sheets",
+  "totalOperations": 3,
+  "operations": [
+    {"index": 0, "type": "merge", "range": "Sheet1!A1:B2", "status": "included"},
+    {"index": 1, "type": "highlight", "range": "Sheet1!A1:B2", "color": "light_green", "status": "included"},
+    {"index": 2, "type": "insert_dimension", "sheet": "Sheet1", "dimension": "rows", "start": 5, "end": 6, "status": "included"}
+  ]
+}
+```
 
 ---
 
