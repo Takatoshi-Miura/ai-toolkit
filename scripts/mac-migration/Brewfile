@@ -1,0 +1,62 @@
+# =============================================================================
+# Brewfile - Mac 環境パッケージ定義
+# Generated: 2026-02-20
+# Host: Mac
+# macOS: 26.2 (arm64)
+# =============================================================================
+
+tap "gcenx/wine"
+tap "homebrew/services"
+# Decentralized dependency manager for Cocoa
+brew "carthage"
+# Dependency manager for Cocoa projects
+brew "cocoapods", link: false
+# Maintain consistent coding style between multiple editors
+brew "editorconfig"
+# GitHub command-line tool
+brew "gh"
+# Open-source build automation tool based on the Groovy and Kotlin DSL
+brew "gradle"
+# Mac App Store command-line interface
+brew "mas"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
+# Node.js version manager
+brew "nodebrew"
+# Development kit for the Java programming language
+brew "openjdk@17"
+# Object-relational database system
+brew "postgresql@14", restart_service: :changed
+# Install various Ruby versions and implementations
+brew "ruby-build"
+# Ruby version manager
+brew "rbenv"
+# Automatic workarounds for problems in Wine
+brew "winetricks"
+# App to build and share containerised applications and microservices
+cask "docker-desktop"
+# Open Source Multimedia Framework
+cask "gstreamer-runtime"
+# Compatibility layer to run Windows applications
+cask "gcenx/wine/wine-crossover"
+mas "Auto Clicker", id: 1601460545
+mas "iMovie", id: 408981434
+mas "Kindle", id: 302584613
+mas "LINE", id: 539883307
+vscode "formulahendry.auto-rename-tag"
+vscode "mrmlnc.vscode-csscomb"
+vscode "ms-ceintl.vscode-language-pack-ja"
+vscode "redhat.java"
+vscode "visualstudioexptteam.intellicode-api-usage-examples"
+vscode "visualstudioexptteam.vscodeintellicode"
+vscode "vmware.vscode-boot-dev-pack"
+vscode "vmware.vscode-spring-boot"
+vscode "vscjava.vscode-gradle"
+vscode "vscjava.vscode-java-debug"
+vscode "vscjava.vscode-java-dependency"
+vscode "vscjava.vscode-java-pack"
+vscode "vscjava.vscode-java-test"
+vscode "vscjava.vscode-lombok"
+vscode "vscjava.vscode-maven"
+vscode "vscjava.vscode-spring-boot-dashboard"
+vscode "vscjava.vscode-spring-initializr"
