@@ -43,6 +43,7 @@ Skillsは、ユーザーの質問に応じて自動的に発動する専門ス�
 | ユーティリティ | `extract-pdf-images` | PDFファイルから画像を抽出して~/Downloads/に保存。pdfimagesコマンドを使用し、単一/複数PDF一括変換に対応。抽出後に各画像のサイズも報告 | ✅ |
 | ユーティリティ | `check-drive-document-updates-skill` | Google Driveファイルの変更有無を日付指定で確認。TARGET_FILES.mdで監視対象を管理し、指定日以降の更新をチェック | ✅ |
 | コード品質 | `code-diff-and-coverage` | 指定期間のコード差分を取得し、変更ファイルのテストカバレッジ（JaCoCo）を計測。Pythonスクリプトでgit log解析とJaCoCoレポート抽出を自動化 | ❌ |
+| ユーティリティ | `homebrew` | Homebrewパッケージの一括更新（update/upgrade/cleanup + Brewfile生成）、追加インストール、削除、App Store→Homebrew移行、Mac環境移行（エクスポート/セットアップ）を統括。目次型SKILL.mdから操作別ワークフロー（WORKFLOW-UPDATE/DELETE/ADD/MIGRATE/MAC-MIGRATION）に分岐 | ✅ |
 
 
 ## サブエージェント一覧
