@@ -193,6 +193,7 @@ python3 scripts/manage_dimension.py <fileId> <action> <シート名> <dimension>
 
 | type | 必須パラメータ | オプション |
 |------|--------------|-----------|
+| `update_values` | `range`, `values` | -- |
 | `merge` | `range` | -- |
 | `highlight` | `range` | `color`（デフォルト: yellow） |
 | `insert_dimension` | `sheet`, `dimension`, `start` | `end`（デフォルト: start）, `inheritFromBefore`（デフォルト: true） |
@@ -215,8 +216,8 @@ python3 scripts/batch_sheets.py <fileId> '<json_operations>'
 ### 制約事項
 
 - `add_sheet` で作成した新規シートへの同バッチ内での後続操作は不可
-- 値の挿入（`insert_value.py` の sheets 機能）は別APIのためバッチに含められない
-- 操作は指定した順序通りに実行される。行挿入後のセル結合など、順序依存がある場合はインデックスのずれに注意
+- `update_values` は全書式操作（merge, highlight等）の**前に**まとめて実行される（操作配列内の順序とは無関係）
+- 書式操作は指定した順序通りに実行される。行挿入後のセル結合など、順序依存がある場合はインデックスのずれに注意
 
 ### 使い分けガイド
 
@@ -225,6 +226,7 @@ python3 scripts/batch_sheets.py <fileId> '<json_operations>'
 | 単一操作 | 各専用スクリプト |
 | 同種の複数操作（セル結合のみ） | `merge_cells_batch.py` または `batch_sheets.py` |
 | 異種の複数操作（結合＋ハイライト＋行挿入） | **`batch_sheets.py`** |
+| 複数セルへの値書き込み＋書式操作 | **`batch_sheets.py`**（`update_values` + 他の操作） |
 
 ---
 
@@ -590,10 +592,40 @@ python3 scripts/batch_sheets.py 1abc...xyz '[
   "fileType": "sheets",
   "operation": "batch_sheets",
   "totalOperations": 3,
+  "valueUpdates": 0,
+  "formatUpdates": 3,
   "operations": [
     {"index": 0, "type": "merge", "range": "Sheet1!A1:B2", "status": "included"},
     {"index": 1, "type": "highlight", "range": "Sheet1!A1:B2", "color": "light_green", "status": "included"},
     {"index": 2, "type": "insert_dimension", "sheet": "Sheet1", "dimension": "rows", "start": 5, "end": 6, "status": "included"}
+  ]
+}
+```
+
+#### 値書き込み＋ハイライトを一括実行
+
+```bash
+python3 scripts/batch_sheets.py 1abc...xyz '[
+  {"type": "update_values", "range": "Sheet1!A1", "values": [["新しい値1"]]},
+  {"type": "update_values", "range": "Sheet1!A2", "values": [["新しい値2"]]},
+  {"type": "highlight", "range": "Sheet1!A1:A2", "color": "yellow"}
+]'
+```
+
+**成功時の出力:**
+```json
+{
+  "success": true,
+  "fileId": "1abc...xyz",
+  "fileType": "sheets",
+  "operation": "batch_sheets",
+  "totalOperations": 3,
+  "valueUpdates": 2,
+  "formatUpdates": 1,
+  "operations": [
+    {"index": 0, "type": "update_values", "range": "Sheet1!A1", "updatedCells": 1, "status": "included"},
+    {"index": 1, "type": "update_values", "range": "Sheet1!A2", "updatedCells": 1, "status": "included"},
+    {"index": 2, "type": "highlight", "range": "Sheet1!A1:A2", "color": "yellow", "status": "included"}
   ]
 }
 ```

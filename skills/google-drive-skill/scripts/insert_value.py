@@ -555,6 +555,10 @@ def main():
         print(json.dumps(result, ensure_ascii=False, indent=2))
         sys.exit(1)
 
+    # range文字列の正規化（Bashサンドボックスの \! エスケープ対策）
+    if args.target:
+        args.target = args.target.replace("\\!", "!")
+
     # ファイルタイプに応じて処理
     if args.file_type == "sheets":
         try:

@@ -27,6 +27,23 @@ from auth import get_auth_client
 from googleapiclient.discovery import build
 
 
+def normalize_range(range_str: str) -> str:
+    """範囲文字列を正規化する
+
+    Bashツールのサンドボックス環境では「!」が「\\!」にエスケープされる場合がある。
+    また、シート名がシングルクォートで囲まれている場合があるため、それらを正規化する。
+
+    Args:
+        range_str: 範囲文字列（例: "'Sheet1'\\!A1:B2"）
+
+    Returns:
+        正規化された範囲文字列（例: "Sheet1!A1:B2"）
+    """
+    # \! → ! に正規化（Bashサンドボックスのエスケープ対策）
+    result = range_str.replace("\\!", "!")
+    return result
+
+
 def parse_range(range_str: str) -> tuple[str, dict]:
     """範囲文字列を解析してシート名とセル範囲を取得
 
@@ -36,12 +53,15 @@ def parse_range(range_str: str) -> tuple[str, dict]:
     Returns:
         tuple: (シート名, {"startRow": 0, "endRow": 2, "startCol": 0, "endCol": 2})
     """
+    # 範囲文字列を正規化
+    range_str = normalize_range(range_str)
+
     # シート名とセル範囲を分離
     parts = range_str.split("!")
     if len(parts) != 2:
         raise ValueError(f"無効な範囲形式です。正しい形式: シート名!A1:B2 (入力: {range_str})")
 
-    sheet_name = parts[0]
+    sheet_name = parts[0].strip("'")
     cell_range = parts[1]
 
     # セル範囲を解析（例: A1:B2）

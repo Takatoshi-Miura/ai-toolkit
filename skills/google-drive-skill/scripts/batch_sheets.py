@@ -7,9 +7,9 @@
 
 例:
     python scripts/batch_sheets.py 1abc...xyz '[
-      {"type": "merge", "range": "Sheet1!A1:B2"},
-      {"type": "highlight", "range": "Sheet1!A1:B2", "color": "light_green"},
-      {"type": "insert_dimension", "sheet": "Sheet1", "dimension": "rows", "start": 5, "end": 6}
+      {"type": "update_values", "range": "Sheet1!A1", "values": [["新しい値"]]},
+      {"type": "highlight", "range": "Sheet1!A1:A1", "color": "yellow"},
+      {"type": "merge", "range": "Sheet1!B1:C2"}
     ]'
 
 認証ファイル:
@@ -21,7 +21,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 # 同じディレクトリのモジュールをインポート
 sys.path.insert(0, str(Path(__file__).parent))
@@ -30,10 +30,11 @@ from merge_cells import parse_range
 from highlight_cells import PRESET_COLORS, DEFAULT_COLOR
 
 from googleapiclient.discovery import build
+from merge_cells import normalize_range
 
 
 # サポートする操作タイプ
-SUPPORTED_TYPES = {"merge", "highlight", "insert_dimension", "delete_dimension", "add_sheet", "duplicate_sheet"}
+SUPPORTED_TYPES = {"merge", "highlight", "insert_dimension", "delete_dimension", "add_sheet", "duplicate_sheet", "update_values"}
 
 
 def build_merge_request(op: dict, sheet_id_map: dict) -> dict:
@@ -163,10 +164,11 @@ REQUIRED_FIELDS = {
     "delete_dimension": ["sheet", "dimension", "start"],
     "add_sheet": ["title"],
     "duplicate_sheet": ["sourceSheetId"],
+    "update_values": ["range", "values"],
 }
 
 
-def validate_operation(index: int, op: dict, sheet_id_map: dict) -> str | None:
+def validate_operation(index: int, op: dict, sheet_id_map: dict) -> Optional[str]:
     """操作を検証し、エラーメッセージを返す（問題なければNone）"""
     if not isinstance(op, dict):
         return "操作はオブジェクトである必要があります"
@@ -195,6 +197,11 @@ def validate_operation(index: int, op: dict, sheet_id_map: dict) -> str | None:
         color_name = op.get("color", DEFAULT_COLOR)
         if color_name not in PRESET_COLORS:
             return f'未知の色名です: {color_name}（利用可能: {", ".join(PRESET_COLORS.keys())}）'
+
+    if op_type == "update_values":
+        values = op.get("values")
+        if not isinstance(values, list) or not all(isinstance(row, list) for row in values):
+            return '"values" は2次元配列である必要があります'
 
     if op_type in ("insert_dimension", "delete_dimension"):
         if op["sheet"] not in sheet_id_map:
@@ -277,43 +284,73 @@ def batch_sheets(creds: Any, file_id: str, operations: list[dict]) -> dict:
             "error": "操作が指定されていません"
         }
 
-    # 4. batchUpdateリクエストを構築
-    requests = []
+    # 4. update_values操作と書式操作を分離
+    format_requests = []
+    value_updates = []
     operation_summaries = []
+
     for i, op in enumerate(operations):
         op_type = op["type"]
-        builder = REQUEST_BUILDERS[op_type]
-        requests.append(builder(op, sheet_id_map))
-
         summary = {"index": i, "type": op_type, "status": "included"}
-        if op_type in ("merge", "highlight"):
-            summary["range"] = op["range"]
-        if op_type == "highlight":
-            summary["color"] = op.get("color", DEFAULT_COLOR)
-        if op_type in ("insert_dimension", "delete_dimension"):
-            summary["sheet"] = op["sheet"]
-            summary["dimension"] = op["dimension"]
-            summary["start"] = op["start"]
-            summary["end"] = op.get("end", op["start"])
-        if op_type == "add_sheet":
-            summary["title"] = op["title"]
-        if op_type == "duplicate_sheet":
-            summary["sourceSheetId"] = op["sourceSheetId"]
+
+        if op_type == "update_values":
+            # 値書き込み操作: range文字列を正規化
+            normalized_range = normalize_range(op["range"])
+            value_updates.append({
+                "range": normalized_range,
+                "values": op["values"]
+            })
+            summary["range"] = normalized_range
+            summary["updatedCells"] = sum(len(row) for row in op["values"])
+        else:
+            # 書式操作: 既存のbuilder関数で変換
+            builder = REQUEST_BUILDERS[op_type]
+            format_requests.append(builder(op, sheet_id_map))
+
+            if op_type in ("merge", "highlight"):
+                summary["range"] = op["range"]
+            if op_type == "highlight":
+                summary["color"] = op.get("color", DEFAULT_COLOR)
+            if op_type in ("insert_dimension", "delete_dimension"):
+                summary["sheet"] = op["sheet"]
+                summary["dimension"] = op["dimension"]
+                summary["start"] = op["start"]
+                summary["end"] = op.get("end", op["start"])
+            if op_type == "add_sheet":
+                summary["title"] = op["title"]
+            if op_type == "duplicate_sheet":
+                summary["sourceSheetId"] = op["sourceSheetId"]
+
         operation_summaries.append(summary)
 
-    # 5. 一括実行（1回のAPI呼び出し）
+    total_operations = len(format_requests) + len(value_updates)
+
+    # 5a. 値の一括書き込み（spreadsheets.values.batchUpdate）
     try:
-        service.spreadsheets().batchUpdate(
-            spreadsheetId=file_id,
-            body={"requests": requests}
-        ).execute()
+        if value_updates:
+            service.spreadsheets().values().batchUpdate(
+                spreadsheetId=file_id,
+                body={
+                    "valueInputOption": "RAW",
+                    "data": value_updates
+                }
+            ).execute()
+
+        # 5b. 書式操作の一括実行（spreadsheets.batchUpdate）
+        if format_requests:
+            service.spreadsheets().batchUpdate(
+                spreadsheetId=file_id,
+                body={"requests": format_requests}
+            ).execute()
 
         return {
             "success": True,
             "fileId": file_id,
             "fileType": "sheets",
             "operation": "batch_sheets",
-            "totalOperations": len(requests),
+            "totalOperations": total_operations,
+            "valueUpdates": len(value_updates),
+            "formatUpdates": len(format_requests),
             "operations": operation_summaries
         }
     except Exception as e:
@@ -323,7 +360,7 @@ def batch_sheets(creds: Any, file_id: str, operations: list[dict]) -> dict:
             "fileType": "sheets",
             "operation": "batch_sheets",
             "error": f"バッチ実行に失敗しました: {e}",
-            "totalOperations": len(requests),
+            "totalOperations": total_operations,
             "operations": operation_summaries
         }
 
@@ -339,6 +376,7 @@ def print_usage():
     json_operations - 操作リストのJSON配列
 
 操作タイプ:
+    update_values      値の書き込み     {"type": "update_values", "range": "Sheet1!A1", "values": [["値1","値2"]]}
     merge              セル結合         {"type": "merge", "range": "Sheet1!A1:B2"}
     highlight          セルハイライト   {"type": "highlight", "range": "Sheet1!A1:B2", "color": "yellow"}
     insert_dimension   行/列挿入       {"type": "insert_dimension", "sheet": "Sheet1", "dimension": "rows", "start": 3, "end": 4}
@@ -362,8 +400,8 @@ def print_usage():
 
 注意:
     - このスクリプトはスプレッドシートのみで動作します
-    - 操作は指定した順序通りに実行されます
-    - 値の挿入（insert_value.py）は別APIのためバッチに含められません
+    - 書式操作は指定した順序通りに実行されます
+    - update_valuesは全書式操作の前にまとめて実行されます
     - add_sheetで作成した新規シートへの同バッチ内での後続操作は不可です
 """)
 
