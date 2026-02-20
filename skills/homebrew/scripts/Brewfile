@@ -1,12 +1,3 @@
-# =============================================================================
-# Brewfile - Mac 環境パッケージ定義
-# Generated: 2026-02-20
-# Host: Mac
-# macOS: 26.2 (arm64)
-# =============================================================================
-
-tap "gcenx/wine"
-tap "homebrew/services"
 # Decentralized dependency manager for Cocoa
 brew "carthage"
 # Dependency manager for Cocoa projects
@@ -21,42 +12,46 @@ brew "gradle"
 brew "mas"
 # Open-source, cross-platform JavaScript runtime environment
 brew "node"
-# Node.js version manager
-brew "nodebrew"
 # Development kit for the Java programming language
 brew "openjdk@17"
-# Object-relational database system
-brew "postgresql@14", restart_service: :changed
 # Install various Ruby versions and implementations
 brew "ruby-build"
 # Ruby version manager
 brew "rbenv"
-# Automatic workarounds for problems in Wine
-brew "winetricks"
-# App to build and share containerised applications and microservices
-cask "docker-desktop"
-# Open Source Multimedia Framework
-cask "gstreamer-runtime"
-# Compatibility layer to run Windows applications
-cask "gcenx/wine/wine-crossover"
-mas "Auto Clicker", id: 1601460545
+# Tools for building Android applications
+cask "android-studio"
+# Uninstaller for Mac apps
+cask "appcleaner"
+# Clipboard manager
+cask "clipy"
+# Web browser
+cask "google-chrome"
+# Tool to clean the keyboard while the screen is switched off
+cask "keyboardcleantool"
+# Official game launcher for Minecraft
+cask "minecraft"
+# Open-source software for video recording and live streaming
+cask "obs"
+# Desktop virtualization software
+cask "parallels"
+# Tool to customize input devices and automate computer systems
+cask "parallels-toolbox"
+# Reverse scrolling direction for mice, not for trackpads
+cask "scroll-reverser"
+# Git client
+cask "sourcetree"
+# Open-source code editor
+cask "visual-studio-code"
+# Mind mapping and brainstorming tool
+cask "xmind"
+# Video communication and virtual meeting platform
+cask "zoom"
+# Google's anti-gravity browser game
+cask "antigravity"
 mas "iMovie", id: 408981434
 mas "Kindle", id: 302584613
 mas "LINE", id: 539883307
+vscode "anthropic.claude-code"
 vscode "formulahendry.auto-rename-tag"
 vscode "mrmlnc.vscode-csscomb"
 vscode "ms-ceintl.vscode-language-pack-ja"
-vscode "redhat.java"
-vscode "visualstudioexptteam.intellicode-api-usage-examples"
-vscode "visualstudioexptteam.vscodeintellicode"
-vscode "vmware.vscode-boot-dev-pack"
-vscode "vmware.vscode-spring-boot"
-vscode "vscjava.vscode-gradle"
-vscode "vscjava.vscode-java-debug"
-vscode "vscjava.vscode-java-dependency"
-vscode "vscjava.vscode-java-pack"
-vscode "vscjava.vscode-java-test"
-vscode "vscjava.vscode-lombok"
-vscode "vscjava.vscode-maven"
-vscode "vscjava.vscode-spring-boot-dashboard"
-vscode "vscjava.vscode-spring-initializr"
