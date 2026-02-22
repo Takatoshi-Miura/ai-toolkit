@@ -1,5 +1,5 @@
 ---
-allowed-tools: mcp__mcp-google-drive__*
+allowed-tools: Bash
 description: ちいぽよの金銭管理スペシャリストとして月次の収支分析とアドバイスを実施
 ---
 

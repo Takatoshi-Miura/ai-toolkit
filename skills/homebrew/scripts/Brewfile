@@ -51,6 +51,7 @@ cask "antigravity"
 mas "iMovie", id: 408981434
 mas "Kindle", id: 302584613
 mas "LINE", id: 539883307
+mas "Xcode", id: 497799835
 vscode "anthropic.claude-code"
 vscode "formulahendry.auto-rename-tag"
 vscode "mrmlnc.vscode-csscomb"

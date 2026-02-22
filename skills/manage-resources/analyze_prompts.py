@@ -40,16 +40,32 @@ def parse_frontmatter(content: str) -> dict[str, Any]:
     if end_idx == -1:
         return frontmatter
 
-    for line in lines[1:end_idx]:
-        if ':' in line:
+    i = 1
+    while i < end_idx:
+        line = lines[i]
+        if ':' in line and not line.startswith(' ') and not line.startswith('\t'):
             key, value = line.split(':', 1)
             key = key.strip()
             value = value.strip()
+            # YAMLブロックスカラー（| または >）の処理
+            if value in ('|', '>'):
+                block_lines = []
+                i += 1
+                while i < end_idx:
+                    next_line = lines[i]
+                    if next_line and (next_line[0] == ' ' or next_line[0] == '\t'):
+                        block_lines.append(next_line.strip())
+                        i += 1
+                    else:
+                        break
+                frontmatter[key] = ' '.join(block_lines)
+                continue
             # allowed-tools や tools はリストとして解析
-            if key in ['allowed-tools', 'tools', 'disallowedTools']:
+            elif key in ['allowed-tools', 'tools', 'disallowedTools']:
                 frontmatter[key] = [v.strip() for v in value.split(',') if v.strip()]
             else:
                 frontmatter[key] = value
+        i += 1
 
     return frontmatter
 
