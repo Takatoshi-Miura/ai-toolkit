@@ -1,7 +1,7 @@
 ---
 name: review-skill
 description: GitHub PRおよびGoogle Drive資料（ドキュメント、スプレッドシート、スライド）のレビューを実施。GitHub PR URL（github.com/*/pull/*）やGoogle Drive URL（docs.google.com, drive.google.com）が含まれ、レビューを依頼された時に自動発動。Androidファイル（.kt、.java、.xml、build.gradle）を含むPRはAndroid専門レビューを実施。「レビューして」「PRレビュー」「コードレビュー」「このPRレビューして」「このドキュメント見て」「レビューお願い」「フィードバックちょうだい」「差分見て」「変更確認して」などの依頼で適用。
-allowed-tools: mcp__mcp-google-drive__*, mcp__mcp-gh-pr-mini__*, Read, Grep, Glob, Bash
+allowed-tools: mcp__mcp-gh-pr-mini__*, Read, Grep, Glob, Bash
 ---
 
 # レビュースキル
@@ -106,7 +106,7 @@ PRの変更ファイルを確認し、以下のいずれかに該当する場合
 ## 注意事項
 
 - PRレビューの場合、対象ブランチにチェックアウトされているか確認が必要
-- Google Driveの場合、`g_drive_search_files`は使用しない（ファイルIDがURLから取得可能なため）
+- Google Driveの場合、ファイルIDはURLから取得する（検索は不要）
 - 追加のコンテキスト（PBI、概要設計書、テスト項目書など）が提供された場合は、それも考慮してレビューする
 
 ## エラー対応
