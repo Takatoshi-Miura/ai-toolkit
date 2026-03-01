@@ -1,86 +1,92 @@
 ---
 name: retrospective
 description: 振り返りスペシャリストとして週次/月次のレトロスペクティブを実行。LifeGraph、日次記録、金銭データをスクリプトで取得・分析してレポートを作成。
-allowed-tools: Bash, AskUserQuestion, Write, Read
+allowed-tools: Bash, Read, Write, TodoWrite, AskUserQuestion
 user-invocable: true
 disable-model-invocation: true
 ---
 
 # 振り返りスキル
 
-週次または月次の振り返りを効率的にサポートし、スクリプトでデータを取得してレポートを作成します。
-
-## 前提条件
-
-### データソース
-| データ | ファイルID | fileType | 用途 |
-|--------|-----------|----------|------|
-| LifeGraph | `1WF58VNM0lGfN-YKqR2ySXU_EKQQCpyrV4da8WiVtoBo` | sheets | 時間・パフォーマンス分析 |
-| ノート | `1iVeZ1EB5dahEZukuQQB4gSa5jIw3By-Gz8JaAysiAoA` | docs | 日次記録・目標 |
-| 金銭管理 | `1P519LiN0Tiu-NvWuYgek9jc4IfvXTzIukkVkuokAqY0` | sheets | 収支分析（月次のみ） |
-| パーソナルコンテキスト | `1hDcVtQ5wEz2rPGRrJGK8CspnqSujheAjeZ1PPAj2u6E` | docs | 価値観・思考スタイル（分析の参考） |
+週次または月次の振り返りを実行するスキル。各Phaseで対応するREFERENCEファイルを参照すること。
 
 ## 実行手順
 
+### Phase 0: 進捗管理の登録
+
+**最初にTodoWriteで以下を登録すること：**
+
+```json
+[
+  { "content": "Phase 1: 期間選択", "status": "pending", "activeForm": "期間を選択中" },
+  { "content": "Phase 2: 出力ファイル作成", "status": "pending", "activeForm": "出力ファイルを作成中" },
+  { "content": "Phase 3: データ取得", "status": "pending", "activeForm": "データを取得中" },
+  { "content": "Phase 3.5: Insights取得（月次のみ）", "status": "pending", "activeForm": "Insightsを取得中" },
+  { "content": "Phase 4: 分析とレポート作成", "status": "pending", "activeForm": "分析・レポートを作成中" },
+  { "content": "Phase 5: 目標提案・総評", "status": "pending", "activeForm": "目標提案・総評を作成中" },
+  { "content": "Phase 6: 完了報告", "status": "pending", "activeForm": "完了報告中" }
+]
+```
+
 ### Phase 1: 期間選択
 
-AskUserQuestionツールで期間を質問：
+**AskUserQuestionで以下を実行：**
 
-| 選択肢 | 内容 |
-|--------|------|
-| 週次 | LifeGraph + 日次記録 |
-| 月次 | LifeGraph + 金銭 + 日次記録 |
+```json
+{
+  "questions": [
+    {
+      "question": "振り返りの期間を選択してください。",
+      "header": "期間",
+      "multiSelect": false,
+      "options": [
+        { "label": "週次", "description": "LifeGraph + 日次記録を分析" },
+        { "label": "月次", "description": "LifeGraph + 日次記録 + 金銭を分析" }
+      ]
+    }
+  ]
+}
+```
+
+| 選択肢 | 読み込むREFERENCE |
+|--------|-----------------|
+| 週次 | LIFEGRAPH / DAILY / SUMMARY |
+| 月次 | LIFEGRAPH / DAILY / MONEY / SUMMARY |
 
 ### Phase 2: 出力ファイル作成
 
-`~/Downloads/yyyyMMdd-{weekly|monthly}-retrospective.md` を作成（タイトルと目次のみ）
+`~/Downloads/yyyyMMdd-{weekly|monthly}-retrospective.md` を作成（タイトルと目次のみ）。
 
 ### Phase 3: データ取得
 
-**スクリプトでGoogle Driveからデータを取得する:**
-
-```bash
-# スクリプトパス
-SCRIPT_PATH="~/.claude/skills/retrospective/scripts/read_drive_file.py"
-
-# LifeGraph（スプレッドシート）
-python3 $SCRIPT_PATH 1WF58VNM0lGfN-YKqR2ySXU_EKQQCpyrV4da8WiVtoBo sheets "Googleカレンダー集計"
-
-# ノート（ドキュメント）- 今年の目標タブ
-python3 $SCRIPT_PATH 1iVeZ1EB5dahEZukuQQB4gSa5jIw3By-Gz8JaAysiAoA docs "今年の目標"
-
-# ノート（ドキュメント）- 今月タブ（yyyyMM形式、例: 202601）
-python3 $SCRIPT_PATH 1iVeZ1EB5dahEZukuQQB4gSa5jIw3By-Gz8JaAysiAoA docs "202601"
-
-# 金銭管理（月次のみ）
-python3 $SCRIPT_PATH 1P519LiN0Tiu-NvWuYgek9jc4IfvXTzIukkVkuokAqY0 sheets "予算_給与負担"
-python3 $SCRIPT_PATH 1P519LiN0Tiu-NvWuYgek9jc4IfvXTzIukkVkuokAqY0 sheets "マネープラン"
-
-# パーソナルコンテキスト（価値観・思考スタイル）
-python3 $SCRIPT_PATH 1hDcVtQ5wEz2rPGRrJGK8CspnqSujheAjeZ1PPAj2u6E docs
-```
-
-**出力形式:** JSON。`content` フィールドにデータが含まれる。
+→ **[REFERENCE-LIFEGRAPH.md](REFERENCE-LIFEGRAPH.md)** を参照してLifeGraphデータを取得
+→ **[REFERENCE-DAILY.md](REFERENCE-DAILY.md)** を参照して日次記録データを取得
+→ **[REFERENCE-MONEY.md](REFERENCE-MONEY.md)** を参照して金銭データを取得（**月次のみ**）
 
 ### Phase 3.5: Insights取得（月次のみ）
 
-月次の場合、`/insights` コマンドを実行して過去の会話から得られた洞察を取得する。
-取得した結果はPhase 4の分析材料として活用する。
+`/insights` コマンドを実行して過去の会話から得られた洞察を取得する。取得結果はPhase 4の分析材料として活用。
 
 ### Phase 4: 分析とレポート作成
 
-取得したデータを分析し、レポートに追記する。
-詳細な分析観点とフォーマットは [REFERENCE.md](REFERENCE.md) を参照。
+取得データをもとに分析しレポートに追記する。各観点のフォーマットは各REFERENCEファイルを参照。
+
+| 観点 | 参照ファイル | 対象 |
+|------|------------|------|
+| LifeGraph分析 | [REFERENCE-LIFEGRAPH.md](REFERENCE-LIFEGRAPH.md) | 週次・月次 |
+| 日次記録分析 | [REFERENCE-DAILY.md](REFERENCE-DAILY.md) | 週次・月次 |
+| 金銭分析 | [REFERENCE-MONEY.md](REFERENCE-MONEY.md) | **月次のみ** |
 
 ### Phase 5: 目標提案・総評
 
-全分析結果を踏まえて、各カテゴリの目標提案と総評を追記。
+→ **[REFERENCE-SUMMARY.md](REFERENCE-SUMMARY.md)** を参照して目標提案と総評を追記。
 
 ### Phase 6: 完了報告
 
-レポートファイルのパスを報告。
+レポートファイルのパスを報告する。
 
 ## 注意事項
 
 - スクリプトがエラーを返した場合は [SETUP.md](SETUP.md) の認証手順を案内
 - 今月のタブ名は `yyyyMM` 形式（例: 202601）
+- **月次のみのPhaseを週次で実行しないこと**
