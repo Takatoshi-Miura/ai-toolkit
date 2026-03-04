@@ -35,16 +35,6 @@
 - **subagent_type**: `"Plan"`
 - 不明点がある場合はユーザーへの質問を含める
 
-### code-implementer サブエージェント
-- **用途**: コード実装、ビルド確認
-- **subagent_type**: `"code-implementer"`
-- 承認された実装計画とCLAUDE.mdパスを必ず含める
-
-### test-writer サブエージェント
-- **用途**: テストコード作成・実行
-- **subagent_type**: `"test-writer"`
-- テスト対象ファイルパスとフレームワーク情報を含める
-
 ---
 
 ## 共通の注意事項

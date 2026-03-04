@@ -1,58 +1,26 @@
-# Decentralized dependency manager for Cocoa
+tap "homebrew/services"
 brew "carthage"
-# Dependency manager for Cocoa projects
-brew "cocoapods", link: false
-# Maintain consistent coding style between multiple editors
+brew "cocoapods"
 brew "editorconfig"
-# GitHub command-line tool
 brew "gh"
-# Open-source build automation tool based on the Groovy and Kotlin DSL
 brew "gradle"
-# Mac App Store command-line interface
 brew "mas"
-# Open-source, cross-platform JavaScript runtime environment
 brew "node"
-# Development kit for the Java programming language
 brew "openjdk@17"
-# Install various Ruby versions and implementations
 brew "ruby-build"
-# Ruby version manager
 brew "rbenv"
-# Tools for building Android applications
 cask "android-studio"
-# Uninstaller for Mac apps
-cask "appcleaner"
-# Clipboard manager
-cask "clipy"
-# Web browser
-cask "google-chrome"
-# Tool to clean the keyboard while the screen is switched off
-cask "keyboardcleantool"
-# Official game launcher for Minecraft
-cask "minecraft"
-# Open-source software for video recording and live streaming
-cask "obs"
-# Desktop virtualization software
-cask "parallels"
-# Tool to customize input devices and automate computer systems
-cask "parallels-toolbox"
-# Reverse scrolling direction for mice, not for trackpads
-cask "scroll-reverser"
-# Git client
-cask "sourcetree"
-# Open-source code editor
-cask "visual-studio-code"
-# Mind mapping and brainstorming tool
-cask "xmind"
-# Video communication and virtual meeting platform
-cask "zoom"
-# Google's anti-gravity browser game
 cask "antigravity"
-mas "iMovie", id: 408981434
-mas "Kindle", id: 302584613
-mas "LINE", id: 539883307
-mas "Xcode", id: 497799835
-vscode "anthropic.claude-code"
-vscode "formulahendry.auto-rename-tag"
-vscode "mrmlnc.vscode-csscomb"
-vscode "ms-ceintl.vscode-language-pack-ja"
+cask "appcleaner"
+cask "clipy"
+cask "google-chrome"
+cask "keyboardcleantool"
+cask "minecraft"
+cask "obs"
+cask "parallels"
+cask "parallels-toolbox"
+cask "scroll-reverser"
+cask "sourcetree"
+cask "visual-studio-code"
+cask "xmind"
+cask "zoom"

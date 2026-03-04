@@ -24,58 +24,49 @@ ai-toolkit/
 
 ## Skills一覧
 
-Skillsは、ユーザーの質問に応じて自動的に発動する専門スキルです。スラッシュコマンドとは異なり、明示的な呼び出しなしで適切な場面で自動的に使用されます。
-
 | カテゴリ | スキル名 | 説明 | 自動呼び出し |
 |---------|---------|------|:------------:|
-| データ操作 | `google-drive-skill` | Google Driveファイル（スプレッドシート/ドキュメント/スライド）の読み取りと書き込み。値挿入、シート/スライド作成、要素コピー、セル結合、セルハイライト、行列操作、複数操作の一括実行に対応。Pythonスクリプトで実行 | ✅ |
-| データ操作 | `redmine-skill` | Redmineチケットの読み取り・操作をPythonスクリプトで実行。URLとチケット確認キーワードで自動発動 | ✅ |
-| レビュー | `review-skill` | GitHub PRおよびGoogle Drive資料の統合レビュー。PR URLではAndroidファイル有無を自動判定し汎用/Android専門レビューに分岐。Drive URLでは資料レビューを実施。「レビューして」「PRレビュー」等で自動発動 | ✅ |
-| GitHub/Git操作 | `github-skill` | GitHub CLI (gh) とGit操作を統合したスキル。Issue/PR操作全般と強制プッシュに対応。目次型SKILL.mdから各操作別ガイド（ISSUE.md/PULL-REQUEST.md/GIT-PUSH.md/REFERENCE.md）に分岐 | ✅ |
-| Git操作 | `git-pr-setup` | ブランチ作成からPR作成までのGitワークフローを自動化。空コミット、プッシュ、ドラフトPR作成、Redmineコメント追加を一括処理。Pythonスクリプトで完全独立 | ✅ |
-| パーソナライズ | `personal-context-aware-response` | パーソナルコンテキストを考慮した回答を提供。技術的意思決定、振り返り分析、アドバイス依頼などで自動発動し、PREP法による構造化された回答を生成 | ✅ |
-| 目標設定 | `smart-goal-setting` | SMARTフレームワークを活用した目標設定支援。目標設定・KPI策定・OKR作成などの依頼で自動発動し、5観点での分析とリーダー行動計画を提案 | ✅ |
-| リソース管理 | `manage-resources` | Claude Codeリソース(スラッシュコマンド、サブエージェント、Skills)の新規作成・更新・メンテナンス・同期を統括。条件分岐で操作タイプ選択後、適切なワークフローに誘導。ai-toolkitの変更を~/.claude/に一方向同期する機能も含む | ✅ |
-| 振り返り | `retrospective` | 週次/月次のレトロスペクティブを実行。LifeGraph、日次記録、金銭データを分析してレポート作成。「振り返り」「レトロスペクティブ」などで自動発動 | ❌ |
-| レビュー・問題解決 | `solve-problem` | 問題解決のスペシャリストとして7フェーズ（問題定義、所在特定、原因追及、解決策立案、タスク分解、スケジュール、リスク計画）の構造化プロセスで、現状とあるべき姿のギャップを分析し実行可能な解決策を策定 | ❌ |
-| 開発・コーディング | `coding` | コーディングタスクを統括するオーケストレーター。モバイルアプリ開発（情報収集→実装計画→コード実装→テスト→完了）とMCP開発（新規サーバー作成・ツール追加・ツール更新）の両方に対応 | ❌ |
-| テスト | `generate-test-item-skill` | 因子水準組み合わせに基づくテスト項目書を作成。Pythonスクリプトでペアワイズ法を適用し、効率的なテストケースを生成 | ❌ |
-| ユーティリティ | `extract-pdf-images` | PDFファイルから画像を抽出して~/Downloads/に保存。pdfimagesコマンドを使用し、単一/複数PDF一括変換に対応。抽出後に各画像のサイズも報告 | ✅ |
-| ユーティリティ | `check-drive-document-updates-skill` | Google Driveファイルの変更有無を日付指定で確認。TARGET_FILES.mdで監視対象を管理し、指定日以降の更新をチェック | ✅ |
-| コード品質 | `code-diff-and-coverage` | 指定期間のコード差分を取得し、変更ファイルのテストカバレッジ（JaCoCo）を計測。Pythonスクリプトでgit log解析とJaCoCoレポート抽出を自動化 | ❌ |
-| ユーティリティ | `homebrew` | Homebrewパッケージの一括更新（update/upgrade/cleanup + Brewfile生成）、追加インストール、削除、App Store→Homebrew移行、Mac環境移行（エクスポート/セットアップ）を統括。目次型SKILL.mdから操作別ワークフロー（WORKFLOW-UPDATE/DELETE/ADD/MIGRATE/MAC-MIGRATION）に分岐 | ✅ |
+| データ操作 | `google-drive-skill` | Google Drive（Sheets/Docs/Slides）の読み書き（値挿入・シート作成・セル結合・行列操作など） | ✅ |
+| データ操作 | `redmine-skill` | RedmineチケットURLからチケット詳細を取得・参照 | ✅ |
+| レビュー | `review-skill` | GitHub PRレビュー（Android/汎用を自動判定）とGoogle Drive資料レビュー | ✅ |
+| GitHub/Git操作 | `github-skill` | Issue・PR・強制プッシュなどGitHub/Git操作全般 | ✅ |
+| Git操作 | `git-pr-setup` | Redmineチケットを元にブランチ作成・空コミット・PR作成・Redmineコメントを一括自動化 | ✅ |
+| パーソナライズ | `personal-context-aware-response` | Google Driveのパーソナルコンテキストを読み取り、価値観・思考スタイルに合わせた回答を提供 | ✅ |
+| 目標設定 | `smart-goal-setting` | SMARTフレームワークで目標を5観点分析し、リーダー行動計画まで策定 | ✅ |
+| リソース管理 | `manage-resources` | Claude Codeリソース（コマンド/エージェント/Skills）の新規作成・更新・メンテナンス・~/.claude/への同期 | ✅ |
+| 振り返り | `retrospective` | LifeGraph・日次記録・金銭データを分析して週次/月次レポートを作成 | ❌ |
+| 問題解決 | `solve-problem` | 7フェーズ（問題定義〜リスク計画）の構造化プロセスで解決策をマークダウン出力 | ❌ |
+| 開発・コーディング | `coding` | モバイルアプリ・MCP開発・SportsNote iOS・OpenSpecプロポーザル作成のオーケストレーター | ❌ |
+| テスト | `generate-test-item-skill` | 因子水準の全組み合わせからテスト項目書をスプレッドシートに自動生成 | ❌ |
+| ユーティリティ | `extract-pdf-images` | PDFから埋め込み画像を抽出し~/Downloads/に保存（単一/複数対応） | ✅ |
+| ユーティリティ | `check-drive-document-updates-skill` | 指定日以降のGoogle Driveファイル更新有無を確認 | ✅ |
+| コード品質 | `code-diff-and-coverage` | 指定期間のコード差分取得とJaCoCoテストカバレッジ計測 | ✅ |
+| ユーティリティ | `homebrew` | Homebrewの更新・追加・削除・App Store移行・Mac環境移行を統括 | ✅ |
 
 
 ## サブエージェント一覧
 
-サブエージェントは、Taskツールから呼び出される専門特化したエージェントです。
-独立したコンテキスト窓を持ち、特定のタスクに集中して処理を行います。
-
-| カテゴリ | エージェント名 | 説明 | モデル |
-|---------|--------------|------|--------|
-| コーディング | `code-implementer` | 承認された実装計画に従ってコードを実装、ビルド確認まで実施 | sonnet |
-| テスト | `test-writer` | テスト計画の作成、テストコード実装、テスト実行を担当 | haiku |
-| テスト | `test-item-writer` | 因子・水準組み合わせに基づくテスト項目書をスプレッドシートに作成（Pythonスクリプト版） | sonnet |
-| 問題解決 | `solve-problem-executor` | 問題解決Phase 1-7: 全フェーズを一括実行 | sonnet |
+| カテゴリ | エージェント名 | 説明 |
+|---------|--------------|------|
+| テスト | `test-item-writer` | テスト項目書をスプレッドシートに書き込む |
+| 問題解決 | `solve-problem-executor` | 問題解決Phase 1-7を一括実行 |
 
 ## スラッシュコマンド一覧
 
 | カテゴリ | コマンド名 | 説明 |
 |---------|-----------|------|
-| 振り返り | `/retrospective-chipoyo-money` | ちいぽよの金銭管理スペシャリストとして月次の収支分析とアドバイスを実施 |
-| 開発・コーディング | `/create-todo-issue` | 開発中に思いついたTODOをGitHub Issueとして素早く登録 |
-| 開発・コーディング | `/install-apk` | Android端末へのAPKインストールを支援 |
-| 情報収集 | `/fetch-web-search-result` | Web検索でヒットした記事を取得して処理 |
-| 情報収集 | `/research-play-console-update` | Google Play Consoleの更新情報を収集・調査 |
+| 振り返り | `/retrospective-chipoyo-money` | 月次の収支分析とアドバイスを実施 |
+| 開発・コーディング | `/create-todo-issue` | 思いついたTODOをGitHub Issueとして登録 |
+| 開発・コーディング | `/install-apk` | Android端末へのAPKインストール |
+| 情報収集 | `/fetch-web-search-result` | Web検索でヒットした記事を取得 |
+| 情報収集 | `/research-play-console-update` | Google Play Consoleの更新情報を収集 |
 
 ## ルールファイル一覧
 
-ルールファイルは `~/.claude/rules/` に同期され、`paths` フロントマターで指定されたファイルを扱う際に自動適用されます。
-
 | ルール名 | 説明 | 適用条件 |
 |---------|------|----------|
-| `swift-testing` | Swift Testingフレームワークのテストコード生成ルール（XCTest禁止、struct使用、#expectマクロ等） | `*Test*.swift`, `*Tests*.swift` |
-| `android-development` | Android開発のコーディング規約（Kotlin優先、Coroutine/Flow、Compose、ライフサイクル等） | `.kt`, `.java`, `.xml`, `build.gradle` |
+| `swift-testing` | Swift Testingフレームワークのコード生成規約 | `*Test*.swift`, `*Tests*.swift` |
+| `android-development` | Android開発のコーディング規約 | `.kt`, `.java`, `.xml`, `build.gradle` |
 
 ## 使用方法
 

@@ -89,17 +89,17 @@ brew autoremove
 ### 4-1. Brewfileの出力
 
 ```bash
-brew bundle dump --file=~/Brewfile --force
+brew bundle dump --file=~/Documents/Git/ai-toolkit/skills/homebrew/scripts/Brewfile --force
 ```
 
 **`--force` フラグの意味**: 既存のBrewfileがあれば上書きする。
 
-**出力先**: `~/Brewfile`
+**出力先**: `~/Documents/Git/ai-toolkit/skills/homebrew/scripts/Brewfile`
 
 ### 4-2. 生成されたBrewfileの内容を確認
 
 ```bash
-cat ~/Brewfile
+cat ~/Documents/Git/ai-toolkit/skills/homebrew/scripts/Brewfile
 ```
 
 ユーザーにBrewfileの内容を提示する。
@@ -127,13 +127,13 @@ cat ~/Brewfile
 | brew upgrade --greedy | {upgrade_count}件アップグレード |
 | brew cleanup | {cleanup_result} |
 | brew autoremove | {autoremove_result} |
-| Brewfile生成 | ~/Brewfile に出力済み |
+| Brewfile生成 | ~/Documents/Git/ai-toolkit/skills/homebrew/scripts/Brewfile に出力済み |
 
 ### アップグレードされたパッケージ
 {upgraded_packages_list}
 
 ### Brewfile
-~/Brewfile に現在のインストール状態を保存しました。
+~/Documents/Git/ai-toolkit/skills/homebrew/scripts/Brewfile に現在のインストール状態を保存しました。
 ```
 
 **Phase 5完了時**: TodoWriteで「Phase 5」を `completed` に更新
