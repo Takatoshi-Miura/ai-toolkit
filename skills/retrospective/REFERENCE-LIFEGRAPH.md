@@ -47,5 +47,5 @@ python3 $SCRIPT_PATH 1WF58VNM0lGfN-YKqR2ySXU_EKQQCpyrV4da8WiVtoBo sheets "Google
 ### その他の活動
 - **運動**: （頻度とパフォーマンスへの影響を1行で）
 - **思考整理**: （増減傾向や効果を1行で）
-- **その他気づき**: （その他の傾向を1行で）
+- **その他気づき**: （その他の傾向を自由に記述）
 ```

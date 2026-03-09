@@ -21,7 +21,6 @@ disable-model-invocation: true
   { "content": "Phase 1: 期間選択", "status": "pending", "activeForm": "期間を選択中" },
   { "content": "Phase 2: 出力ファイル作成", "status": "pending", "activeForm": "出力ファイルを作成中" },
   { "content": "Phase 3: データ取得", "status": "pending", "activeForm": "データを取得中" },
-  { "content": "Phase 3.5: Insights取得（月次のみ）", "status": "pending", "activeForm": "Insightsを取得中" },
   { "content": "Phase 4: 分析とレポート作成", "status": "pending", "activeForm": "分析・レポートを作成中" },
   { "content": "Phase 5: 目標提案・総評", "status": "pending", "activeForm": "目標提案・総評を作成中" },
   { "content": "Phase 6: 完了報告", "status": "pending", "activeForm": "完了報告中" }
@@ -62,10 +61,6 @@ disable-model-invocation: true
 → **[REFERENCE-LIFEGRAPH.md](REFERENCE-LIFEGRAPH.md)** を参照してLifeGraphデータを取得
 → **[REFERENCE-DAILY.md](REFERENCE-DAILY.md)** を参照して日次記録データを取得
 → **[REFERENCE-MONEY.md](REFERENCE-MONEY.md)** を参照して金銭データを取得（**月次のみ**）
-
-### Phase 3.5: Insights取得（月次のみ）
-
-`/insights` コマンドを実行して過去の会話から得られた洞察を取得する。取得結果はPhase 4の分析材料として活用。
 
 ### Phase 4: 分析とレポート作成
 
