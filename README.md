@@ -42,6 +42,7 @@ ai-toolkit/
 | ユーティリティ | `check-drive-document-updates-skill` | 指定日以降のGoogle Driveファイル更新有無を確認 | ✅ |
 | コード品質 | `code-diff-and-coverage` | 指定期間のコード差分取得とJaCoCoテストカバレッジ計測 | ✅ |
 | ユーティリティ | `homebrew` | Homebrewの更新・追加・削除・App Store移行・Mac環境移行を統括 | ✅ |
+| 情報収集 | `research` | Web検索・PlayConsole更新情報・Claude Changelog確認を統合管理 | ❌ |
 
 
 ## サブエージェント一覧
@@ -58,8 +59,6 @@ ai-toolkit/
 | 振り返り | `/retrospective-chipoyo-money` | 月次の収支分析とアドバイスを実施 |
 | 開発・コーディング | `/create-todo-issue` | 思いついたTODOをGitHub Issueとして登録 |
 | 開発・コーディング | `/install-apk` | Android端末へのAPKインストール |
-| 情報収集 | `/fetch-web-search-result` | Web検索でヒットした記事を取得 |
-| 情報収集 | `/research-play-console-update` | Google Play Consoleの更新情報を収集 |
 
 ## ルールファイル一覧
 
