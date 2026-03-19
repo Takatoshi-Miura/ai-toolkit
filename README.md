@@ -43,6 +43,7 @@ ai-toolkit/
 | コード品質 | `code-diff-and-coverage` | 指定期間のコード差分取得とJaCoCoテストカバレッジ計測 | ✅ |
 | ユーティリティ | `homebrew` | Homebrewの更新・追加・削除・App Store移行・Mac環境移行を統括 | ✅ |
 | 情報収集 | `research` | Web検索・PlayConsole更新情報・Claude Changelog確認を統合管理 | ❌ |
+| 情報収集 | `daily-research` | 指定トピックの最新情報をWeb検索で収集し、mdファイルに整理して出力 | ❌ |
 
 
 ## サブエージェント一覧
