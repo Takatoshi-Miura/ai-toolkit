@@ -10,6 +10,7 @@ ai-toolkit/
 ├── .github/workflows/ # GitHub Actions ワークフロー（定期実行タスク用）
 ├── agents/            # Task tool用サブエージェント定義
 ├── commands/          # カスタムスラッシュコマンド定義
+├── global/            # グローバル設定（~/.claude/CLAUDE.mdに同期）
 ├── output-style/      # 出力スタイル設定（キャラクター別応答スタイル）
 ├── rules/             # ルールファイル（~/.claude/rules/に同期、paths指定で条件適用）
 ├── scripts/           # 自動化スクリプト（Python等）

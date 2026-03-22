@@ -115,6 +115,38 @@ def sync_skill_dir(src_skill: str, dst_skill: str, dry_run: bool) -> dict:
     return result
 
 
+def sync_claude_md(repo_root: str, claude_dir: str, dry_run: bool) -> dict:
+    """global/CLAUDE.mdを~/.claude/CLAUDE.mdに同期
+
+    Args:
+        repo_root: ai-toolkitリポジトリのルートパス
+        claude_dir: ~/.claude/ のパス
+        dry_run: Trueの場合コピーしない
+
+    Returns:
+        dict: 同期結果（copied, skipped, errorsのリスト）
+    """
+    result = {"copied": [], "skipped": [], "errors": []}
+
+    src_path = os.path.join(repo_root, "global", "CLAUDE.md")
+    dst_path = os.path.join(claude_dir, "CLAUDE.md")
+
+    if not os.path.isfile(src_path):
+        return result
+
+    try:
+        if os.path.exists(dst_path) and filecmp.cmp(src_path, dst_path, shallow=False):
+            result["skipped"].append("CLAUDE.md")
+        else:
+            if not dry_run:
+                shutil.copy2(src_path, dst_path)
+            result["copied"].append("CLAUDE.md")
+    except Exception as e:
+        result["errors"].append({"file": "CLAUDE.md", "error": str(e)})
+
+    return result
+
+
 def sync_skills(src_dir: str, dst_dir: str, dry_run: bool) -> dict:
     """skills/ ディレクトリ全体を同期
 
@@ -160,12 +192,16 @@ def main():
         "mode": "dry-run" if dry_run else "sync",
         "source": repo_root,
         "destination": claude_dir,
+        "claudeMd": {},
         "commands": {},
         "agents": {},
         "rules": {},
         "skills": {},
         "summary": {"totalCopied": 0, "totalSkipped": 0, "totalErrors": 0}
     }
+
+    # global/CLAUDE.md の同期
+    output["claudeMd"] = sync_claude_md(repo_root, claude_dir, dry_run)
 
     # commands/ の同期
     output["commands"] = sync_flat_files(
@@ -200,7 +236,7 @@ def main():
 
     # サマリー集計
     total_only_in_dest = []
-    for category in ["commands", "agents", "rules"]:
+    for category in ["claudeMd", "commands", "agents", "rules"]:
         data = output[category]
         output["summary"]["totalCopied"] += len(data.get("copied", []))
         output["summary"]["totalSkipped"] += len(data.get("skipped", []))

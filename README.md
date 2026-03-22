@@ -15,6 +15,7 @@ ai-toolkit/
 ├── commands/          <- Claude Codeのカスタムスラッシュコマンド用
 ├── skills/            <- Claude Code Skills（自動発動する専門スキル）
 ├── agents/            <- サブエージェント関連の定義や設定
+├── global/            <- グローバル設定（~/.claude/CLAUDE.mdに同期）
 ├── rules/             <- ルールファイル（~/.claude/rules/に同期、paths指定で条件適用）
 ├── templates/         <- 定型テンプレートファイル、応答フォーマットなど
 ├── output-style/      <- Claude Codeの出力スタイル設定
