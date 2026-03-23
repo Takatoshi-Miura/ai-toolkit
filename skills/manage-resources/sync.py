@@ -115,12 +115,13 @@ def sync_skill_dir(src_skill: str, dst_skill: str, dry_run: bool) -> dict:
     return result
 
 
-def sync_claude_md(repo_root: str, claude_dir: str, dry_run: bool) -> dict:
-    """global/CLAUDE.mdを~/.claude/CLAUDE.mdに同期
+def sync_single_file(src_path: str, dst_path: str, label: str, dry_run: bool) -> dict:
+    """単一ファイルを同期
 
     Args:
-        repo_root: ai-toolkitリポジトリのルートパス
-        claude_dir: ~/.claude/ のパス
+        src_path: コピー元ファイルパス
+        dst_path: コピー先ファイルパス
+        label: 表示用ラベル
         dry_run: Trueの場合コピーしない
 
     Returns:
@@ -128,23 +129,40 @@ def sync_claude_md(repo_root: str, claude_dir: str, dry_run: bool) -> dict:
     """
     result = {"copied": [], "skipped": [], "errors": []}
 
-    src_path = os.path.join(repo_root, "global", "CLAUDE.md")
-    dst_path = os.path.join(claude_dir, "CLAUDE.md")
-
     if not os.path.isfile(src_path):
         return result
 
     try:
         if os.path.exists(dst_path) and filecmp.cmp(src_path, dst_path, shallow=False):
-            result["skipped"].append("CLAUDE.md")
+            result["skipped"].append(label)
         else:
             if not dry_run:
                 shutil.copy2(src_path, dst_path)
-            result["copied"].append("CLAUDE.md")
+            result["copied"].append(label)
     except Exception as e:
-        result["errors"].append({"file": "CLAUDE.md", "error": str(e)})
+        result["errors"].append({"file": label, "error": str(e)})
 
     return result
+
+
+def sync_claude_md(repo_root: str, claude_dir: str, dry_run: bool) -> dict:
+    """global/CLAUDE.mdを~/.claude/CLAUDE.mdに同期"""
+    return sync_single_file(
+        os.path.join(repo_root, "global", "CLAUDE.md"),
+        os.path.join(claude_dir, "CLAUDE.md"),
+        "CLAUDE.md",
+        dry_run
+    )
+
+
+def sync_statusline(repo_root: str, claude_dir: str, dry_run: bool) -> dict:
+    """statusline/statusline.cjsを~/.claude/statusline.cjsに同期"""
+    return sync_single_file(
+        os.path.join(repo_root, "statusline", "statusline.cjs"),
+        os.path.join(claude_dir, "statusline.cjs"),
+        "statusline.cjs",
+        dry_run
+    )
 
 
 def sync_skills(src_dir: str, dst_dir: str, dry_run: bool) -> dict:
@@ -193,6 +211,7 @@ def main():
         "source": repo_root,
         "destination": claude_dir,
         "claudeMd": {},
+        "statusline": {},
         "commands": {},
         "agents": {},
         "rules": {},
@@ -202,6 +221,9 @@ def main():
 
     # global/CLAUDE.md の同期
     output["claudeMd"] = sync_claude_md(repo_root, claude_dir, dry_run)
+
+    # statusline/statusline.cjs の同期
+    output["statusline"] = sync_statusline(repo_root, claude_dir, dry_run)
 
     # commands/ の同期
     output["commands"] = sync_flat_files(
@@ -236,7 +258,7 @@ def main():
 
     # サマリー集計
     total_only_in_dest = []
-    for category in ["claudeMd", "commands", "agents", "rules"]:
+    for category in ["claudeMd", "statusline", "commands", "agents", "rules"]:
         data = output[category]
         output["summary"]["totalCopied"] += len(data.get("copied", []))
         output["summary"]["totalSkipped"] += len(data.get("skipped", []))

@@ -14,12 +14,14 @@ ai-toolkit/
 │   └── workflows/     <- GitHub Actions ワークフロー定義
 ├── commands/          <- Claude Codeのカスタムスラッシュコマンド用
 ├── skills/            <- Claude Code Skills（自動発動する専門スキル）
+├── claude-web-skills/ <- Claude Web用スキル（プロジェクトのナレッジとして使用）
 ├── agents/            <- サブエージェント関連の定義や設定
 ├── global/            <- グローバル設定（~/.claude/CLAUDE.mdに同期）
 ├── rules/             <- ルールファイル（~/.claude/rules/に同期、paths指定で条件適用）
 ├── templates/         <- 定型テンプレートファイル、応答フォーマットなど
 ├── output-style/      <- Claude Codeの出力スタイル設定
 ├── scripts/           <- 自動化スクリプト（Python等）
+├── statusline/        <- Claude Codeステータスライン表示スクリプト（~/.claude/に同期）
 └── README.md          <- このファイル
 ```
 
@@ -33,32 +35,37 @@ ai-toolkit/
 | GitHub/Git操作 | `github-skill` | Issue・PR・強制プッシュなどGitHub/Git操作全般 | ✅ |
 | Git操作 | `git-pr-setup` | Redmineチケットを元にブランチ作成・空コミット・PR作成・Redmineコメントを一括自動化 | ✅ |
 | パーソナライズ | `personal-context-aware-response` | Google Driveのパーソナルコンテキストを読み取り、価値観・思考スタイルに合わせた回答を提供 | ✅ |
-| 目標設定 | `smart-goal-setting` | SMARTフレームワークで目標を5観点分析し、リーダー行動計画まで策定 | ✅ |
 | リソース管理 | `manage-resources` | Claude Codeリソース（コマンド/エージェント/Skills）の新規作成・更新・メンテナンス・~/.claude/への同期 | ✅ |
 | 振り返り | `retrospective` | LifeGraph・日次記録・金銭データを分析して週次/月次レポートを作成 | ❌ |
-| 問題解決 | `solve-problem` | 7フェーズ（問題定義〜リスク計画）の構造化プロセスで解決策をマークダウン出力 | ❌ |
 | 開発・コーディング | `coding` | モバイルアプリ・MCP開発・SportsNote iOS・OpenSpecプロポーザル作成のオーケストレーター | ❌ |
 | テスト | `generate-test-item-skill` | 因子水準の全組み合わせからテスト項目書をスプレッドシートに自動生成 | ❌ |
 | ユーティリティ | `extract-pdf-images` | PDFから埋め込み画像を抽出し~/Downloads/に保存（単一/複数対応） | ✅ |
 | ユーティリティ | `check-drive-document-updates-skill` | 指定日以降のGoogle Driveファイル更新有無を確認 | ✅ |
-| コード品質 | `code-diff-and-coverage` | 指定期間のコード差分取得とJaCoCoテストカバレッジ計測 | ✅ |
 | ユーティリティ | `homebrew` | Homebrewの更新・追加・削除・App Store移行・Mac環境移行を統括 | ✅ |
 | 情報収集 | `research` | Web検索・PlayConsole更新情報・Claude Changelog確認を統合管理 | ❌ |
 | 情報収集 | `daily-research` | 指定トピックの最新情報をWeb検索で収集し、mdファイルに整理して出力 | ❌ |
 
+
+## Claude Web用スキル一覧
+
+[Claude.ai](https://claude.ai/) のプロジェクト機能で使用するスキル。
+プロジェクトのカスタマイズからカスタムスキルとしてアップロードして使用する。
+
+| カテゴリ | スキル名 | 説明 |
+|---------|---------|------|
+| 振り返り | `retrospective` | LifeGraph・日次記録をコネクタで取得・分析し週次レポートを作成（金銭分析はClaude Code版のみ） |
+| 振り返り | `retro-questions` | 2016年からの振り返り記録を活用し、振り返り質問を作成 |
 
 ## サブエージェント一覧
 
 | カテゴリ | エージェント名 | 説明 |
 |---------|--------------|------|
 | テスト | `test-item-writer` | テスト項目書をスプレッドシートに書き込む |
-| 問題解決 | `solve-problem-executor` | 問題解決Phase 1-7を一括実行 |
 
 ## スラッシュコマンド一覧
 
 | カテゴリ | コマンド名 | 説明 |
 |---------|-----------|------|
-| 振り返り | `/retrospective-chipoyo-money` | 月次の収支分析とアドバイスを実施 |
 | 開発・コーディング | `/create-todo-issue` | 思いついたTODOをGitHub Issueとして登録 |
 | 開発・コーディング | `/install-apk` | Android端末へのAPKインストール |
 

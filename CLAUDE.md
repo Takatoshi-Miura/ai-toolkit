@@ -14,6 +14,7 @@ ai-toolkit/
 ├── output-style/      # 出力スタイル設定（キャラクター別応答スタイル）
 ├── rules/             # ルールファイル（~/.claude/rules/に同期、paths指定で条件適用）
 ├── scripts/           # 自動化スクリプト（Python等）
+├── statusline/        # ステータスライン表示スクリプト（~/.claude/statusline.cjsに同期）
 ├── skills/            # Skills定義（自動起動プロンプト）
 └── templates/         # テンプレート・リファレンス資料
 ```
