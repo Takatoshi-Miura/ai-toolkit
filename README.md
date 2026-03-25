@@ -43,6 +43,7 @@ ai-toolkit/
 | ユーティリティ | `check-drive-document-updates-skill` | 指定日以降のGoogle Driveファイル更新有無を確認 | ✅ |
 | ユーティリティ | `homebrew` | Homebrewの更新・追加・削除・App Store移行・Mac環境移行を統括 | ✅ |
 | 情報収集 | `research` | Web検索・PlayConsole更新情報・Claude Changelog確認を統合管理 | ❌ |
+| Slack連携 | `slack-message-router` | SlackメッセージをSocket Modeで監視し、キーワードに基づいてClaude Codeスキルにルーティング | ❌ |
 
 
 ## Claude Web用スキル一覧
