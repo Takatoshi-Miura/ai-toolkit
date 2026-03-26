@@ -53,10 +53,23 @@ def main():
         logger.error(f"環境変数 {APP_TOKEN_ENV} が設定されていません")
         sys.exit(1)
 
-    # claude CLIの存在確認
+    # claude CLIの存在確認（標準PATHに加え、一般的なインストール先もフォールバック検索）
     claude_path = shutil.which("claude")
     if not claude_path:
-        logger.error("claude CLIが見つかりません。PATHを確認してください")
+        for _p in [
+            Path.home() / ".local/bin/claude",
+            Path("/usr/local/bin/claude"),
+            Path("/opt/homebrew/bin/claude"),
+        ]:
+            if _p.is_file() or _p.is_symlink():
+                claude_path = str(_p)
+                logger.warning(f"claude CLIをフォールバックパスで発見: {claude_path}")
+                break
+    if not claude_path:
+        logger.error(
+            "claude CLIが見つかりません。~/.local/bin/claude にシンボリックリンクを作成するか、"
+            "PATHに claude のディレクトリを追加してください"
+        )
         sys.exit(1)
     logger.info(f"claude CLI: {claude_path}")
 

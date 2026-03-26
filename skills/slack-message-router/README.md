@@ -98,7 +98,7 @@ python3 scripts/slack_listener.py
 バックグラウンド実行:
 ```bash
 cd ~/.claude/skills/slack-message-router
-nohup python3 scripts/slack_listener.py > /tmp/slack-listener.log 2>&1 &
+nohup python3 scripts/slack_listener.py > /tmp/slack_listener.log 2>&1 &
 ```
 
 ### 停止
@@ -125,7 +125,7 @@ ps aux | grep -v grep | grep "slack_listener.py"
 |------|---------|
 | リスナーが起動しない | 環境変数（SLACK_BOT_TOKEN, SLACK_APP_TOKEN）が設定されているか確認 |
 | メッセージに反応しない | Botがチャンネルに招待されているか確認 |
-| `claude`コマンドが見つからない | `which claude` でパスを確認。PATHに含まれているか確認 |
+| `claude`コマンドが見つからない | `~/.local/bin`, `/usr/local/bin`, `/opt/homebrew/bin` を自動検索。それでも見つからない場合は `mkdir -p ~/.local/bin && ln -sf /path/to/claude ~/.local/bin/claude` でシンボリックリンクを作成 |
 | Socket Mode接続エラー | Slack App管理画面でSocket Modeが有効か確認。App-Level Tokenが有効か確認 |
 
 詳細は [ERROR-HANDLING.md](ERROR-HANDLING.md) を参照。

@@ -6,7 +6,7 @@
 |-------|------|------|
 | `環境変数 SLACK_BOT_TOKEN が設定されていません` | Bot Tokenが未設定 | `export SLACK_BOT_TOKEN="xoxb-..."` を実行 |
 | `環境変数 SLACK_APP_TOKEN が設定されていません` | App-Level Tokenが未設定 | `export SLACK_APP_TOKEN="xapp-..."` を実行 |
-| `claude CLIが見つかりません` | claudeコマンドがPATHにない | Claude Codeのインストール確認、PATHの設定確認 |
+| `claude CLIが見つかりません` | claudeコマンドがPATHにない | 1. `which claude` でパス確認 2. 見つからない場合はシンボリックリンクを作成: `mkdir -p ~/.local/bin && ln -sf /path/to/claude ~/.local/bin/claude` |
 | Socket Mode接続失敗 | App Tokenが無効、またはSocket Modeが無効 | Slack App管理画面でSocket Modeが有効か確認。App-Level Tokenの再生成 |
 | チャンネルのメッセージが受信できない | BotがチャンネルにJoinしていない | 監視対象チャンネルにBotを招待 (`/invite @BotName`) |
 | `not_in_channel`エラー | Botがチャンネルメンバーでない | 上記と同様、Botを招待 |
