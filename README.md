@@ -29,22 +29,21 @@ ai-toolkit/
 
 | カテゴリ | スキル名 | 説明 | 自動呼び出し |
 |---------|---------|------|:------------:|
-| データ操作 | `google-drive-skill` | Google Drive（Sheets/Docs/Slides）の読み書き（値挿入・シート作成・セル結合・行列操作など） | ✅ |
-| データ操作 | `redmine-skill` | RedmineチケットURLからチケット詳細を取得・参照 | ✅ |
-| レビュー | `review-skill` | GitHub PRレビュー（Android/汎用を自動判定）とGoogle Drive資料レビュー | ✅ |
-| GitHub/Git操作 | `github-skill` | Issue・PR・強制プッシュなどGitHub/Git操作全般 | ✅ |
-| Git操作 | `git-pr-setup` | Redmineチケットを元にブランチ作成・空コミット・PR作成・Redmineコメントを一括自動化 | ✅ |
-| パーソナライズ | `personal-context-aware-response` | Google Driveのパーソナルコンテキストを読み取り、価値観・思考スタイルに合わせた回答を提供 | ✅ |
-| リソース管理 | `manage-resources` | Claude Codeリソース（コマンド/エージェント/Skills）の新規作成・更新・メンテナンス・~/.claude/への同期 | ✅ |
-| 振り返り | `retrospective` | LifeGraph・日次記録・金銭データを分析して週次/月次レポートを作成 | ❌ |
-| 開発・コーディング | `coding` | モバイルアプリ・MCP開発・SportsNote iOS・OpenSpecプロポーザル作成のオーケストレーター | ❌ |
-| テスト | `generate-test-item-skill` | 因子水準の全組み合わせからテスト項目書をスプレッドシートに自動生成 | ❌ |
-| ユーティリティ | `extract-pdf-images` | PDFから埋め込み画像を抽出し~/Downloads/に保存（単一/複数対応） | ✅ |
-| ユーティリティ | `check-drive-document-updates-skill` | 指定日以降のGoogle Driveファイル更新有無を確認 | ✅ |
-| ユーティリティ | `homebrew` | Homebrewの更新・追加・削除・App Store移行・Mac環境移行を統括 | ✅ |
+| 外部連携 | `google-drive-skill` | Google Drive（Sheets/Docs/Slides）の読み書き（値挿入・シート作成・セル結合・行列操作など） | ✅ |
+| 外部連携 | `redmine-skill` | RedmineチケットURLからチケット詳細を取得・参照 | ✅ |
+| 外部連携 | `github-skill` | Issue・PR・強制プッシュなどGitHub/Git操作全般 | ✅ |
+| 自動化基盤 | `slack-message-router` | SlackメッセージをSocket Modeで監視し、キーワードに基づいてClaude Codeスキルにルーティング | ❌ |
+| 開発 | `coding` | モバイルアプリ・MCP開発・SportsNote iOS・OpenSpecプロポーザル作成のオーケストレーター | ❌ |
+| 開発 | `git-pr-setup` | Redmineチケットを元にブランチ作成・空コミット・PR作成・Redmineコメントを一括自動化 | ✅ |
+| 開発 | `generate-test-item-skill` | 因子水準の全組み合わせからテスト項目書をスプレッドシートに自動生成 | ❌ |
+| 開発 | `review-skill` | GitHub PRレビュー（Android/汎用を自動判定）とGoogle Drive資料レビュー | ✅ |
+| 開発 | `extract-pdf-images` | PDFから埋め込み画像を抽出し~/Downloads/に保存（単一/複数対応） | ✅ |
+| 開発 | `check-drive-document-updates-skill` | 指定日以降のGoogle Driveファイル更新有無を確認 | ✅ |
 | 情報収集 | `research` | Web検索・PlayConsole更新情報・Claude Changelog確認を統合管理 | ❌ |
-| Slack連携 | `slack-message-router` | SlackメッセージをSocket Modeで監視し、キーワードに基づいてClaude Codeスキルにルーティング | ❌ |
-
+| 内省・分析 | `retrospective` | LifeGraph・日次記録・金銭データを分析して週次/月次レポートを作成 | ❌ |
+| 内省・分析 | `personal-context-aware-response` | パーソナルコンテキストを読み取り、価値観・思考スタイルに合わせた回答を提供 | ✅ |
+| 環境管理 | `homebrew` | Homebrewの更新・追加・削除・App Store移行・Mac環境移行を統括 | ✅ |
+| 環境管理 | `manage-resources` | Claude Codeリソース（コマンド/エージェント/Skills）の新規作成・更新・メンテナンス・~/.claude/への同期 | ✅ |
 
 ## Claude Web用スキル一覧
 

@@ -26,7 +26,6 @@ def parse_config(config_path: str | Path | None = None) -> dict:
     return {
         "listener": {"log_level": "INFO", "max_concurrent": 3},
         "notifications": _parse_notifications(sections),
-        "channels": _parse_channels(sections),
         "mention_targets": _parse_mention_targets(sections),
         "routes": _parse_routes(sections),
     }
@@ -133,20 +132,11 @@ def _parse_frontmatter(content: str) -> dict[str, str]:
 
 
 def _parse_notifications(sections: dict[str, str]) -> dict:
-    """通知チャンネルセクションをパースする。先頭行のチャンネルIDを使用。"""
-    rows = _parse_table(sections.get("通知チャンネル", ""))
+    """システム通知チャンネルセクションをパースする。先頭行のチャンネルIDを使用。"""
+    rows = _parse_table(sections.get("システム通知チャンネル", ""))
     return {
         "channel": rows[0].get("チャンネルID", "") if rows else "",
     }
-
-
-def _parse_channels(sections: dict[str, str]) -> list[dict[str, str]]:
-    """監視対象チャンネルセクションをパースする。"""
-    rows = _parse_table(sections.get("監視対象チャンネル", ""))
-    return [
-        {"id": row.get("チャンネルID", ""), "name": row.get("チャンネル名（メモ）", "")}
-        for row in rows if row.get("チャンネルID")
-    ]
 
 
 def _parse_mention_targets(sections: dict[str, str]) -> list[str]:
@@ -165,6 +155,7 @@ def _parse_routes(sections: dict[str, str]) -> list[dict]:
         routes.append({
             "skill": row.get("スキル名", ""),
             "keywords": keywords,
+            "notify_channel": row.get("通知先チャンネルID", ""),
         })
     return routes
 

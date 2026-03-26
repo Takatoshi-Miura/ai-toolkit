@@ -84,20 +84,12 @@ def main():
     signal.signal(signal.SIGTERM, _shutdown)
 
     # 起動通知（メンションなし、表形式で詳細表示）
-    channel_lines = "\n".join(
-        f"| {ch['id']} | {ch['name']} |" for ch in config["channels"]
-    ) if config["channels"] else "| (なし) | |"
-
     route_lines = "\n".join(
         f"| {r['skill']} | {', '.join(r['keywords'])} |"
         for r in config["routes"]
     ) if config["routes"] else "| (なし) | |"
 
     startup_body = (
-        "*監視チャンネル:*\n"
-        "| チャンネルID | チャンネル名 |\n"
-        "|---|---|\n"
-        f"{channel_lines}\n\n"
         "*ルーティングルール:*\n"
         "| スキル名 | キーワード |\n"
         "|---|---|\n"
@@ -121,11 +113,6 @@ def _on_message(event: dict, config: dict, semaphore: threading.Semaphore, claud
     channel = event.get("channel", "")
     user = event.get("user", "")
     text = event.get("text", "")
-
-    # チャンネルフィルター
-    channel_ids = [ch["id"] for ch in config["channels"]]
-    if channel_ids and channel not in channel_ids:
-        return
 
     # メンション対象フィルター: 指定ユーザーへのメンションを含むメッセージのみ処理
     mention_targets = config["mention_targets"]
@@ -209,7 +196,9 @@ def _run_skill(
         result_text = _extract_result_text(result.stdout)
 
         if result_text:
-            _notify(config, result_text)
+            # 成功結果はルート指定の通知先に投稿（未指定ならデフォルト）
+            result_ch = route.get("notify_channel") or None
+            _notify(config, result_text, channel_override=result_ch)
         elif result.returncode == 0:
             _notify(config, f":white_check_mark: スキル実行完了: *{route['skill']}*")
         else:
@@ -268,9 +257,9 @@ def _mention_str(config: dict) -> str:
     return " ".join(f"<@{uid}>" for uid in targets)
 
 
-def _notify(config: dict, subject: str, body: str = "", mention: bool = True):
+def _notify(config: dict, subject: str, body: str = "", mention: bool = True, channel_override: str = None):
     """通知チャンネルにメッセージを送信する。形式: メンション → 件名 → 内容"""
-    channel = config["notifications"].get("channel")
+    channel = channel_override or config["notifications"].get("channel")
     if not channel:
         return
     mention_text = _mention_str(config) if mention else ""
