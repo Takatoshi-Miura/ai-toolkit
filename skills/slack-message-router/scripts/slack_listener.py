@@ -84,14 +84,14 @@ def main():
     def handle_message(event):
         _on_message(event, config, semaphore, claude_path)
 
-    # グレースフルシャットダウン
+    # シャットダウン用Event（シグナルハンドラ → メインスレッドへの伝達）
+    shutdown_event = threading.Event()
     handler = SocketModeHandler(app, app_token)
 
     def _shutdown(signum, frame):
         sig_name = signal.Signals(signum).name
         logger.info(f"{sig_name} を受信。シャットダウンします...")
-        _notify(config, f":octagonal_sign: リスナー停止", f"シグナル: {sig_name}", mention=False)
-        handler.close()
+        shutdown_event.set()  # ネットワークI/Oなし・即時完了
 
     signal.signal(signal.SIGINT, _shutdown)
     signal.signal(signal.SIGTERM, _shutdown)
@@ -111,7 +111,27 @@ def main():
 
     _notify(config, ":rocket: リスナー起動", startup_body, mention=False)
     logger.info("Socket Mode接続を開始します...")
-    handler.start()
+    handler.connect()       # start() の代わりに connect() のみ（ブロックしない）
+
+    shutdown_event.wait()   # シグナルが来るまでメインスレッドをブロック
+
+    # --- シャットダウン処理（メインスレッドで実行）---
+    logger.info("シャットダウン処理を開始します...")
+    notify_thread = threading.Thread(
+        target=_notify,
+        args=(config, ":octagonal_sign: リスナー停止", "プロセスを終了します", False),
+        daemon=True,
+    )
+    notify_thread.start()
+    notify_thread.join(timeout=5.0)  # 最大5秒待機、超えても続行
+
+    try:
+        handler.close()
+    except Exception as e:
+        logger.warning(f"handler.close() でエラー（無視）: {e}")
+
+    logger.info("終了します。")
+    sys.exit(0)
 
 
 # --- メッセージ処理 ---
