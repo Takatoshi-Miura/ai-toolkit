@@ -14,7 +14,6 @@ ai-toolkit/
 │   └── workflows/     <- GitHub Actions ワークフロー定義
 ├── commands/          <- Claude Codeのカスタムスラッシュコマンド用
 ├── skills/            <- Claude Code Skills（自動発動する専門スキル）
-├── claude-web-skills/ <- Claude Web用スキル（プロジェクトのナレッジとして使用）
 ├── agents/            <- サブエージェント関連の定義や設定
 ├── global/            <- グローバル設定（~/.claude/CLAUDE.mdに同期）
 ├── rules/             <- ルールファイル（~/.claude/rules/に同期、paths指定で条件適用）
@@ -44,16 +43,6 @@ ai-toolkit/
 | 内省・分析 | `personal-context-aware-response` | パーソナルコンテキストを読み取り、価値観・思考スタイルに合わせた回答を提供 | ✅ |
 | 環境管理 | `homebrew` | Homebrewの更新・追加・削除・App Store移行・Mac環境移行を統括 | ✅ |
 | 環境管理 | `manage-resources` | Claude Codeリソース（コマンド/エージェント/Skills）の新規作成・更新・メンテナンス・~/.claude/への同期 | ✅ |
-
-## Claude Web用スキル一覧
-
-[Claude.ai](https://claude.ai/) のプロジェクト機能で使用するスキル。
-プロジェクトのカスタマイズからカスタムスキルとしてアップロードして使用する。
-
-| カテゴリ | スキル名 | 説明 |
-|---------|---------|------|
-| 振り返り | `retrospective` | LifeGraph・日次記録をコネクタで取得・分析し週次レポートを作成（金銭分析はClaude Code版のみ） |
-| 振り返り | `retro-questions` | 2016年からの振り返り記録を活用し、振り返り質問を作成 |
 
 ## サブエージェント一覧
 
