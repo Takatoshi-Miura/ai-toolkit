@@ -5,13 +5,10 @@
 ## データ取得
 
 ```bash
-SCRIPT_PATH="~/.claude/skills/retrospective/scripts/read_drive_file.py"
-
-# パーソナルコンテキスト（価値観・思考スタイル）
-python3 $SCRIPT_PATH 1hDcVtQ5wEz2rPGRrJGK8CspnqSujheAjeZ1PPAj2u6E docs
+python3 ~/.claude/skills/retrospective/scripts/read_summary.py
 ```
 
-**出力形式:** JSON。`content` フィールドにデータが含まれる。
+**出力形式:** JSON。`tabs` フィールドに各タブのテキストが含まれる。
 
 分析結果全体を踏まえて、パーソナルコンテキストを参考に目標提案と総評を作成する。
 

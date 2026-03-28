@@ -27,7 +27,7 @@ disable-model-invocation: true
 ]
 ```
 
-### Phase 1: 期間選択
+### Phase 1: 期間選択・設定確認
 
 **AskUserQuestionで以下を実行：**
 
@@ -51,6 +51,8 @@ disable-model-invocation: true
 |--------|-----------------|
 | 週次 | LIFEGRAPH / DAILY / SUMMARY |
 | 月次 | LIFEGRAPH / DAILY / MONEY / SUMMARY |
+
+**月タブ確認:** [CONFIG.md](CONFIG.md) の `month_tab` を読み取り、現在の値をAskUserQuestionで確認する。変更が必要な場合はCONFIG.mdを更新する。
 
 ### Phase 2: 出力ファイル作成
 

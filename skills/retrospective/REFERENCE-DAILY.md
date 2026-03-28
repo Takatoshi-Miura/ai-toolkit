@@ -5,18 +5,12 @@
 ## データ取得
 
 ```bash
-SCRIPT_PATH="~/.claude/skills/retrospective/scripts/read_drive_file.py"
-
-# 今年の目標タブ
-python3 $SCRIPT_PATH 1iVeZ1EB5dahEZukuQQB4gSa5jIw3By-Gz8JaAysiAoA docs "今年の目標"
-
-# 今月タブ（yyyyMM形式、例: 202601）
-python3 $SCRIPT_PATH 1iVeZ1EB5dahEZukuQQB4gSa5jIw3By-Gz8JaAysiAoA docs "202601"
+python3 ~/.claude/skills/retrospective/scripts/read_daily.py
 ```
 
-**出力形式:** JSON。`content` フィールドにデータが含まれる。
+**出力形式:** JSON。`goalsTab` と `monthTab` フィールドにそれぞれのタブのテキストが含まれる。
 
-**読み取り範囲:** 「今年の目標」タブと今月（yyyyMM形式）のタブ
+**読み取り範囲:** 「今年の目標」タブとCONFIG.mdの `month_tab` で指定された月タブ
 
 ## 分析観点
 

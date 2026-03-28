@@ -10,7 +10,7 @@
 
 ```bash
 # 読み取りテスト（LifeGraphのGoogleカレンダー集計シート）
-python3 ~/.claude/skills/retrospective/scripts/read_drive_file.py 1WF58VNM0lGfN-YKqR2ySXU_EKQQCpyrV4da8WiVtoBo sheets "Googleカレンダー集計"
+python3 ~/.claude/skills/retrospective/scripts/read_lifegraph.py
 ```
 
 **成功時**: ファイル内容がJSON形式で出力される
@@ -54,7 +54,7 @@ cp "<ユーザーが指定したパス>" ~/.config/google-drive-skills/client_se
 ### Step 3: 認証実行
 
 ```bash
-python3 ~/.claude/skills/retrospective/scripts/read_drive_file.py 1WF58VNM0lGfN-YKqR2ySXU_EKQQCpyrV4da8WiVtoBo sheets "Googleカレンダー集計"
+python3 ~/.claude/skills/retrospective/scripts/read_lifegraph.py
 ```
 
 token.jsonがない場合、自動でブラウザが開き認証フローが開始される。ユーザーにGoogle認証を完了してもらう。認証成功後、スキル本体へ進む。

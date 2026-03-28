@@ -5,17 +5,12 @@
 ## データ取得
 
 ```bash
-SCRIPT_PATH="~/.claude/skills/retrospective/scripts/read_drive_file.py"
-
-python3 $SCRIPT_PATH 1P519LiN0Tiu-NvWuYgek9jc4IfvXTzIukkVkuokAqY0 sheets "予算_給与負担"
-python3 $SCRIPT_PATH 1P519LiN0Tiu-NvWuYgek9jc4IfvXTzIukkVkuokAqY0 sheets "マネープラン"
+python3 ~/.claude/skills/retrospective/scripts/read_money.py
 ```
 
-**出力形式:** JSON。`content` フィールドにデータが含まれる。
+**出力形式:** JSON。`budget` と `moneyPlan` フィールドにそれぞれのシートデータが含まれる。
 
-**読み取り範囲:**
-- 「予算_給与負担」シートのA~G列
-- 「マネープラン」シートのA~AN列
+**読み取り範囲:** CONFIG.mdで設定（デフォルト: 「予算_給与負担」A~G列、「マネープラン」A~AN列）
 
 ## データ解釈の備考
 
