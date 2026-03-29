@@ -7,17 +7,17 @@
 
 ```yaml
 lifegraph:
-  url: "https://docs.google.com/spreadsheets/d/1f3U95xxzoSuIJpdKVL3SQMIEqkDYT_INvmaYCnqPZzU/edit?usp=drive_link"
+  url: "https://docs.google.com/spreadsheets/d/1WF58VNM0lGfN-YKqR2ySXU_EKQQCpyrV4da8WiVtoBo/edit?usp=sharing"
   sheet_name: "Googleカレンダー集計"
   columns: "A:P"
 
 daily:
-  url: "https://docs.google.com/document/d/1xWbRWz_hdwf1HLq3JbiwRCqVXTYUYhQ83KUbYSk7XWI/edit?usp=drive_link"
+  url: "https://docs.google.com/document/d/1iVeZ1EB5dahEZukuQQB4gSa5jIw3By-Gz8JaAysiAoA/edit?usp=sharing"
   goals_tab: "今年の目標"
   month_tab: "202603"
 
 money:
-  url: "https://docs.google.com/spreadsheets/d/1G68GW1v_Dt6XHNLIYq0rau6iUKjskdzSfs_42HPAVHo/edit?usp=drive_link"
+  url: "https://docs.google.com/spreadsheets/d/1P519LiN0Tiu-NvWuYgek9jc4IfvXTzIukkVkuokAqY0/edit?usp=sharing"
   sheets:
     - name: "予算_給与負担"
       columns: "A:G"
@@ -25,5 +25,5 @@ money:
       columns: "A:AN"
 
 summary:
-  url: "https://docs.google.com/document/d/1B1kGaDmM80-vzpBtDqe6Ibl12aWM80Zk-Wjvhi68oYA/edit?usp=drive_link"
+  url: "https://docs.google.com/document/d/1hDcVtQ5wEz2rPGRrJGK8CspnqSujheAjeZ1PPAj2u6E/edit?usp=sharing"
 ```
