@@ -60,7 +60,7 @@ disable-model-invocation: true
 
 ### Phase 3: データ取得
 
-→ **[REFERENCE-LIFEGRAPH.md](REFERENCE-LIFEGRAPH.md)** を参照してLifeGraphデータを取得
+→ **[REFERENCE-LIFEGRAPH.md](REFERENCE-LIFEGRAPH.md)** を参照してカレンダーイベント + スプレッドシート補完データを取得
 → **[REFERENCE-DAILY.md](REFERENCE-DAILY.md)** を参照して日次記録データを取得
 → **[REFERENCE-MONEY.md](REFERENCE-MONEY.md)** を参照して金銭データを取得（**月次のみ**）
 

@@ -26,4 +26,20 @@ money:
 
 summary:
   url: "https://docs.google.com/document/d/1hDcVtQ5wEz2rPGRrJGK8CspnqSujheAjeZ1PPAj2u6E/edit?usp=sharing"
+
+calendar:
+  calendar_id: "primary"
+  timezone: "Asia/Tokyo"
+  tag_mapping:
+    "#work": "仕事"
+    "#life": "生活"
+    "#sleep": "睡眠"
+    "#undo": "運動"
+    "#idea": "思考整理"
+    "#ref": "リフレッシュ"
+    "#douga": "YouTube活動"
+    "#skill": "自己研鑽"
+    "#book": "読書"
+    "#code": "プログラミング"
+    "#chi": "パートナー"
 ```

@@ -2,7 +2,7 @@
 
 ## 前提条件
 
-このスキルはGoogle Drive APIを使用するPythonスクリプトを含んでいます。
+このスキルはGoogle Drive API・Google Calendar APIを使用するPythonスクリプトを含んでいます。
 
 ## セットアップ確認
 
@@ -11,6 +11,9 @@
 ```bash
 # 読み取りテスト（LifeGraphのGoogleカレンダー集計シート）
 python3 ~/.claude/skills/retrospective/scripts/read_lifegraph.py
+
+# カレンダーAPIテスト
+python3 ~/.claude/skills/retrospective/scripts/read_calendar.py --start 2026-01-01 --end 2026-01-02
 ```
 
 **成功時**: ファイル内容がJSON形式で出力される
@@ -84,6 +87,7 @@ Google Cloud Consoleで以下のAPIを有効化：
 - Google Sheets API
 - Google Docs API
 - Google Drive API
+- Google Calendar API
 
 ---
 
@@ -95,6 +99,23 @@ Google Cloud Consoleで以下のAPIを有効化：
 ```bash
 pip install google-auth google-auth-oauthlib google-api-python-client
 ```
+
+---
+
+## スコープ変更時の再認証
+
+Calendar APIスコープ追加等でスコープが変更された場合：
+
+1. 既存トークンを削除
+   ```bash
+   rm ~/.config/google-drive-skills/token.json
+   ```
+
+2. 任意のスクリプトを実行して再認証
+   ```bash
+   python3 ~/.claude/skills/retrospective/scripts/read_calendar.py --start 2026-01-01 --end 2026-01-02
+   ```
+   ブラウザが開き、新しいスコープでの認証が求められる。
 
 ---
 

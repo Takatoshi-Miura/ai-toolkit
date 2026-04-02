@@ -47,12 +47,13 @@ from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-# Google Drive API のスコープ
+# Google API のスコープ（Drive / Sheets / Docs / Slides / Calendar）
 SCOPES = [
     "https://www.googleapis.com/auth/drive",
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/documents",
     "https://www.googleapis.com/auth/presentations",
+    "https://www.googleapis.com/auth/calendar.events.readonly",
 ]
 
 
