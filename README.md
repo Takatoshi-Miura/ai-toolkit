@@ -32,7 +32,7 @@ ai-toolkit/
 | 外部連携 | `redmine-skill` | RedmineチケットURLからチケット詳細を取得・参照 | ✅ |
 | 外部連携 | `github-skill` | Issue・PR・強制プッシュなどGitHub/Git操作全般 | ✅ |
 | 自動化基盤 | `slack-message-router` | SlackメッセージをSocket Modeで監視し、キーワードに基づいてClaude Codeスキルにルーティング | ❌ |
-| 開発 | `coding` | モバイルアプリ・MCP開発・SportsNote iOS・OpenSpecプロポーザル作成のオーケストレーター | ❌ |
+| 開発 | `coding` | モバイルアプリ・MCP開発・SportsNote iOS・OpenSpecプロポーザル作成・FE開発のオーケストレーター | ❌ |
 | 開発 | `git-pr-setup` | Redmineチケットを元にブランチ作成・空コミット・PR作成・Redmineコメントを一括自動化 | ✅ |
 | 開発 | `generate-test-item-skill` | 因子水準の全組み合わせからテスト項目書をスプレッドシートに自動生成 | ❌ |
 | 開発 | `review-skill` | GitHub PRレビュー（Android/汎用を自動判定）とGoogle Drive資料レビュー | ✅ |

@@ -1,6 +1,6 @@
 ---
 name: coding
-description: コーディングタスクを統括するオーケストレーター。モバイルアプリ開発、MCP開発、SportsNote iOS開発、OpenSpecプロポーザル作成に対応。
+description: コーディングタスクを統括するオーケストレーター。モバイルアプリ開発、MCP開発、SportsNote iOS開発、OpenSpecプロポーザル作成、FE開発に対応。
 allowed-tools: Task, AskUserQuestion, Read, Write, Glob, Grep, Edit, Bash
 user-invocable: true
 disable-model-invocation: true
@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 # コーディング オーケストレーター
 
-モバイルアプリ開発、MCP開発、およびSportsNote iOS開発のコーディングタスクを統括し、情報収集から実装・テストまでの一連のワークフローを効率的に進行します。
+モバイルアプリ開発、MCP開発、SportsNote iOS開発、OpenSpecプロポーザル作成、およびFE開発のコーディングタスクを統括し、情報収集から実装・テストまでの一連のワークフローを効率的に進行します。
 
 日本語で回答すること。
 
@@ -26,6 +26,7 @@ AskUserQuestionツールで以下の選択肢を提示:
 | 2 | MCP開発 | MCPサーバーの新規作成・ツール追加・ツール更新 |
 | 3 | SportsNote iOS開発 | SportsNote iOSアプリの機能追加・修正・改善（要件ヒアリング→計画→実装→レビュー→ドキュメント更新） |
 | 4 | OpenSpecプロポーザル作成 | ai-code-tracker確認・セットアップ後、/opsx:newでプロポーザルを作成 |
+| 5 | FE開発 | FE（React/TypeScript）の機能追加・修正・改善（要件ヒアリング→Git準備→計画→実装→セルフチェック） |
 
 ### 0-2. 選択に応じて分岐
 
@@ -33,6 +34,7 @@ AskUserQuestionツールで以下の選択肢を提示:
 - **MCP開発を選択** → [WORKFLOW-MCP.md](WORKFLOW-MCP.md) を参照して実行
 - **SportsNote iOS開発を選択** → [WORKFLOW-SPORTSNOTE.md](WORKFLOW-SPORTSNOTE.md) を参照して実行
 - **OpenSpecプロポーザル作成を選択** → [WORKFLOW-OPENSPEC-PROPOSAL.md](WORKFLOW-OPENSPEC-PROPOSAL.md) を参照して実行
+- **FE開発を選択** → [WORKFLOW-FE.md](WORKFLOW-FE.md) を参照して実行
 
 **重要**: 選択されたワークフローに記載されているTodoWriteチェックリストを使用して進捗管理すること。
 
@@ -70,6 +72,15 @@ AskUserQuestionツールで以下の選択肢を提示:
 | `aict` | AI/人間のコード生成量の計測 | Phase 1 |
 | `/opsx:new` | OpenSpec変更の新規作成 | Phase 2 |
 
+### FE開発
+
+| リソース | 用途 | 呼び出しPhase |
+|---------|------|--------------|
+| `aict` | AI/人間のコード生成量の計測 | Phase 2 |
+| `Plan` | 実装計画の立案 | Phase 3 |
+| `CLAUDE.md` | ビルド・テスト・Lint等のコマンド参照 | Phase 3, 4 |
+| `coding-standards.md` | コーディング規約の参照 | Phase 5 |
+
 ---
 
 ## エラー対応
@@ -80,16 +91,6 @@ AskUserQuestionツールで以下の選択肢を提示:
 | サブエージェント失敗 | エラーメッセージを分析し再試行（最大3回） |
 | ビルド失敗 | エラーメッセージを分析し修正支援 |
 | 参考実装が見つからない | パスの確認、エラーメッセージ表示 |
-
----
-
-## 詳細リファレンス
-
-- **モバイル開発ワークフロー**: [WORKFLOW-MOBILE.md](WORKFLOW-MOBILE.md)
-- **MCP開発ワークフロー**: [WORKFLOW-MCP.md](WORKFLOW-MCP.md)
-- **SportsNote iOS開発ワークフロー**: [WORKFLOW-SPORTSNOTE.md](WORKFLOW-SPORTSNOTE.md)
-- **OpenSpecプロポーザル作成ワークフロー**: [WORKFLOW-OPENSPEC-PROPOSAL.md](WORKFLOW-OPENSPEC-PROPOSAL.md)
-- **共通リファレンス**: [REFERENCE.md](REFERENCE.md)
 
 ---
 
