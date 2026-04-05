@@ -14,7 +14,7 @@ lifegraph:
 daily:
   url: "https://docs.google.com/document/d/1iVeZ1EB5dahEZukuQQB4gSa5jIw3By-Gz8JaAysiAoA/edit?usp=sharing"
   goals_tab: "今年の目標"
-  month_tab: "202603"
+  month_tab: "202604"
 
 money:
   url: "https://docs.google.com/spreadsheets/d/1P519LiN0Tiu-NvWuYgek9jc4IfvXTzIukkVkuokAqY0/edit?usp=sharing"
