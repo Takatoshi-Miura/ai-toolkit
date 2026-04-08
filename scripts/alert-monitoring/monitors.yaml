@@ -1,0 +1,22 @@
+# ===== アラート監視設定 =====
+#
+# 各monitorの設定項目:
+#   name:             監視名（通知メッセージに表示される識別名）
+#   type:             監視タイプ（現在は "gmail" のみ対応）
+#   enabled:          有効/無効（false でスキップ）
+#   from_address:     送信元メールアドレスでフィルタ（空文字 = フィルタなし）
+#   subject_contains: 件名に含むキーワード（リスト形式、OR条件）
+#   body_contains:    本文に含むキーワード（リスト形式、OR条件、空 = フィルタなし）
+#   slack_channel:    通知先Slackチャンネル
+#   note:             メモ（実行には影響しない）
+
+monitors:
+  - name: rakuten_securities
+    type: gmail
+    enabled: true
+    from_address: ""
+    subject_contains:
+      - "楽天証券"
+    body_contains: []
+    slack_channel: "#personal-alerts"
+    note: "楽天証券からのメール通知"

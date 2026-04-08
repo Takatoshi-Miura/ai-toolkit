@@ -1,2 +1,5 @@
 __pycache__/
 *.pyc
+
+# Alert monitoring
+scripts/alert-monitoring/processed_ids.json

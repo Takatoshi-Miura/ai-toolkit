@@ -1,0 +1,49 @@
+name: Alert Monitor
+
+on:
+  # 30分ごとに実行
+  schedule:
+    - cron: '*/30 * * * *'
+  # 手動実行も可能
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r scripts/alert-monitoring/requirements.txt
+
+      - name: Restore processed IDs cache
+        uses: actions/cache/restore@v4
+        with:
+          path: scripts/alert-monitoring/processed_ids.json
+          key: alert-monitor-processed-ids-${{ github.run_id }}
+          restore-keys: alert-monitor-processed-ids-
+
+      - name: Run alert monitor
+        env:
+          GMAIL_CREDENTIALS: ${{ secrets.GMAIL_CREDENTIALS }}
+          GMAIL_TOKEN: ${{ secrets.GMAIL_TOKEN }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        working-directory: scripts/alert-monitoring
+        run: python main.py
+
+      - name: Save processed IDs cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: scripts/alert-monitoring/processed_ids.json
+          key: alert-monitor-processed-ids-${{ github.run_id }}
