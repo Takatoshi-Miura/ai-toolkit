@@ -18,5 +18,5 @@ monitors:
     subject_contains:
       - "楽天証券"
     body_contains: []
-    slack_channel: "#personal-alerts"
+    slack_channel: "C0ANKC79CBX"
     note: "楽天証券からのメール通知"
