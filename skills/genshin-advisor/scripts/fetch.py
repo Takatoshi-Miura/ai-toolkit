@@ -282,6 +282,29 @@ def cmd_status(uid, ltoken, ltuid):
     }
     print(json.dumps(result, ensure_ascii=False, indent=2))
 
+# ────────────── 設定ファイル読み込み ──────────────
+def load_config():
+    """
+    skills/genshin-advisor/.genshin_config から uid / ltoken_v2 / ltuid_v2 を読み込む。
+    fetch.py は scripts/ に置かれているため、親ディレクトリを探索する。
+    """
+    import configparser
+    config_paths = [
+        _SCRIPT_DIR.parent / ".genshin_config",  # skills/genshin-advisor/.genshin_config
+        Path.home() / ".genshin_config",          # ~/.genshin_config（フォールバック）
+    ]
+    for path in config_paths:
+        if path.exists():
+            cp = configparser.ConfigParser()
+            cp.read(str(path))
+            section = cp["genshin"] if "genshin" in cp else {}
+            return {
+                "uid":      section.get("uid", ""),
+                "ltoken":   section.get("ltoken_v2", ""),
+                "ltuid":    section.get("ltuid_v2", ""),
+            }
+    return {"uid": "", "ltoken": "", "ltuid": ""}
+
 # ────────────── エントリポイント ──────────────
 def main():
     parser = argparse.ArgumentParser(description="原神データ取得スクリプト（公式HoYoLAB API）")
@@ -291,20 +314,31 @@ def main():
     parser.add_argument("--ltuid",  default="")
     args = parser.parse_args()
 
-    if args.command == "help" or not args.uid:
+    if args.command == "help":
         print("使い方:")
-        print("  python3 fetch.py allchars <UID> --ltoken <ltoken_v2> --ltuid <ltuid_v2>")
-        print("  python3 fetch.py status   <UID> --ltoken <ltoken_v2> --ltuid <ltuid_v2>")
+        print("  python3 fetch.py allchars [UID] [--ltoken <ltoken_v2>] [--ltuid <ltuid_v2>]")
+        print("  python3 fetch.py status   [UID] [--ltoken <ltoken_v2>] [--ltuid <ltuid_v2>]")
+        print("  UID・Cookie省略時は .genshin_config から自動読み込み")
         return
 
-    if not args.ltoken or not args.ltuid:
-        print(json.dumps({"error": "--ltoken と --ltuid が必要です"}, ensure_ascii=False))
+    # 設定ファイルから値を補完（引数で渡された値を優先）
+    cfg = load_config()
+    uid    = args.uid    or (int(cfg["uid"])    if cfg["uid"]    else None)
+    ltoken = args.ltoken or cfg["ltoken"]
+    ltuid  = args.ltuid  or cfg["ltuid"]
+
+    if not uid:
+        print(json.dumps({"error": "UID が指定されておらず、.genshin_config にも見つかりません"}, ensure_ascii=False))
+        sys.exit(1)
+
+    if not ltoken or not ltuid:
+        print(json.dumps({"error": "--ltoken / --ltuid が指定されておらず、.genshin_config にも見つかりません"}, ensure_ascii=False))
         sys.exit(1)
 
     if args.command == "allchars":
-        cmd_allchars(args.uid, args.ltoken, args.ltuid)
+        cmd_allchars(uid, ltoken, ltuid)
     elif args.command == "status":
-        cmd_status(args.uid, args.ltoken, args.ltuid)
+        cmd_status(uid, ltoken, ltuid)
 
 if __name__ == "__main__":
     main()

@@ -3,3 +3,6 @@ __pycache__/
 
 # Alert monitoring
 scripts/alert-monitoring/processed_ids.json
+
+# genshin-advisor 認証情報（絶対にcommitしない）
+skills/genshin-advisor/.genshin_config
