@@ -47,7 +47,7 @@ PROP_TYPE_JP = {
     22: "会心ダメージ",
     23: "元素チャージ効率",
     26: "元素熟知",
-    28: "物理ダメ%",
+    28: "元素熟知",      # 実APIデータ: value=整数(187等)で元素熟知が返る
     29: "炎元素ダメ%",
     30: "雷元素ダメ%",
     31: "水元素ダメ%",
@@ -55,8 +55,12 @@ PROP_TYPE_JP = {
     33: "風元素ダメ%",
     34: "岩元素ダメ%",
     35: "氷元素ダメ%",
-    40: "回復効果",
-    43: "シールド強化",
+    40: "炎元素ダメ%",   # 実APIデータ: Pyroキャラの杯に使われる
+    41: "雷元素ダメ%",   # 実APIデータ: Electroキャラの杯に使われる
+    42: "水元素ダメ%",   # 実APIデータ: Hydroキャラの杯に使われる
+    43: "草元素ダメ%",   # 実APIデータ: Dendroキャラの杯に使われる
+    44: "風元素ダメ%",   # 実APIデータ: Anemoキャラの杯に使われる
+    46: "氷元素ダメ%",   # 実APIデータ: Cryoキャラの杯に使われる
 }
 
 # pos（部位番号） → 日本語スロット名
@@ -80,8 +84,8 @@ def uid_to_server(uid):
 
 def score_grade(score):
     if score >= 220: return "SS"
-    if score >= 200: return "S"
-    if score >= 180: return "A"
+    if score >= 180: return "S"
+    if score >= 140: return "A"
     if score >= 100: return "B"
     if score >= 60:  return "C"
     return "D"
