@@ -16,7 +16,8 @@ monitors:
     enabled: true
     from_address: ""
     subject_contains:
-      - "楽天証券"
+      - "カード利用のお知らせ"
+      - "投信基準価額メール"
     body_contains: []
     slack_channel: "C0ANKC79CBX"
-    note: "楽天証券からのメール通知"
+    note: "楽天からのメール通知"
