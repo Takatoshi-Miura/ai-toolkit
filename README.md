@@ -43,6 +43,7 @@ ai-toolkit/
 | 内省・分析 | `personal-context-aware-response` | パーソナルコンテキストを読み取り、価値観・思考スタイルに合わせた回答を提供 | ✅ |
 | 環境管理 | `homebrew` | Homebrewの更新・追加・削除・App Store移行・Mac環境移行を統括 | ✅ |
 | 環境管理 | `manage-resources` | Claude Codeリソース（コマンド/エージェント/Skills）の新規作成・更新・メンテナンス・~/.claude/への同期 | ✅ |
+| ゲーム | `genshin-advisor` | 原神アカウントの公式HoYoLAB APIでキャラ・聖遺物・パーティ編成・深境螺旋などをアドバイス | ✅ |
 
 ## サブエージェント一覧
 
