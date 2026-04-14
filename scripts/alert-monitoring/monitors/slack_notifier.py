@@ -17,10 +17,10 @@ def format_notification(monitor_name: str, email: dict) -> str:
     body_preview = email.get("body_preview", "")
 
     return (
-        f":rotating_light: *[アラート]* {monitor_name}\n"
-        f":envelope: *件名:* {subject}\n"
-        f":calendar: *受信時刻:* {received_at}\n"
-        f":memo: *本文（先頭300文字）:*\n{body_preview}"
+        f"*[アラート]* {monitor_name}\n"
+        f"*件名:* {subject}\n"
+        f"*受信時刻:* {received_at}\n"
+        f"*本文（先頭300文字）:*\n```{body_preview}```"
     )
 
 
