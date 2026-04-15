@@ -3,17 +3,31 @@
 from __future__ import annotations
 
 import logging
+from email.utils import parsedate_to_datetime
+from zoneinfo import ZoneInfo
 
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 
 logger = logging.getLogger(__name__)
 
+_WEEKDAYS_JA = ["月", "火", "水", "木", "金", "土", "日"]
+
+
+def _format_received_at(raw: str) -> str:
+    """RFC 2822形式の日時文字列を日本時間の読みやすい形式に変換する。"""
+    try:
+        dt = parsedate_to_datetime(raw).astimezone(ZoneInfo("Asia/Tokyo"))
+        weekday = _WEEKDAYS_JA[dt.weekday()]
+        return dt.strftime(f"%Y/%m/%d({weekday}) %H:%M")
+    except Exception:
+        return raw
+
 
 def format_notification(monitor_name: str, email: dict) -> str:
     """メール情報からSlack通知メッセージを整形する。"""
     subject = email.get("subject", "(件名なし)")
-    received_at = email.get("received_at", "(不明)")
+    received_at = _format_received_at(email.get("received_at", "(不明)"))
     body_preview = email.get("body_preview", "")
 
     return (
