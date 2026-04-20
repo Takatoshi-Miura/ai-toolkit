@@ -16,55 +16,13 @@
 
 ### 2. working folder の作成
 
-任意の場所に working folder を作成し、以下の 3 ファイルを配置する。
+任意の場所に working folder を作成し、スキルフォルダ内の以下の 3 ファイルをコピーする。
 
-#### CONFIG.md
-
-```markdown
-# 設定
-
-## 宛先
-- groupId: C1234567890abcdef...
-
-## 調査条件
-
-- エリア: 蓮田駅(埼玉県)から片道 1 時間以内
-- 移動手段: 車で行ける場所を優先。車アクセスが良いスポットを上位に扱う
-- ジャンル: 屋内外どちらも可。美術館・公園・カフェ巡り・自然散策が好み
-- 避けたいもの: 強い混雑、行列必須の人気スポット、派手なテーマパーク、駐車場が確保できない場所
-- 同行者: 2 人(自分を含む)
-- 対象日: 次の土曜日。雨天なら屋内中心に切り替える
-- 除外: history.md に含まれる場所はすべて選ばない
-
-## メッセージフォーマット
-
-以下のテンプレートに沿って本文を組み立てる。各行は必須。絵文字は 1 行目のみ可。
-
-🗓 {対象日(YYYY/MM/DD (曜))}
-📍 {スポット名}({市町村名 / 蓮田から車で約 X 分})
-⏱ 片道目安 {所要時間}
-💡 {おすすめ理由を 2〜3 行}
-🚗 車: {所要時間・駐車場の有無や料金}
-🔗 公式: {公式 URL}
-🗺 地図: {Google Maps URL}
-```
-
-#### history.md
-
-```markdown
-# 提案履歴
-
-<!-- 各実行後、SKILL.md の手順に従って 1 行追記される -->
-<!-- 形式: YYYY-MM-DD | スポット名 -->
-```
-
-#### line_config.json
-
-```json
-{
-  "channel_access_token": "<LINE Messaging API のチャネルアクセストークン>"
-}
-```
+| コピー元(スキルフォルダ内) | コピー先(working folder) |
+|---|---|
+| `CONFIG.md` | `<working folder>/CONFIG.md` |
+| `history.md` | `<working folder>/history.md` |
+| `line_config.json` | `<working folder>/line_config.json` |
 
 > **重要**: line_config.json はバージョン管理システムにコミットしない。
 
