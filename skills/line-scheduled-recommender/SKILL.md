@@ -50,7 +50,7 @@ disable-model-invocation: true
 ### 1-1. 現在時刻の取得
 
 ```bash
-date +"%H:%M"
+TZ=Asia/Tokyo date +"%H:%M"
 ```
 
 取得した時刻を分に換算する（例: `07:15` → `7*60+15 = 435`）。
