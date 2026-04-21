@@ -45,6 +45,17 @@ ai-toolkit/
 | 環境管理 | `manage-resources` | Claude Codeリソース（コマンド/エージェント/Skills）の新規作成・更新・メンテナンス・~/.claude/への同期 | ✅ |
 | ゲーム | `genshin-advisor` | 原神アカウントの公式HoYoLAB APIでキャラ・聖遺物・パーティ編成・深境螺旋などをアドバイス | ✅ |
 
+## Cowork 定期実行スキル一覧
+
+Claude Code ではなく **Cowork のスケジューラ** が起動主体のスキル。
+working folder（Cowork 上に作成）が必須で、LINE などへの自動通知に使用する。
+
+| カテゴリ | スキル名 | 説明 |
+|---------|---------|------|
+| 通知 | `line-scheduled-recommender` | 実行時刻に応じて CONFIG.md のテーマを自動選択し、LINE グループに定期通知（お出かけ提案・読書推薦など複数テーマ対応） |
+
+> セットアップ手順は各スキルの `SETUP.md` を参照。
+
 ## サブエージェント一覧
 
 | カテゴリ | エージェント名 | 説明 |
