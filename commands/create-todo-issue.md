@@ -45,8 +45,31 @@ description: 開発中に思いついたTODOをGitHub Issueとして素早く登
 
 ## Phase 2: Issue作成
 
-2. テンプレートを読み込む
-    - パス: `~/Documents/Git/ai-toolkit/templates/github-issue-todo-template.md`
+2. 収集した情報を以下のテンプレートに当てはめてIssue本文を生成する
+
+    ```markdown
+    ## 概要
+    {description}
+
+    ## 背景
+    {background}
+
+    ## 期待する結果
+    {expected_outcome}
+
+    ## 関連箇所
+    {related_files_or_features}
+
+    ## 追加情報
+    - **優先度**: {priority}
+    - **種別**: {type}
+    ```
+
+    セクション省略ルール:
+    - `{background}` が未指定の場合: 「## 背景」セクションを省略
+    - `{expected_outcome}` が未指定の場合: 「## 期待する結果」セクションを省略
+    - `{related_files_or_features}` が未指定の場合: 「## 関連箇所」セクションを省略
+    - 「## 追加情報」セクションは常に出力（デフォルト値を使用）
 
 3. 収集した情報をテンプレートに当てはめてIssue本文を生成する
     - 任意項目が未入力の場合は該当セクションを省略

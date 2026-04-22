@@ -1,6 +1,9 @@
 ---
 name: genshin-advisor
 description: 原神（Genshin Impact）のゲームデータをAPIで取得してClaudeが分析・アドバイスするスキル
+allowed-tools: Bash, Read
+user-invocable: true
+---
 
 # 原神アドバイザースキル（Claude Code版）
 
