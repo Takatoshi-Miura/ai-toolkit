@@ -39,6 +39,7 @@ ai-toolkit/
 | 開発 | `extract-pdf-images` | PDFから埋め込み画像を抽出し~/Downloads/に保存（単一/複数対応） | ✅ |
 | 情報収集 | `research` | Web検索・PlayConsole更新情報・Claude Changelog確認を統合管理 | ❌ |
 | 内省・分析 | `retrospective` | LifeGraph・日次記録・金銭データを分析して週次/月次レポートを作成 | ❌ |
+| 内省・分析 | `session-log-to-markdown` | Claude Codeのセッションログ（JSONL）を読みやすい1つのMarkdownファイルに変換・保存 | ✅ |
 | 環境管理 | `homebrew` | Homebrewの更新・追加・削除・App Store移行・Mac環境移行を統括 | ✅ |
 | 環境管理 | `manage-resources` | Claude Codeリソース（コマンド/エージェント/Skills）の新規作成・更新・メンテナンス・~/.claude/への同期 | ✅ |
 | ゲーム | `genshin-advisor` | 原神アカウントの公式HoYoLAB APIでキャラ・聖遺物・パーティ編成・深境螺旋などをアドバイス | ✅ |
