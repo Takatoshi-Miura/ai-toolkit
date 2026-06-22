@@ -1,97 +1,60 @@
 #!/usr/bin/env python3
-"""Claude Codeのセッションログ(JSONL)を1つのMarkdownファイルに変換する。
+"""Claude Codeの全プロジェクトセッションログ(JSONL)を1つのMarkdownファイルに変換する。
 
-サブコマンド:
-  list    : 指定プロジェクトのセッション一覧をJSONで表示
-  convert : 指定セッション(群)をMarkdownに変換して書き出す
+extract_feedback_candidates.py の前段（Stage 1）として使う。
+~/.claude/projects/ 配下を全プロジェクト横断で走査し、Question/Answer形式の
+読みやすいMarkdownに変換する。worktreeディレクトリはデフォルトで除外する。
 """
 
 import argparse
 import json
+import re
 import sys
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from pathlib import Path
 
 KNOWN_TYPES = {"user", "assistant"}
 TOOL_RESULT_PREVIEW_LIMIT = 2000
-NOISE_TAGS = ("ide_opened_file", "system-reminder", "ide_selection")
+NOISE_TAGS = (
+    "ide_opened_file",
+    "ide_selection",
+    "system-reminder",
+    "command-name",
+    "command-message",
+    "command-args",
+    "local-command-stdout",
+)
+WORKTREE_MARKER = "--claude-worktrees-"
+SKILL_INJECTION_MARKER = "Base directory for this skill:"
 
 
-# ---------- 1. セッション検出 ----------
+# ---------- 1. プロジェクトログディレクトリの発見 ----------
 
-def resolve_project_log_dir(project_dir: str | None) -> Path:
-    cwd = project_dir or str(Path.cwd())
-    hyphenated = cwd.replace("/", "-")
-    return Path.home() / ".claude" / "projects" / hyphenated
+def discover_project_log_dirs(root: Path, include_worktrees: bool) -> tuple[list[Path], list[str]]:
+    if not root.exists():
+        return [], []
+
+    included = []
+    excluded = []
+    for entry in sorted(root.iterdir()):
+        if not entry.is_dir():
+            continue
+        if not include_worktrees and WORKTREE_MARKER in entry.name:
+            excluded.append(entry.name)
+            continue
+        included.append(entry)
+    return included, excluded
 
 
-def list_sessions(log_dir: Path) -> list[dict]:
-    index_path = log_dir / "sessions-index.json"
-    if index_path.exists():
-        try:
-            index = json.loads(index_path.read_text(encoding="utf-8"))
-            entries = index.get("entries", [])
-            sessions = []
-            for e in entries:
-                jsonl_path = log_dir / f"{e['sessionId']}.jsonl"
-                if not jsonl_path.exists():
-                    continue
-                sessions.append({
-                    "session_id": e["sessionId"],
-                    "path": str(jsonl_path),
-                    "mtime": e.get("fileMtime") or e.get("modified"),
-                    "first_prompt": e.get("firstPrompt"),
-                    "message_count": e.get("messageCount"),
-                })
-            if sessions:
-                sessions.sort(key=lambda s: s["mtime"] or "", reverse=True)
-                return sessions
-        except (json.JSONDecodeError, KeyError):
-            pass
-
-    sessions = []
+def iter_jsonl_files(log_dir: Path, since_date: date | None) -> list[Path]:
+    paths = []
     for jsonl_path in log_dir.glob("*.jsonl"):
-        stat = jsonl_path.stat()
-        sessions.append({
-            "session_id": jsonl_path.stem,
-            "path": str(jsonl_path),
-            "mtime": datetime.fromtimestamp(stat.st_mtime).isoformat(),
-            "first_prompt": None,
-            "message_count": None,
-        })
-    sessions.sort(key=lambda s: s["mtime"], reverse=True)
-    return sessions
-
-
-def select_sessions(log_dir: Path, mode: str, session_ids=None,
-                     since: date | None = None, until: date | None = None) -> list[dict]:
-    sessions = list_sessions(log_dir)
-
-    if mode == "latest":
-        return sessions[:1]
-
-    if mode == "ids":
-        wanted = set(session_ids or [])
-        return [s for s in sessions if s["session_id"] in wanted]
-
-    if mode == "all":
-        return sessions
-
-    if mode == "range":
-        result = []
-        for s in sessions:
-            mtime = s["mtime"]
-            if not mtime:
+        if since_date is not None:
+            mtime = datetime.fromtimestamp(jsonl_path.stat().st_mtime).date()
+            if mtime < since_date:
                 continue
-            s_date = datetime.fromisoformat(mtime.replace("Z", "+00:00")).date()
-            if since and s_date < since:
-                continue
-            if until and s_date > until:
-                continue
-            result.append(s)
-        return result
-
-    raise ValueError(f"unknown mode: {mode}")
+        paths.append(jsonl_path)
+    return paths
 
 
 # ---------- 2. JSONL読み込み・パース ----------
@@ -110,8 +73,6 @@ def read_jsonl_lines(path: Path) -> tuple[list[dict], list[tuple[int, str]]]:
                 errors.append((lineno, line[:200]))
     return records, errors
 
-
-# ---------- 3. ペア構築 ----------
 
 def _extract_text_blocks(content) -> list[str]:
     if isinstance(content, str):
@@ -250,13 +211,22 @@ def pair_question_answer(turns: list[dict]) -> list[dict]:
     return pairs
 
 
-# ---------- 4. コンテンツ整形 ----------
+# ---------- 3. コンテンツ整形 ----------
 
-def format_question(text: str) -> str:
-    import re
+def strip_noise(text: str) -> str:
     for tag in NOISE_TAGS:
         text = re.sub(rf"<{tag}>.*?</{tag}>", "", text, flags=re.DOTALL)
     return text.strip()
+
+
+def is_skill_injection(text: str) -> bool:
+    return text.lstrip().startswith(SKILL_INJECTION_MARKER)
+
+
+def format_question(text: str) -> str:
+    if is_skill_injection(text):
+        return "(スキル定義文の混入のため省略)"
+    return strip_noise(text)
 
 
 def format_tool_call(call: dict) -> str:
@@ -294,12 +264,12 @@ def format_answer(answer_blocks: list[str], tool_calls: list[dict]) -> str:
     return "\n\n".join(parts) if parts else "(応答テキストなし)"
 
 
-# ---------- 5. Markdown生成・書き出し ----------
+# ---------- 4. Markdown生成 ----------
 
 def render_session_markdown(session_meta: dict, qa_pairs: list[dict]) -> str:
     lines = []
     first_question = format_question(qa_pairs[0]["question"]) if qa_pairs else ""
-    title = session_meta.get("title") or (first_question[:40] if first_question else "(無題)")
+    title = first_question[:40] if first_question else "(無題)"
     lines.append(f"# Session Log: {title}")
     lines.append("")
     lines.append(f"- Session ID: `{session_meta.get('session_id')}`")
@@ -336,77 +306,55 @@ def write_output(path: Path, content: str) -> dict:
     return {"written": True, "path": str(path), "unchanged": False}
 
 
-# ---------- 6. CLI ----------
-
-def cmd_list(args) -> dict:
-    log_dir = resolve_project_log_dir(args.project_dir)
-    if not log_dir.exists():
-        return {"success": False, "error": f"project log dir not found: {log_dir}"}
-    sessions = list_sessions(log_dir)
-    return {"success": True, "log_dir": str(log_dir), "sessions": sessions}
-
+# ---------- 5. CLI ----------
 
 def cmd_convert(args) -> dict:
-    log_dir = resolve_project_log_dir(args.project_dir)
-    if not log_dir.exists():
-        return {"success": False, "error": f"project log dir not found: {log_dir}"}
+    projects_root = Path(args.projects_root).expanduser()
+    if not projects_root.exists():
+        return {"success": False, "error": f"projects root not found: {projects_root}"}
 
-    if args.latest:
-        mode = "latest"
-    elif args.session_id:
-        mode = "ids"
-    elif args.all:
-        mode = "all"
-    elif args.since:
-        mode = "range"
-    else:
-        mode = "latest"
+    log_dirs, excluded_dirs = discover_project_log_dirs(projects_root, args.include_worktrees)
 
-    since = date.fromisoformat(args.since) if args.since else None
-    until = date.fromisoformat(args.until) if args.until else None
-
-    sessions = select_sessions(log_dir, mode, args.session_id, since, until)
-    if not sessions:
-        return {"success": False, "error": "no matching sessions found"}
+    since_date = date.fromisoformat(args.since) if args.since else None
+    if since_date is None and args.since_days is not None:
+        since_date = date.today() - timedelta(days=args.since_days)
 
     all_warnings = []
     total_skipped = 0
     session_summaries = []
     rendered_sections = []
 
-    for session in sessions:
-        jsonl_path = Path(session["path"])
-        records, errors = read_jsonl_lines(jsonl_path)
-        total_skipped += len(errors)
-        if errors:
-            all_warnings.append(f"{session['session_id']}: {len(errors)} 行のパースに失敗")
+    for log_dir in log_dirs:
+        for jsonl_path in iter_jsonl_files(log_dir, since_date):
+            records, errors = read_jsonl_lines(jsonl_path)
+            total_skipped += len(errors)
+            if errors:
+                all_warnings.append(f"{jsonl_path.stem}: {len(errors)} 行のパースに失敗")
 
-        turns = build_turns(records)
-        qa_pairs = pair_question_answer(turns)
+            turns = build_turns(records)
+            qa_pairs = pair_question_answer(turns)
+            if not qa_pairs:
+                continue
 
-        if not qa_pairs:
-            all_warnings.append(f"{session['session_id']}: メッセージが空のためスキップ")
-            continue
+            first_rec = next((r for r in records if r.get("type") in KNOWN_TYPES), {})
+            session_meta = {
+                "session_id": jsonl_path.stem,
+                "cwd": first_rec.get("cwd", ""),
+                "git_branch": first_rec.get("gitBranch", ""),
+                "start_time": qa_pairs[0]["timestamp"],
+                "end_time": qa_pairs[-1]["timestamp"],
+            }
 
-        first_rec = next((r for r in records if r.get("type") in KNOWN_TYPES), {})
-        session_meta = {
-            "session_id": session["session_id"],
-            "cwd": first_rec.get("cwd", ""),
-            "git_branch": first_rec.get("gitBranch", ""),
-            "start_time": qa_pairs[0]["timestamp"],
-            "end_time": qa_pairs[-1]["timestamp"],
-            "title": None,
-        }
-
-        rendered_sections.append(render_session_markdown(session_meta, qa_pairs))
-        session_summaries.append({
-            "session_id": session["session_id"],
-            "qa_count": len(qa_pairs),
-            "skipped_lines": len(errors),
-        })
+            rendered_sections.append(render_session_markdown(session_meta, qa_pairs))
+            session_summaries.append({
+                "session_id": jsonl_path.stem,
+                "project_dir_name": log_dir.name,
+                "qa_count": len(qa_pairs),
+                "skipped_lines": len(errors),
+            })
 
     if not rendered_sections:
-        return {"success": False, "error": "no convertible sessions (all empty)", "warnings": all_warnings}
+        return {"success": False, "error": "no convertible sessions found", "warnings": all_warnings}
 
     content = "\n\n".join(rendered_sections)
     output_path = Path(args.output).expanduser()
@@ -416,6 +364,8 @@ def cmd_convert(args) -> dict:
         "success": True,
         "output_path": write_result["path"],
         "unchanged": write_result["unchanged"],
+        "scanned_dirs": [str(d) for d in log_dirs],
+        "excluded_dirs": excluded_dirs,
         "sessions": session_summaries,
         "skipped_lines": total_skipped,
         "warnings": all_warnings,
@@ -426,21 +376,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_list = sub.add_parser("list")
-    p_list.add_argument("--project-dir")
-
     p_conv = sub.add_parser("convert")
     p_conv.add_argument("--output", required=True)
-    g = p_conv.add_mutually_exclusive_group()
-    g.add_argument("--latest", action="store_true")
-    g.add_argument("--session-id", action="append")
-    g.add_argument("--all", action="store_true")
-    g.add_argument("--since")
-    p_conv.add_argument("--until")
-    p_conv.add_argument("--project-dir")
+    p_conv.add_argument("--since-days", type=int, default=None)
+    p_conv.add_argument("--since")
+    p_conv.add_argument("--include-worktrees", action="store_true")
+    p_conv.add_argument("--projects-root", default="~/.claude/projects")
 
     args = parser.parse_args()
-    result = cmd_list(args) if args.command == "list" else cmd_convert(args)
+    result = cmd_convert(args)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     sys.exit(0 if result.get("success", True) else 1)
 
