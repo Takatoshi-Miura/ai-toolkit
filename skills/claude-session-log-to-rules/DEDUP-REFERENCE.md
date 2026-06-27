@@ -1,6 +1,6 @@
 # 重複・矛盾チェックリファレンス
 
-Phase 3で、ルール化候補と既存ルールファイル（`ai-toolkit/global/CLAUDE.md`、関連する`ai-toolkit/rules/*.md`）を比較し、以下の4分類に振り分けるためのチェックリスト。
+Phase 3で、ルール化候補と既存ルールファイル（`~/.claude/CLAUDE.md`、関連する`~/.claude/rules/*.md`）を比較し、以下の4分類に振り分けるためのチェックリスト。
 
 ## 分類
 

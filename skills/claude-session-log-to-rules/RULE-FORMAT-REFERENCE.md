@@ -4,10 +4,10 @@
 
 ## 編集対象ファイル
 
-`~/.claude/` 配下を直接編集しない。必ず以下を編集し、最後に`sync.py`で反映する。
+`~/.claude/` 配下を直接編集する。
 
-- グローバルルール: `ai-toolkit/global/CLAUDE.md`
-- プロジェクト別ルール: `ai-toolkit/rules/<project-kebab-case>.md`
+- グローバルルール: `~/.claude/CLAUDE.md`
+- プロジェクト別ルール: `~/.claude/rules/<project-kebab-case>.md`
 
 ## プロジェクト名 vs グローバルの判定基準
 
