@@ -33,10 +33,8 @@ ai-toolkit/
 | 外部連携 | `github-skill` | Issue・PR・強制プッシュなどGitHub/Git操作全般 | ✅ |
 | 自動化基盤 | `slack-message-router` | SlackメッセージをSocket Modeで監視し、キーワードに基づいてClaude Codeスキルにルーティング | ❌ |
 | 開発 | `coding` | モバイルアプリ・MCP開発・SportsNote iOS・OpenSpecプロポーザル作成・FE開発のオーケストレーター | ❌ |
-| 開発 | `git-pr-setup` | Redmineチケットを元にブランチ作成・空コミット・PR作成・Redmineコメントを一括自動化 | ✅ |
 | 開発 | `generate-test-item-skill` | 因子水準の全組み合わせからテスト項目書をスプレッドシートに自動生成 | ❌ |
 | 開発 | `review-skill` | GitHub PRレビュー（Android/汎用を自動判定）とGoogle Drive資料レビュー | ✅ |
-| 開発 | `extract-pdf-images` | PDFから埋め込み画像を抽出し~/Downloads/に保存（単一/複数対応） | ✅ |
 | 情報収集 | `research` | Web検索・PlayConsole更新情報・Claude Changelog確認を統合管理 | ❌ |
 | 内省・分析 | `retrospective` | LifeGraph・日次記録・金銭データを分析して週次/月次レポートを作成 | ❌ |
 | 内省・分析 | `claude-session-log-to-rules` | セッションログ全プロジェクト横断でフィードバック・指示・承認を抽出し、ルールファイルへの反映を提案 | ❌ |
@@ -60,13 +58,6 @@ working folder（Cowork 上に作成）が必須で、LINE などへの自動通
 | カテゴリ | エージェント名 | 説明 |
 |---------|--------------|------|
 | テスト | `test-item-writer` | テスト項目書をスプレッドシートに書き込む |
-
-## スラッシュコマンド一覧
-
-| カテゴリ | コマンド名 | 説明 |
-|---------|-----------|------|
-| 開発・コーディング | `/create-todo-issue` | 思いついたTODOをGitHub Issueとして登録 |
-| 開発・コーディング | `/install-apk` | Android端末へのAPKインストール |
 
 ## ルールファイル一覧
 
