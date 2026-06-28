@@ -48,6 +48,7 @@ working folder（Cowork 上に作成）が必須で、LINE などへの自動通
 | カテゴリ | スキル名 | 説明 |
 |---------|---------|------|
 | 通知 | `line-scheduled-recommender` | 実行時刻に応じて CONFIG.md のテーマを自動選択し、LINE グループに定期通知（お出かけ提案・読書推薦など複数テーマ対応） |
+| 情報収集 | `daily-notebooklm-research` | 未調査テーマリスト・Googleドキュメント・セッションログ・ai-toolkit既存リソースから調査テーマを決定し、NotebookLM用のURLリストと音声解説プロンプトを生成（working folder不要、スキルディレクトリ直下のCONFIG.md/history.mdで完結） |
 
 > セットアップ手順は各スキルの `SETUP.md` を参照。
 
