@@ -32,10 +32,8 @@ ai-toolkit/
 | 開発 | `generate-test-item-skill` | 因子水準の全組み合わせからテスト項目書をスプレッドシートに自動生成 | ❌ |
 | 開発 | `review-skill` | GitHub PRレビュー（Android/汎用を自動判定）とGoogle Drive資料レビュー | ✅ |
 | 開発 | `dev-tools` | AndroidデバイスへのAPKインストール、PDFからの画像抽出などの開発効率化ツール群 | ❌ |
-| 情報収集 | `research` | Web検索・PlayConsole更新情報・Claude Changelog確認を統合管理 | ❌ |
 | 内省・分析 | `retrospective` | LifeGraph・日次記録・金銭データを分析して週次/月次レポートを作成 | ❌ |
 | 内省・分析 | `claude-session-log-to-rules` | セッションログ全プロジェクト横断でフィードバック・指示・承認を抽出し、ルールファイルへの反映を提案 | ❌ |
-| 内省・分析 | `session-reflection` | 作業セッションの内容から学びや気づきをログ転記しやすい形式で抽出・整理 | ❌ |
 | 環境管理 | `homebrew` | Homebrewの更新・追加・削除・App Store移行・Mac環境移行を統括 | ✅ |
 | 環境管理 | `skill-manager` | プライベートスキル（~/.claude/skills/）の新規作成・更新・セルフチェック | ✅ |
 | ゲーム | `genshin-advisor` | 原神アカウントの公式HoYoLAB APIでキャラ・聖遺物・パーティ編成・深境螺旋などをアドバイス | ✅ |
