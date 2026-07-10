@@ -1,33 +1,16 @@
 ---
 name: retrospective
-description: 振り返りスペシャリストとして週次/月次のレトロスペクティブを実行。LifeGraph、日次記録、金銭データをスクリプトで取得・分析してレポートを作成。
-allowed-tools: Bash, Read, Write, TodoWrite, AskUserQuestion
+description: 振り返りスペシャリストとして週次/月次のレトロスペクティブ、および週末の振り返り質問生成を実行。LifeGraph、日次記録、金銭データをスクリプトで取得・分析してレポートや質問を作成し、サブエージェントレビューとユーザーフィードバックの蓄積により回を重ねるごとに質を改善する。
+allowed-tools: Bash, Read, Write, TodoWrite, AskUserQuestion, Agent
 user-invocable: true
 disable-model-invocation: true
 ---
 
 # 振り返りスキル
 
-週次または月次の振り返りを実行するスキル。各Phaseで対応するREFERENCEファイルを参照すること。
+振り返りに関する2つのワークフローを提供する。最初にどちらを行うかを選択し、対応するWORKFLOWファイルの手順に従うこと。
 
-## 実行手順
-
-### Phase 0: 進捗管理の登録
-
-**最初にTodoWriteで以下を登録すること：**
-
-```json
-[
-  { "content": "Phase 1: 期間選択", "status": "pending", "activeForm": "期間を選択中" },
-  { "content": "Phase 2: 出力ファイル作成", "status": "pending", "activeForm": "出力ファイルを作成中" },
-  { "content": "Phase 3: データ取得", "status": "pending", "activeForm": "データを取得中" },
-  { "content": "Phase 4: 分析とレポート作成", "status": "pending", "activeForm": "分析・レポートを作成中" },
-  { "content": "Phase 5: 目標提案・総評", "status": "pending", "activeForm": "目標提案・総評を作成中" },
-  { "content": "Phase 6: 完了報告", "status": "pending", "activeForm": "完了報告中" }
-]
-```
-
-### Phase 1: 期間選択・設定確認
+## Phase 0: ワークフロー選択
 
 **AskUserQuestionで以下を実行：**
 
@@ -35,55 +18,34 @@ disable-model-invocation: true
 {
   "questions": [
     {
-      "question": "振り返りの期間を選択してください。",
-      "header": "期間",
+      "question": "どちらのワークフローを実行しますか？",
+      "header": "ワークフロー",
       "multiSelect": false,
       "options": [
-        { "label": "週次", "description": "LifeGraph + 日次記録を分析" },
-        { "label": "月次", "description": "LifeGraph + 日次記録 + 金銭を分析" }
+        { "label": "レポート作成", "description": "週次/月次のレトロスペクティブレポートを作成する" },
+        { "label": "週末振り返り質問生成", "description": "直近1週間の記録から、振り返りを深める質問を生成する" }
       ]
     }
   ]
 }
 ```
 
-| 選択肢 | 読み込むREFERENCE |
-|--------|-----------------|
-| 週次 | LIFEGRAPH / DAILY / SUMMARY |
-| 月次 | LIFEGRAPH / DAILY / MONEY / SUMMARY |
+| 選択肢 | 進む先 |
+|--------|--------|
+| レポート作成 | [WORKFLOW-REPORT.md](WORKFLOW-REPORT.md) |
+| 週末振り返り質問生成 | [WORKFLOW-WEEKLY-QUESTIONS.md](WORKFLOW-WEEKLY-QUESTIONS.md) |
 
-**月タブ確認:** [CONFIG.md](CONFIG.md) の `month_tab` を読み取り、現在の値をAskUserQuestionで確認する。変更が必要な場合はCONFIG.mdを更新する。
+選択後は、選ばれたWORKFLOWファイルのPhase構成（TodoWrite登録含む）に従って最後まで実行する。本ファイルのPhaseには戻らない。
 
-### Phase 2: 出力ファイル作成
+## 共通の設計方針
 
-`~/Downloads/yyyyMMdd-{weekly|monthly}-retrospective.md` を作成（タイトルと目次のみ）。
-
-### Phase 3: データ取得
-
-→ **[REFERENCE-LIFEGRAPH.md](REFERENCE-LIFEGRAPH.md)** を参照してカレンダーイベント + スプレッドシート補完データを取得
-→ **[REFERENCE-DAILY.md](REFERENCE-DAILY.md)** を参照して日次記録データを取得
-→ **[REFERENCE-MONEY.md](REFERENCE-MONEY.md)** を参照して金銭データを取得（**月次のみ**）
-
-### Phase 4: 分析とレポート作成
-
-取得データをもとに分析しレポートに追記する。各観点のフォーマットは各REFERENCEファイルを参照。
-
-| 観点 | 参照ファイル | 対象 |
-|------|------------|------|
-| LifeGraph分析 | [REFERENCE-LIFEGRAPH.md](REFERENCE-LIFEGRAPH.md) | 週次・月次 |
-| 日次記録分析 | [REFERENCE-DAILY.md](REFERENCE-DAILY.md) | 週次・月次 |
-| 金銭分析 | [REFERENCE-MONEY.md](REFERENCE-MONEY.md) | **月次のみ** |
-
-### Phase 5: 目標提案・総評
-
-→ **[REFERENCE-SUMMARY.md](REFERENCE-SUMMARY.md)** を参照して目標提案と総評を追記。
-
-### Phase 6: 完了報告
-
-レポートファイルのパスを報告する。
+- **過去の蓄積を踏まえる**: 両ワークフローとも、`output/feedback-log.md`（ユーザー指摘の蓄積）と直近の過去成果物を読み込んでから作成に着手する。同じ指摘を繰り返さないようにするため。
+- **サブエージェントレビュー**: 成果物の初稿ができた時点で、Agentツール（`general-purpose`）を起動しレビューを依頼する。レビュー観点は各WORKFLOWファイルに明記。
+- **ユーザー確認とフィードバック蓄積**: レビュー反映後、必ずユーザーに内容を提示し誤り・修正指摘を確認する。指摘があれば成果物に反映したうえで `output/feedback-log.md` に追記し、次回以降に活かす。
+- **出力先**: すべての成果物・ログは [output/](output/) 配下に保存する（`output/.gitignore` で誤コミットを防止済み）。
 
 ## 注意事項
 
 - スクリプトがエラーを返した場合は [SETUP.md](SETUP.md) の認証手順を案内
-- 今月のタブ名は `yyyyMM` 形式（例: 202601）
-- **月次のみのPhaseを週次で実行しないこと**
+- 月タブ名は `yyyyMM` 形式。現在値は [CONFIG.md](CONFIG.md) の `month_tab` を参照
+- CONFIG.mdの値変更が必要な場合は、両WORKFLOWとも [CONFIG.md](CONFIG.md) を単一の情報源として参照・更新する
