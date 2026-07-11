@@ -9,30 +9,9 @@
 
 ## セットアップ手順
 
-### 1. スキルのアップロード（Cowork）
+### 1. line_config.json への実値の記入
 
-1. `skills/line-scheduled-recommender/` フォルダを ZIP 化する
-2. Cowork の左サイドバー Customize → Skills → 「+」から ZIP をアップロード
-
-### 2. working folder の作成
-
-Cowork 上で任意の working folder を作成し、スキルフォルダ内の `working-folder-template/` の**中身を丸ごと**コピーする。
-
-```
-working-folder-template/ の中身
-├── CONFIG.md
-├── line_config.json
-├── outing/
-│   └── history.md
-└── book/
-    └── history.md
-```
-
-> **重要**: `line_config.json` はバージョン管理システムにコミットしない。
-
-### 3. 実値の記入
-
-#### line_config.json
+スキルディレクトリ直下の `line_config.json` に channel access token を記入する。
 
 ```json
 {
@@ -40,32 +19,35 @@ working-folder-template/ の中身
 }
 ```
 
-#### CONFIG.md
+> **重要**: `line_config.json` はバージョン管理システムにコミットしない。
 
-1. スケジュール表の時刻を Cowork のスケジュールタスクの実行時刻に合わせる
-2. 使用する各テーマの `groupId` を実際の LINE グループ ID に書き換える
-3. 不要なテーマ行はスケジュール表から削除する（セクションも削除してよい）
+### 2. CONFIG.md への実値の記入
 
-### 4. スケジュールタスクの作成（Cowork）
+スキルディレクトリ直下の `CONFIG.md` を編集する。
 
-CONFIG.md のスケジュール表に記載した時刻ごとにタスクを作成する。
+1. 冒頭の「共通設定」にある「デフォルト宛先groupId」を実際の LINE グループ ID に書き換える
+2. 特定のテーマだけ別グループに送りたい場合は、該当テーマの「宛先」セクションに `- groupId: C...` を追記する（省略時は共通設定のデフォルトが使われる）
+3. スケジュール表の時刻を、後述するルーチンの実行時刻に合わせる
+4. 不要なテーマ行はスケジュール表から削除する（セクションも削除してよい）
+
+### 3. Claude Code ルーチン（定期実行）の登録
+
+CONFIG.md のスケジュール表に記載した時刻ごとに、Claude Code のルーチン（定期実行）を登録する。
 
 | 項目 | 値 |
 |------|----|
-| Name | `line-recommender-07:00` など任意 |
-| Prompt | `line-scheduled-recommender スキルを使って、LINE グループに通知して` |
-| Frequency | 毎週金曜 07:00 など CONFIG.md に合わせた時刻 |
-| Working folder | 上記で作成した working folder |
-| Model | Sonnet 以上（web 検索と判断が必要） |
+| プロンプト | `line-scheduled-recommender スキルを使って、LINE グループに通知して` |
+| 実行間隔 | CONFIG.md のスケジュール表に合わせた時刻（例: 毎日 6:00） |
 
-> **ヒント**: 複数テーマを運用する場合でも working folder は 1 つでよい。スケジュールタスクを時刻ごとに複数作成し、すべて同じ working folder を指定する。
+> **ヒント**: 複数テーマを運用する場合、スケジュール表の時刻ごとにルーチンを複数登録する（ルーチンはすべて本スキルを同じプロンプトで呼び出せばよく、時刻判定と該当テーマの選択は SKILL.md 側の Phase 1 が行う）。
 
-### 5. 動作確認
+### 4. 動作確認
 
-一度手動で実行し、以下を確認する：
+一度手動で（`/line-scheduled-recommender` または上記プロンプトで）実行し、以下を確認する：
 - 現在時刻が CONFIG.md のスケジュールに一致するテーマが選択されること
 - LINE グループへの送信が成功すること
-- `{theme}/history.md` に記録が追記されること
+- `history.md` に該当テーマの行が追記されること
+- `output/<YYYY-MM-DD>_<theme>.md` に送信本文が保存されること
 
 ---
 
@@ -81,20 +63,20 @@ CONFIG.md のスケジュール表に記載した時刻ごとにタスクを作�
 
    ```markdown
    # テーマ: news
-   
+
    ## 宛先
-   - groupId: C...
-   
+   （省略可。省略時は共通設定のデフォルト宛先groupIdを使用）
+
    ## 調査条件
    ...
-   
+
    ## メッセージフォーマット
    ...
    ```
 
-3. working folder に `news/history.md` を作成する（空ファイルで可）
+3. `history.md` は全テーマ共通のため新規作成不要（初回実行時にそのテーマの行が自動追加される）
 
-4. Cowork に対応するスケジュールタスクを追加する
+4. 対応する Claude Code ルーチンを追加登録する
 
 ---
 
@@ -106,25 +88,26 @@ CONFIG.md のスケジュール表に記載した時刻ごとにタスクを作�
    - LINE Developers コンソールで webhook URL を requestbin などのテスト受信サービスに一時変更
    - グループで一言発言してイベントを受信
    - `source.groupId` を取得後、元の設定に戻す
-4. 取得した groupId を CONFIG.md の該当テーマセクションに記入する
+4. 取得した groupId を CONFIG.md の共通設定（または該当テーマセクション）に記入する
 
 ---
 
 ## 運用上の注意
 
-- Cowork のローカルスケジュールタスクは PC 起動中にのみ実行される。スケジュール時刻に PC が起動している時間帯を選ぶこと
-- `{theme}/history.md` が肥大化しても動作に支障はないが、気になる場合は古い記録を別ファイルに退避する
-- 時刻判定の許容幅は **+0〜+15 分**（遅延のみ許容）。PC スリープ明け等で最大 15 分遅れても正常動作する
+- Claude Code のルーチンは、実行環境（PC・セッション）が起動している時間帯にのみ実行される。スケジュール時刻に環境が起動している時間帯を選ぶこと
+- `history.md` が肥大化しても動作に支障はないが、気になる場合は古い記録を別ファイルに退避する
+- `output/` 配下のファイルも同様に、気になる場合は定期的にアーカイブする
+- 時刻判定の許容幅は **+0〜+15 分**（遅延のみ許容）。スリープ明け等で最大 15 分遅れても正常動作する
 
 ## 変更が起きたときの対応箇所
 
 | やりたいこと | 編集するファイル |
 |---|---|
-| スケジュール時刻を変えたい | CONFIG.md のスケジュール表 + Cowork のタスク設定 |
+| スケジュール時刻を変えたい | CONFIG.md のスケジュール表 + Claude Code のルーチン設定 |
 | テーマの条件を変えたい | CONFIG.md の該当テーマセクション |
-| 宛先グループを変えたい | CONFIG.md の該当テーマの groupId |
+| 宛先グループを変えたい | CONFIG.md の共通設定または該当テーマの groupId |
 | メッセージの見た目を変えたい | CONFIG.md の該当テーマのメッセージフォーマット |
-| テーマを追加・削除したい | CONFIG.md + `{theme}/history.md` + Cowork のタスク |
+| テーマを追加・削除したい | CONFIG.md + Claude Code のルーチン |
 | ロジックを変えたい | SKILL.md |
 | LINE 送信方法を変えたい | scripts/send_line.py |
 | トークンを更新したい | line_config.json |

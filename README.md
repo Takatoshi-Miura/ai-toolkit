@@ -38,10 +38,9 @@ ai-toolkit/
 | 環境管理 | `skill-manager` | プライベートスキル（~/.claude/skills/）の新規作成・更新・セルフチェック | ✅ |
 | ゲーム | `genshin-advisor` | 原神アカウントの公式HoYoLAB APIでキャラ・聖遺物・パーティ編成・深境螺旋などをアドバイス | ✅ |
 
-## Cowork 定期実行スキル一覧
+## 定期実行スキル一覧
 
-Claude Code ではなく **Cowork のスケジューラ** が起動主体のスキル。
-working folder（Cowork 上に作成）が必須で、LINE などへの自動通知に使用する。
+Claude Code のルーチン実行が起動主体のスキル。
 
 | カテゴリ | スキル名 | 説明 |
 |---------|---------|------|
