@@ -30,7 +30,8 @@ except ImportError:
 STATUS_URL   = "https://bbs-api-os.hoyoverse.com/game_record/genshin/api/dailyNote"
 CHAR_LIST_URL   = "https://bbs-api-os.hoyoverse.com/game_record/genshin/api/character/list"
 CHAR_DETAIL_URL = "https://bbs-api-os.hoyoverse.com/game_record/genshin/api/character/detail"
-CACHE_DIR  = Path(".genshin_cache")
+DATA_DIR   = Path(__file__).parent.parent / "data"
+LATEST_FILE = DATA_DIR / "latest.json"
 
 # HoYoLAB の property_type 数値 → 日本語名マッピング
 PROP_TYPE_JP = {
@@ -90,6 +91,23 @@ def score_grade(score):
     if score >= 60:  return "C"
     return "D"
 
+def save_latest(command, uid, result):
+    """取得結果を data/latest.json にコマンド別キーで保存する（毎回上書き）。"""
+    import datetime
+    DATA_DIR.mkdir(exist_ok=True)
+    latest = {}
+    if LATEST_FILE.exists():
+        try:
+            latest = json.loads(LATEST_FILE.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            latest = {}
+    latest[command] = {
+        "uid":         uid,
+        "fetched_at":  datetime.datetime.now().isoformat(timespec="seconds"),
+        "data":        result,
+    }
+    LATEST_FILE.write_text(json.dumps(latest, ensure_ascii=False, indent=2), encoding="utf-8")
+
 # ────────────── allchars (HoYoLAB 全キャラ+聖遺物) ──────────────
 def hoyolab_headers(ltoken, ltuid):
     return {
@@ -124,7 +142,14 @@ def calc_score_hoyolab(sub_list):
         elif pt == 9:  score += v * 0.4    # 防御%
     return round(score, 1)
 
+class FetchError(Exception):
+    """API取得失敗時に投げる例外。message属性にユーザー向けエラー文言を持つ。"""
+    def __init__(self, message):
+        self.message = message
+        super().__init__(message)
+
 def cmd_allchars(uid, ltoken, ltuid):
+    """全キャラ・聖遺物データを取得してdictで返す。失敗時はFetchErrorを投げる。"""
     server  = uid_to_server(uid)
     headers = hoyolab_headers(ltoken, ltuid)
 
@@ -132,12 +157,10 @@ def cmd_allchars(uid, ltoken, ltuid):
     try:
         resp = post_json(CHAR_LIST_URL, {"role_id": str(uid), "server": server}, headers)
     except Exception as e:
-        print(json.dumps({"error": str(e)}, ensure_ascii=False))
-        sys.exit(1)
+        raise FetchError(str(e))
 
     if resp.get("retcode") != 0:
-        print(json.dumps({"error": resp.get("message", "キャラ一覧取得失敗")}, ensure_ascii=False))
-        sys.exit(1)
+        raise FetchError(resp.get("message", "キャラ一覧取得失敗"))
 
     all_chars = resp["data"]["list"]
     char_ids  = [c["id"] for c in all_chars]
@@ -155,11 +178,9 @@ def cmd_allchars(uid, ltoken, ltuid):
                 headers
             )
         except Exception as e:
-            print(json.dumps({"error": str(e)}, ensure_ascii=False))
-            sys.exit(1)
+            raise FetchError(str(e))
         if dr.get("retcode") != 0:
-            print(json.dumps({"error": dr.get("message", "詳細取得失敗")}, ensure_ascii=False))
-            sys.exit(1)
+            raise FetchError(dr.get("message", "詳細取得失敗"))
         for c in dr["data"]["list"]:
             detail_map[c["base"]["id"]] = c
 
@@ -231,10 +252,12 @@ def cmd_allchars(uid, ltoken, ltuid):
         "score_formula":    "会心率×2 + 会心ダメ×1 + 攻撃%×1 + 元素熟知÷4 + チャージ×0.65 + HP%×0.5 + 防御%×0.4",
         "grade_thresholds": "SS≥220 / S≥180 / A≥140 / B≥100 / C≥60 / D<60",
     }
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+    save_latest("allchars", uid, result)
+    return result
 
 # ────────────── status ──────────────
 def cmd_status(uid, ltoken, ltuid):
+    """リアルタイムステータスを取得してdictで返す。失敗時はFetchErrorを投げる。"""
     server = uid_to_server(uid)
     url    = f"{STATUS_URL}?role_id={uid}&server={server}"
     headers = {
@@ -246,13 +269,11 @@ def cmd_status(uid, ltoken, ltuid):
     try:
         resp = fetch_json(url, headers=headers)
     except Exception as e:
-        print(json.dumps({"error": str(e)}, ensure_ascii=False))
-        sys.exit(1)
+        raise FetchError(str(e))
 
     d = resp.get("data")
     if not d:
-        print(json.dumps({"error": resp.get("message", "データ取得失敗")}, ensure_ascii=False))
-        sys.exit(1)
+        raise FetchError(resp.get("message", "データ取得失敗"))
 
     rec_sec  = int(d.get("resin_recovery_time", 0))
     coin_sec = int(d.get("home_coin_recovery_time", 0))
@@ -284,17 +305,18 @@ def cmd_status(uid, ltoken, ltuid):
         },
         "expeditions": expeditions,
     }
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+    save_latest("status", uid, result)
+    return result
 
 # ────────────── 設定ファイル読み込み ──────────────
 def load_config():
     """
-    skills/genshin-advisor/.genshin_config から uid / ltoken_v2 / ltuid_v2 を読み込む。
+    skills/genshin-advisor/references/.genshin_config から uid / ltoken_v2 / ltuid_v2 を読み込む。
     fetch.py は scripts/ に置かれているため、親ディレクトリを探索する。
     """
     import configparser
     config_paths = [
-        _SCRIPT_DIR.parent / ".genshin_config",  # skills/genshin-advisor/.genshin_config
+        _SCRIPT_DIR.parent / "references" / ".genshin_config",  # skills/genshin-advisor/references/.genshin_config
         Path.home() / ".genshin_config",          # ~/.genshin_config（フォールバック）
     ]
     for path in config_paths:
@@ -312,7 +334,7 @@ def load_config():
 # ────────────── エントリポイント ──────────────
 def main():
     parser = argparse.ArgumentParser(description="原神データ取得スクリプト（公式HoYoLAB API）")
-    parser.add_argument("command", choices=["allchars", "status", "help"])
+    parser.add_argument("command", choices=["allchars", "status", "all", "help"])
     parser.add_argument("uid", nargs="?", type=int)
     parser.add_argument("--ltoken", default="")
     parser.add_argument("--ltuid",  default="")
@@ -322,7 +344,8 @@ def main():
         print("使い方:")
         print("  python3 fetch.py allchars [UID] [--ltoken <ltoken_v2>] [--ltuid <ltuid_v2>]")
         print("  python3 fetch.py status   [UID] [--ltoken <ltoken_v2>] [--ltuid <ltuid_v2>]")
-        print("  UID・Cookie省略時は .genshin_config から自動読み込み")
+        print("  python3 fetch.py all      [UID] [--ltoken <ltoken_v2>] [--ltuid <ltuid_v2>]  # allchars+statusを1回で取得")
+        print("  UID・Cookie省略時は references/.genshin_config から自動読み込み")
         return
 
     # 設定ファイルから値を補完（引数で渡された値を優先）
@@ -339,10 +362,21 @@ def main():
         print(json.dumps({"error": "--ltoken / --ltuid が指定されておらず、.genshin_config にも見つかりません"}, ensure_ascii=False))
         sys.exit(1)
 
-    if args.command == "allchars":
-        cmd_allchars(uid, ltoken, ltuid)
-    elif args.command == "status":
-        cmd_status(uid, ltoken, ltuid)
+    try:
+        if args.command == "allchars":
+            result = cmd_allchars(uid, ltoken, ltuid)
+        elif args.command == "status":
+            result = cmd_status(uid, ltoken, ltuid)
+        elif args.command == "all":
+            result = {
+                "allchars": cmd_allchars(uid, ltoken, ltuid),
+                "status":   cmd_status(uid, ltoken, ltuid),
+            }
+    except FetchError as e:
+        print(json.dumps({"error": e.message}, ensure_ascii=False))
+        sys.exit(1)
+
+    print(json.dumps(result, ensure_ascii=False, indent=2))
 
 if __name__ == "__main__":
     main()

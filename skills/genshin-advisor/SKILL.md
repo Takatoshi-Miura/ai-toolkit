@@ -1,15 +1,13 @@
 ---
 name: genshin-advisor
-description: 原神（Genshin Impact）のゲームデータをAPIで取得してClaudeが分析・アドバイスするスキル
-allowed-tools: Bash, Read
+description: 原神（Genshin Impact）のUID・ビルド・聖遺物スコア・パーティ編成・深境螺旋・リアルタイムステータスなどのゲームデータをHoYoLAB APIで取得し、Claudeが分析・アドバイスするスキル
+allowed-tools: Bash, Read, Write, Agent, WebSearch, WebFetch
 user-invocable: true
 ---
 
-# 原神アドバイザースキル（Claude Code版）
+# 原神アドバイザースキル
 
-ユーザーの原神アカウントデータを**公式HoYoLAB API**で取得し、ビルド・聖遺物・パーティ編成・深境螺旋・リアルタイム情報などについて日本語でアドバイスを提供する。
-
-**このスキルはClaude Code環境専用**。外部APIへのネットワークアクセスが必要なため、スクリプトを実行して取得する。
+ユーザーの原神アカウントデータを**公式HoYoLAB API**で取得し、ビルド・聖遺物・パーティ編成・深境螺旋・リアルタイム情報などについて**常に日本語**でアドバイスを提供する。
 
 キャラクター情報・聖遺物情報は**必ず公式HoYoLAB APIのみ使用**する（Enka Network等の非公式APIは使用しない）。
 
@@ -17,15 +15,7 @@ user-invocable: true
 
 ## コマンド一覧
 
-| コマンド | 説明 |
-|---|---|
-| `/genshin build [UID]` | 全所持キャラの聖遺物スコア一覧＋ビルド評価・改善アドバイス |
-| `/genshin party [UID]` | 全所持キャラからパーティ編成を提案 |
-| `/genshin abyss [UID]` | 全所持キャラから深境螺旋向けの編成を提案 |
-| `/genshin status [UID]` | 樹脂・派遣などリアルタイムステータス（要Cookie） |
-| `/genshin help` | コマンド一覧を表示 |
-
-UIDが省略された場合は、会話履歴から取得するか、ユーザーに聞く。
+`/genshin build|party|abyss|status|help [UID]` に対応する。詳細は `references/commands.md` を参照。
 
 ---
 
@@ -33,7 +23,7 @@ UIDが省略された場合は、会話履歴から取得するか、ユーザ�
 
 UID（9桁の数字）と HoYoLAB Cookie（`ltoken_v2` / `ltuid_v2`）が必要。
 
-**設定ファイル自動参照**: `.genshin_config` が存在する場合、UID・Cookie は自動で読み込まれる。引数省略可。
+**設定ファイル自動参照**: `references/.genshin_config` が存在する場合、UID・Cookie は自動で読み込まれる（このディレクトリは非公開のプライベート環境のため実値保存で問題ない）。引数省略可。
 
 **Cookieがない場合**: 取得方法をユーザーに案内する（→ `references/cookie-guide.md` を参照）。
 
@@ -50,89 +40,40 @@ UID（9桁の数字）と HoYoLAB Cookie（`ltoken_v2` / `ltuid_v2`）が必要�
 
 ---
 
-## ステップ2: スクリプトでデータ取得
+## ステップ2: データ取得（毎回最新化）
 
-このスキルディレクトリにある `scripts/fetch.py` を使ってデータを取得する。
-
-### build / party / abyss コマンド（公式API・全キャラ取得）
-
-キャラクター情報・聖遺物情報は必ず `allchars` コマンドを使用する：
+`fetch.py all` で全所持キャラ・聖遺物データとリアルタイムステータスを1回の呼び出しでまとめて取得する。キャッシュは使い回さず毎回APIから取得し、`data/latest.json` に上書き保存する。
 
 ```bash
-# .genshin_config がある場合（推奨）
-python3 scripts/fetch.py allchars
-
-# UID・Cookieを明示する場合
-python3 scripts/fetch.py allchars <UID> --ltoken <ltoken_v2> --ltuid <ltuid_v2>
+python3 scripts/fetch.py all
 ```
 
-`allchars` は HoYoLAB 公式APIで全所持キャラクター（武器・聖遺物・スキルレベル含む）を取得する。
+`references/.genshin_config` からUID・Cookieを自動読み込みする（引数で明示上書きも可能）。`allchars`・`status`が個別に必要な場合はそれぞれ単体コマンドとしても実行できる。
 
-### status コマンド（リアルタイム情報）
+あわせて `references/feedback.md` を読み、過去の評価傾向・プレイスタイルの好みを把握しておく（ステップ3の分析・レポート作成に活かす）。
 
-```bash
-# .genshin_config がある場合（推奨）
-python3 scripts/fetch.py status
-
-# UID・Cookieを明示する場合
-python3 scripts/fetch.py status <UID> --ltoken <ltoken_v2> --ltuid <ltuid_v2>
-```
-
-### スクリプトの出力
-
-`fetch.py` はJSON形式で結果を標準出力に返す。Claudeはこれを受け取って分析・アドバイスを生成する。
+初回実行時は `scripts/translate.py` がキャラ名変換データを `data/.genshin_cache/` にローカルキャッシュする。
 
 ---
 
-## ステップ3: 分析とアドバイス生成
+## ステップ3: 分析・アドバイス草案作成
 
-スクリプトの出力JSONをもとに以下の観点で分析する。詳細は `references/analysis-guide.md` を参照。
-
-### 聖遺物スコア計算式
-
-サブオプションのみを対象に計算：
-
-| サブオプション | 係数 |
-|---|---|
-| 会心率 | × 2.0 |
-| 会心ダメージ | × 1.0 |
-| 攻撃力% | × 1.0 |
-| 元素熟知 | ÷ 4.0 |
-| 元素チャージ効率 | × 0.65 |
-| HP% | × 0.5 |
-| 防御% | × 0.4 |
-
-評価基準: **SS**≥220 / **S**≥180 / **A**≥140 / **B**≥100 / **C**≥60 / **D**<60
-
-### 出力フォーマット
-
-```
-## [キャラ名] のビルド評価
-
-**スコア**: XX.X点（評価: S）
-
-**聖遺物（セット効果は2枚または4枚で発動）**
-| 部位 | スコア | メイン | 注目サブ |
-|---|---|---|---|
-| 花 | XX.X | HP | 会心率X%, 会心ダメX% |
-...
-
-**✅ 良い点**
-- ...
-
-**⚠️ 改善点**
-- ...
-
-**💡 おすすめの方向性**
-- ...
-```
+`data/latest.json` と `references/analysis-guide.md`・`references/feedback.md` をもとに草案を作る。詳細は `WORKFLOW-ADVISE.md` を参照。
 
 ---
 
-## 注意事項
+## ステップ4: サブエージェントレビュー
 
-1. 回答は常に**日本語**で行う
-2. キャラクター・聖遺物データは**公式HoYoLAB API（allchars）のみ**使用する
-3. Enka Network等の非公式APIは使用しない
-4. Cookieはセッション内でのみ使用し、ファイルに保存しない
-5. スクリプトが初回実行時にキャラ名変換データをローカルキャッシュする（`.genshin_cache/` ディレクトリ）
+Agentツールで独立したサブエージェントに草案をレビューさせ、指摘があれば修正して再レビュー（最大3回）。レビュー観点は `WORKFLOW-ADVISE.md` を参照。
+
+---
+
+## ステップ5: レポート出力
+
+確定内容を `output/report_YYYYMMDD_HHMM.md` に保存しつつユーザーに回答する。
+
+---
+
+## ステップ6: フィードバック記録
+
+ユーザーの評価・好みの反応があれば、確認を取ってから `references/feedback.md` に追記する。フォーマットは `WORKFLOW-ADVISE.md` を参照。

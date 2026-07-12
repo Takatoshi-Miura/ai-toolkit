@@ -24,7 +24,7 @@ import argparse
 import urllib.request
 from pathlib import Path
 
-CACHE_DIR  = Path(".genshin_cache")
+CACHE_DIR  = Path(__file__).parent.parent / "data" / ".genshin_cache"
 CHAR_URL   = "https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/characters.json"
 LOC_URL    = "https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/loc.json"
 TABLE_FILE = CACHE_DIR / "zh_to_ja.json"
