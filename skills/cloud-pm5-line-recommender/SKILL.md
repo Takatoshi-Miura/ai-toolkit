@@ -137,11 +137,12 @@ gh pr create --title "chore: cloud-pm5-line-recommender history 更新 ($(date +
   --body "クラウドルーチンによる自動更新（history.md 追記・output 保存）" \
   --base main
 
-gh pr merge --auto --squash
+gh pr merge --auto --squash --delete-branch
 ```
 
 - `git push` / `gh pr create` に失敗した場合はエラーとして明示的に報告する（「history.md の永続化に失敗しました。次回実行時に重複提案の可能性があります」）
 - `gh pr merge --auto` が失敗した場合（ブランチ保護等でマージできない場合）も同様にエラー内容を報告する。この場合 PR 自体は作成済みなので、手動マージが必要な旨を明記する
+- `--delete-branch` により、マージ成功後は使い捨てブランチ（`claude/xxx` 等）がリモートから自動削除される。これによりマージ済みブランチが放置・蓄積されるのを防ぐ
 
 **成功確認**: references/history.md への追記・（送信成功時は）output への保存・PR 作成・main への自動マージが完了した → 完了
 
