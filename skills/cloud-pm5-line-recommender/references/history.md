@@ -35,3 +35,4 @@
 | 2026-07-21 | honeymoon | 南京町(中華街)(兵庫県神戸市) | https://www.nankinmachi.or.jp/ | - |
 | 2026-07-23 | honeymoon | 神戸ポートタワー(兵庫県) | http://www.kobe-port-tower.com/ | - |
 | 2026-07-24 | honeymoon | 北野異人館街(兵庫県神戸市) | https://www.kobeijinkan.com/ | - |
+| 2026-07-25 | honeymoon | - | - | ERROR: outbound network policy denied api.line.me:443 (gateway 403 to CONNECT) |
