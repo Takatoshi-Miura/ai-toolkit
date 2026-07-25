@@ -37,3 +37,4 @@
 | 2026-07-24 | honeymoon | 北野異人館街(兵庫県神戸市) | https://www.kobeijinkan.com/ | - |
 | 2026-07-25 | honeymoon | - | - | ERROR: outbound network policy denied api.line.me:443 (gateway 403 to CONNECT) |
 | 2026-07-25 | honeymoon | 洲本温泉(兵庫県洲本市) | https://sumoto-onsen.com/ | 再送成功 |
+| 2026-07-25 | honeymoon | 須磨離宮公園(兵庫県神戸市須磨区) | https://www.kobe-park.or.jp/rikyu/ | - |
