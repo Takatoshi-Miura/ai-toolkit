@@ -122,19 +122,28 @@ python3 skills/cloud-pm5-line-recommender/scripts/send_line.py "<本文>" "$LINE
 
 送信成功時のみ、送信した本文をそのまま `output/<YYYY-MM-DD>_honeymoon.md` に保存する（送信失敗時は保存しない）。
 
-### 5-3. git commit & push
+### 5-3. git commit & push・PR作成・自動マージ
 
-references/history.md（および送信成功時は output/ の新規ファイル）を commit し、push する：
+references/history.md（および送信成功時は output/ の新規ファイル）を専用ブランチで commit し、PR 作成後に main へ自動マージする。
+
+**注意**: クラウド実行環境は毎回新しい使い捨てブランチ（`claude/xxx` 等）で作業する。このブランチのまま `git push` するだけでは main に反映されず、次回実行時に history.md の更新内容を参照できない（重複提案の原因になる）。必ず PR 作成・マージまで行うこと。
 
 ```bash
 git add skills/cloud-pm5-line-recommender/references/history.md skills/cloud-pm5-line-recommender/output/
 git commit -m "chore: cloud-pm5-line-recommender history 更新 ($(date +%Y-%m-%d))"
-git push
+git push origin HEAD
+
+gh pr create --title "chore: cloud-pm5-line-recommender history 更新 ($(date +%Y-%m-%d))" \
+  --body "クラウドルーチンによる自動更新（history.md 追記・output 保存）" \
+  --base main
+
+gh pr merge --auto --squash
 ```
 
-push に失敗した場合はエラーとして明示的に報告する（「history.md の永続化に失敗しました。次回実行時に重複提案の可能性があります」）。
+- `git push` / `gh pr create` に失敗した場合はエラーとして明示的に報告する（「history.md の永続化に失敗しました。次回実行時に重複提案の可能性があります」）
+- `gh pr merge --auto` が失敗した場合（ブランチ保護等でマージできない場合）も同様にエラー内容を報告する。この場合 PR 自体は作成済みなので、手動マージが必要な旨を明記する
 
-**成功確認**: references/history.md への追記・（送信成功時は）output への保存・git push が完了した → 完了
+**成功確認**: references/history.md への追記・（送信成功時は）output への保存・PR 作成・main への自動マージが完了した → 完了
 
 ---
 
@@ -146,7 +155,9 @@ push に失敗した場合はエラーとして明示的に報告する（「his
 | HTTPError 401 / 403 | `LINE_CHANNEL_ACCESS_TOKEN` を確認・更新 |
 | HTTPError 400 (invalid group ID) | `LINE_GROUP_ID` が正しいか確認 |
 | 候補が除外後に 0 件 | references/history.md の内容を確認し、古い記録のアーカイブを検討 |
+| `outbound network policy denied api.line.me:443` | クラウド環境のネットワークアクセス設定で `api.line.me` への発信が許可されていない。環境のネットワークポリシー設定でアクセスを許可する |
 | git push 失敗 | クラウドルーチンの環境にリポジトリへの書き込み権限があるか確認 |
+| `gh pr create` / `gh pr merge --auto` 失敗 | PR は作成済みだが自動マージできない場合がある（ブランチ保護等）。手動マージが必要な旨を報告する |
 
 ## 出力形式
 
