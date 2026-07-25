@@ -36,3 +36,4 @@
 | 2026-07-23 | honeymoon | 神戸ポートタワー(兵庫県) | http://www.kobe-port-tower.com/ | - |
 | 2026-07-24 | honeymoon | 北野異人館街(兵庫県神戸市) | https://www.kobeijinkan.com/ | - |
 | 2026-07-25 | honeymoon | - | - | ERROR: outbound network policy denied api.line.me:443 (gateway 403 to CONNECT) |
+| 2026-07-25 | honeymoon | 洲本温泉(兵庫県洲本市) | https://sumoto-onsen.com/ | 再送成功 |
