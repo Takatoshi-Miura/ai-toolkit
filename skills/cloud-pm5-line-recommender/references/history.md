@@ -38,3 +38,4 @@
 | 2026-07-25 | honeymoon | - | - | ERROR: outbound network policy denied api.line.me:443 (gateway 403 to CONNECT) |
 | 2026-07-25 | honeymoon | 洲本温泉(兵庫県洲本市) | https://sumoto-onsen.com/ | 再送成功 |
 | 2026-07-25 | honeymoon | 須磨離宮公園(兵庫県神戸市須磨区) | https://www.kobe-park.or.jp/rikyu/ | - |
+| 2026-07-26 | honeymoon | 洲本城跡(兵庫県洲本市) | https://awajikanko.com/sumotocastle/ | - |
