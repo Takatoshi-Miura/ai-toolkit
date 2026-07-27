@@ -39,3 +39,4 @@
 | 2026-07-25 | honeymoon | 洲本温泉(兵庫県洲本市) | https://sumoto-onsen.com/ | 再送成功 |
 | 2026-07-25 | honeymoon | 須磨離宮公園(兵庫県神戸市須磨区) | https://www.kobe-park.or.jp/rikyu/ | - |
 | 2026-07-26 | honeymoon | 洲本城跡(兵庫県洲本市) | https://awajikanko.com/sumotocastle/ | - |
+| 2026-07-27 | honeymoon | 兵庫県立淡路島公園(兵庫県淡路市) | https://www.hyogo-park.or.jp/awajishima/ | - |
