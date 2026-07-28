@@ -40,3 +40,4 @@
 | 2026-07-25 | honeymoon | 須磨離宮公園(兵庫県神戸市須磨区) | https://www.kobe-park.or.jp/rikyu/ | - |
 | 2026-07-26 | honeymoon | 洲本城跡(兵庫県洲本市) | https://awajikanko.com/sumotocastle/ | - |
 | 2026-07-27 | honeymoon | 兵庫県立淡路島公園(兵庫県淡路市) | https://www.hyogo-park.or.jp/awajishima/ | - |
+| 2026-07-28 | honeymoon | - | - | ERROR: HTTPError: 500 Internal Server Error（LINE API側の一時的な障害の可能性） |
