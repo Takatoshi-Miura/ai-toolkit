@@ -42,3 +42,4 @@
 | 2026-07-27 | honeymoon | 兵庫県立淡路島公園(兵庫県淡路市) | https://www.hyogo-park.or.jp/awajishima/ | - |
 | 2026-07-28 | honeymoon | - | - | ERROR: HTTPError: 500 Internal Server Error（LINE API側の一時的な障害の可能性） |
 | 2026-07-28 | honeymoon | 相楽園(兵庫県神戸市) | https://sorakuen.com/ | 再送成功 |
+| 2026-07-29 | honeymoon | 旧居留地(兵庫県神戸市中央区) | https://www.city.kobe.lg.jp/a30028/shise/kekaku/jutakutoshikyoku/scene/11_night/38_kyoryuchi.html | - |
