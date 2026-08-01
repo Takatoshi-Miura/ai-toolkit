@@ -45,3 +45,4 @@
 | 2026-07-29 | honeymoon | 旧居留地(兵庫県神戸市中央区) | https://www.city.kobe.lg.jp/a30028/shise/kekaku/jutakutoshikyoku/scene/11_night/38_kyoryuchi.html | - |
 | 2026-07-30 | honeymoon | 生田神社(兵庫県神戸市) | https://ikutajinja.or.jp/ | - |
 | 2026-07-31 | honeymoon | 明石公園・明石城(兵庫県明石市) | https://hyogo-akashipark.jp/ | - |
+| 2026-08-01 | honeymoon | 伊弉諾神宮(兵庫県淡路市) | https://www.awajishima-kanko.jp/manual/detail.html?bid=448 | - |
