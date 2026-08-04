@@ -48,3 +48,4 @@
 | 2026-08-01 | honeymoon | 伊弉諾神宮(兵庫県淡路市) | https://www.awajishima-kanko.jp/manual/detail.html?bid=448 | - |
 | 2026-08-02 | honeymoon | フェリシモチョコレートミュージアム(兵庫県神戸市) | https://www.felissimo.co.jp/chocolatemuseum/ | - |
 | 2026-08-03 | honeymoon | 王子動物園(兵庫県神戸市灘区) | https://www.kobe-ojizoo.jp/ | - |
+| 2026-08-04 | honeymoon | あわじグリーン館(兵庫県淡路市) | https://awaji-botanicalgarden.com/ | - |
