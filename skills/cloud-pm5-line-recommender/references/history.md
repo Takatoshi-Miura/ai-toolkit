@@ -52,3 +52,4 @@
 | 2026-08-05 | honeymoon | 瑞宝寺公園(兵庫県神戸市北区) | https://www.arima-onsen.com/pickup/21/522/ | - |
 | 2026-08-06 | honeymoon | 浅野公園(兵庫県淡路市) | https://www.awajishima-kanko.jp/manual/detail.html?bid=382 | - |
 | 2026-08-07 | honeymoon | 布引の滝(兵庫県神戸市中央区) | https://www.feel-kobe.jp/facilities/0000000093/ | - |
+| 2026-08-08 | honeymoon | のじまスコーラ(兵庫県淡路市) | https://nojima-scuola.com/ | - |
