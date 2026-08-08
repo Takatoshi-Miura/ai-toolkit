@@ -143,8 +143,22 @@ gh pr merge --auto --squash --delete-branch
 - `git push` / `gh pr create` に失敗した場合はエラーとして明示的に報告する（「history.md の永続化に失敗しました。次回実行時に重複提案の可能性があります」）
 - `gh pr merge --auto` が失敗した場合（ブランチ保護等でマージできない場合）も同様にエラー内容を報告する。この場合 PR 自体は作成済みなので、手動マージが必要な旨を明記する
 - `--delete-branch` により、マージ成功後は使い捨てブランチ（`claude/xxx` 等）がリモートから自動削除される。これによりマージ済みブランチが放置・蓄積されるのを防ぐ
+- `gh` CLI が使えない実行環境（GitHub MCP サーバー経由でのみ操作可能な場合）では、`gh pr create` の代わりに `mcp__github__create_pull_request`、`gh pr merge --auto` の代わりに `mcp__github__merge_pull_request`（`mergeable_state` が `clean` であることを確認したうえで直接マージ）を使う。MCP 側にはリモートブランチ削除に相当するツールが無いため、リモートブランチが残る場合がある
 
-**成功確認**: references/history.md への追記・（送信成功時は）output への保存・PR 作成・main への自動マージが完了した → 完了
+### 5-4. ローカルブランチの削除
+
+マージ成功後、作業していたローカルブランチ（`claude/xxx` 等）を必ず削除する。使い捨てのクラウド実行環境でもセッションが継続する限りローカルにブランチが残り続けるため、放置しない。
+
+```bash
+git checkout main
+git merge --ff-only origin/main
+git branch -D <作業ブランチ名>
+```
+
+- squash マージのため、ローカルの作業ブランチのコミットと main 上のマージコミットは一致しない。`git branch -d`（小文字）は「未マージ」と判定されて拒否されるため、PR がマージ済みであることを確認した上で `-D`（大文字・強制）を使うこと
+- リモートブランチが `git push` / `gh pr merge --delete-branch` 等で既に削除されている場合、`git fetch --prune` で追跡情報を同期してから削除するとよい
+
+**成功確認**: references/history.md への追記・（送信成功時は）output への保存・PR 作成・main への自動マージ・ローカルブランチの削除が完了した → 完了
 
 ---
 
