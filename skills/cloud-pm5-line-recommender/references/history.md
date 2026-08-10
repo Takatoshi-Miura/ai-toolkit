@@ -54,3 +54,4 @@
 | 2026-08-07 | honeymoon | 布引の滝(兵庫県神戸市中央区) | https://www.feel-kobe.jp/facilities/0000000093/ | - |
 | 2026-08-08 | honeymoon | のじまスコーラ(兵庫県淡路市) | https://nojima-scuola.com/ | - |
 | 2026-08-09 | honeymoon | 神戸市役所1号館24階展望ロビー(兵庫県神戸市中央区) | https://www.city.kobe.lg.jp/a28956/shise/about/building/24kai_lobby.html | - |
+| 2026-08-10 | honeymoon | アクアイグニス淡路島(兵庫県淡路市) | https://aquaignis-awaji.jp/ | - |
