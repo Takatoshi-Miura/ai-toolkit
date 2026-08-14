@@ -58,3 +58,4 @@
 | 2026-08-11 | honeymoon | 神戸市立博物館(兵庫県神戸市中央区) | https://www.feel-kobe.jp/facilities/0000000078/ | - |
 | 2026-08-12 | honeymoon | 先山千光寺(淡路富士)(兵庫県洲本市) | https://www.awajishima-kanko.jp/manual/detail.html?bid=235 | - |
 | 2026-08-13 | honeymoon | 五斗長垣内遺跡(兵庫県淡路市) | https://www.city.awaji.lg.jp/soshiki/shakai/35134.html | - |
+| 2026-08-14 | honeymoon | 兵庫県立美術館・なぎさ公園(兵庫県神戸市中央区) | https://www.artm.pref.hyogo.jp/ | - |
