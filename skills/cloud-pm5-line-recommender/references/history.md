@@ -60,3 +60,4 @@
 | 2026-08-13 | honeymoon | 五斗長垣内遺跡(兵庫県淡路市) | https://www.city.awaji.lg.jp/soshiki/shakai/35134.html | - |
 | 2026-08-14 | honeymoon | 兵庫県立美術館・なぎさ公園(兵庫県神戸市中央区) | https://www.artm.pref.hyogo.jp/ | - |
 | 2026-08-15 | honeymoon | 美湯 松帆の郷(兵庫県淡路市) | https://matsuho.com/spa/ | - |
+| 2026-08-16 | honeymoon | 須磨浦山上遊園(兵庫県神戸市須磨区) | https://www.sumaura-yuen.jp/ | - |
