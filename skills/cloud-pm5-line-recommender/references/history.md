@@ -62,3 +62,4 @@
 | 2026-08-15 | honeymoon | 美湯 松帆の郷(兵庫県淡路市) | https://matsuho.com/spa/ | - |
 | 2026-08-16 | honeymoon | 須磨浦山上遊園(兵庫県神戸市須磨区) | https://www.sumaura-yuen.jp/ | - |
 | 2026-08-17 | honeymoon | THE KOBE CRUISE コンチェルト ナイトディナークルーズ(兵庫県神戸市) | https://thekobecruise.com/concerto/ | - |
+| 2026-08-18 | honeymoon | 神戸港震災メモリアルパーク(兵庫県神戸市) | https://www.city.kobe.lg.jp/z/kowankyoku/kanko/leisure/harbor/kankou/memorialpark.html | - |
