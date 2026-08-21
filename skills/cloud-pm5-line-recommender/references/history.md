@@ -65,3 +65,4 @@
 | 2026-08-18 | honeymoon | 神戸港震災メモリアルパーク(兵庫県神戸市) | https://www.city.kobe.lg.jp/z/kowankyoku/kanko/leisure/harbor/kankou/memorialpark.html | - |
 | 2026-08-19 | honeymoon | デザイン・クリエイティブセンター神戸(KIITO)(兵庫県神戸市) | https://kiito.jp/ | - |
 | 2026-08-20 | honeymoon | 太山寺(兵庫県神戸市西区) | https://www.feel-kobe.jp/facilities/0000000150/ | - |
+| 2026-08-21 | honeymoon | 竹中大工道具館(兵庫県神戸市中央区) | https://www.dougukan.jp/ | - |
