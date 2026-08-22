@@ -66,3 +66,4 @@
 | 2026-08-19 | honeymoon | デザイン・クリエイティブセンター神戸(KIITO)(兵庫県神戸市) | https://kiito.jp/ | - |
 | 2026-08-20 | honeymoon | 太山寺(兵庫県神戸市西区) | https://www.feel-kobe.jp/facilities/0000000150/ | - |
 | 2026-08-21 | honeymoon | 竹中大工道具館(兵庫県神戸市中央区) | https://www.dougukan.jp/ | - |
+| 2026-08-22 | honeymoon | ヴィーナスブリッジ(兵庫県神戸市中央区) | https://www.feel-kobe.jp/facilities/0000000091/ | - |
