@@ -68,3 +68,4 @@
 | 2026-08-21 | honeymoon | 竹中大工道具館(兵庫県神戸市中央区) | https://www.dougukan.jp/ | - |
 | 2026-08-22 | honeymoon | ヴィーナスブリッジ(兵庫県神戸市中央区) | https://www.feel-kobe.jp/facilities/0000000091/ | - |
 | 2026-08-23 | honeymoon | 大蔵海岸公園(兵庫県明石市) | https://www.okura-beach.jp/ | - |
+| 2026-08-24 | honeymoon | UCCコーヒー博物館(兵庫県神戸市中央区) | https://www.ucc.co.jp/museum/ | - |
