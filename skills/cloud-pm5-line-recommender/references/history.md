@@ -70,3 +70,4 @@
 | 2026-08-23 | honeymoon | 大蔵海岸公園(兵庫県明石市) | https://www.okura-beach.jp/ | - |
 | 2026-08-24 | honeymoon | UCCコーヒー博物館(兵庫県神戸市中央区) | https://www.ucc.co.jp/museum/ | - |
 | 2026-08-25 | honeymoon | 東遊園地・こども本の森 神戸(兵庫県神戸市中央区) | https://kodomohonnomori-kobe.jp/ | - |
+| 2026-08-26 | honeymoon | 大本山須磨寺(兵庫県神戸市須磨区) | https://www.sumadera.or.jp/ | - |
