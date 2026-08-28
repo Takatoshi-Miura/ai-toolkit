@@ -72,3 +72,4 @@
 | 2026-08-25 | honeymoon | 東遊園地・こども本の森 神戸(兵庫県神戸市中央区) | https://kodomohonnomori-kobe.jp/ | - |
 | 2026-08-26 | honeymoon | 大本山須磨寺(兵庫県神戸市須磨区) | https://www.sumadera.or.jp/ | - |
 | 2026-08-27 | honeymoon | 塩屋レトロタウン散策・旧グッゲンハイム邸(兵庫県神戸市垂水区) | https://nedogu.com/ | - |
+| 2026-08-28 | honeymoon | 淡路ハイウェイオアシス(兵庫県淡路市) | https://www.awajishimahighwayoasis.com/ | - |
