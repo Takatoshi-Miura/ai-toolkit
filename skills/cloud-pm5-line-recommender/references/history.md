@@ -73,3 +73,4 @@
 | 2026-08-26 | honeymoon | 大本山須磨寺(兵庫県神戸市須磨区) | https://www.sumadera.or.jp/ | - |
 | 2026-08-27 | honeymoon | 塩屋レトロタウン散策・旧グッゲンハイム邸(兵庫県神戸市垂水区) | https://nedogu.com/ | - |
 | 2026-08-28 | honeymoon | 淡路ハイウェイオアシス(兵庫県淡路市) | https://www.awajishimahighwayoasis.com/ | - |
+| 2026-08-29 | honeymoon | ドラゴンクエスト記念碑・S BRICK(兵庫県洲本市) | https://awajikanko.com/dragonquest/ | - |
