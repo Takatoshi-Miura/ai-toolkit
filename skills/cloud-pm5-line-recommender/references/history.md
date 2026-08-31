@@ -75,3 +75,4 @@
 | 2026-08-28 | honeymoon | 淡路ハイウェイオアシス(兵庫県淡路市) | https://www.awajishimahighwayoasis.com/ | - |
 | 2026-08-29 | honeymoon | ドラゴンクエスト記念碑・S BRICK(兵庫県洲本市) | https://awajikanko.com/dragonquest/ | - |
 | 2026-08-30 | honeymoon | 幸せのパンケーキ 淡路島テラス(兵庫県淡路市) | https://www.awajishima-kanko.jp/manual/detail.html?bid=925 | - |
+| 2026-08-31 | honeymoon | 道の駅あわじ(兵庫県淡路市) | https://www.awajishima-kanko.jp/manual/detail.html?bid=424 | - |
