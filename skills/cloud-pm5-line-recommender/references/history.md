@@ -79,3 +79,4 @@
 | 2026-09-01 | honeymoon | 白鶴酒造資料館(兵庫県神戸市東灘区) | https://www.hakutsuru.co.jp/community/shiryo/ | - |
 | 2026-09-02 | honeymoon | 淡路人形座(兵庫県南あわじ市) | https://awajiningyoza.com/ | - |
 | 2026-09-03 | honeymoon | 神戸みなと温泉 蓮(兵庫県神戸市中央区) | https://ren-onsen.jp/ | - |
+| 2026-09-04 | honeymoon | バンドー神戸青少年科学館(兵庫県神戸市中央区) | https://www.kobe-kagakukan.jp/ | - |
