@@ -80,3 +80,4 @@
 | 2026-09-02 | honeymoon | 淡路人形座(兵庫県南あわじ市) | https://awajiningyoza.com/ | - |
 | 2026-09-03 | honeymoon | 神戸みなと温泉 蓮(兵庫県神戸市中央区) | https://ren-onsen.jp/ | - |
 | 2026-09-04 | honeymoon | バンドー神戸青少年科学館(兵庫県神戸市中央区) | https://www.kobe-kagakukan.jp/ | - |
+| 2026-09-05 | honeymoon | 神戸酒心館(福寿)(兵庫県神戸市東灘区) | https://www.shushinkan.co.jp/ | - |
