@@ -82,3 +82,4 @@
 | 2026-09-04 | honeymoon | バンドー神戸青少年科学館(兵庫県神戸市中央区) | https://www.kobe-kagakukan.jp/ | - |
 | 2026-09-05 | honeymoon | 神戸酒心館(福寿)(兵庫県神戸市東灘区) | https://www.shushinkan.co.jp/ | - |
 | 2026-09-06 | honeymoon | 三井アウトレットパーク マリンピア神戸(兵庫県神戸市垂水区) | https://mitsui-shopping-park.com/mop/kobe/ | - |
+| 2026-09-07 | honeymoon | MYBEAR STUDIO 淡路島(兵庫県南あわじ市) | https://mybearstudio-awaji.com/ | - |
