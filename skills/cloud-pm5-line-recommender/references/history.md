@@ -85,3 +85,4 @@
 | 2026-09-07 | honeymoon | MYBEAR STUDIO 淡路島(兵庫県南あわじ市) | https://mybearstudio-awaji.com/ | - |
 | 2026-09-08 | honeymoon | 淡路サービスエリア(下り線) 大観覧車(兵庫県淡路市) | http://awaji-kanransya.com/ | - |
 | 2026-09-09 | honeymoon | 小磯記念美術館(兵庫県神戸市東灘区) | https://www.city.kobe.lg.jp/koisomuseum/ | - |
+| 2026-09-10 | honeymoon | 北淡震災記念公園・野島断層保存館(兵庫県淡路市) | https://www.nojima-danso.co.jp/ | - |
