@@ -87,3 +87,4 @@
 | 2026-09-09 | honeymoon | 小磯記念美術館(兵庫県神戸市東灘区) | https://www.city.kobe.lg.jp/koisomuseum/ | - |
 | 2026-09-10 | honeymoon | 北淡震災記念公園・野島断層保存館(兵庫県淡路市) | https://www.nojima-danso.co.jp/ | - |
 | 2026-09-11 | honeymoon | 淡路島タコステ(兵庫県淡路市) | https://tacosute.com/ | - |
+| 2026-09-12 | honeymoon | 淡路島モンキーセンター(兵庫県洲本市) | https://www.awajishima-kanko.jp/manual/detail.html?bid=100 | - |
