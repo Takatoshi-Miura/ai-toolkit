@@ -89,3 +89,4 @@
 | 2026-09-11 | honeymoon | 淡路島タコステ(兵庫県淡路市) | https://tacosute.com/ | - |
 | 2026-09-12 | honeymoon | 淡路島モンキーセンター(兵庫県洲本市) | https://www.awajishima-kanko.jp/manual/detail.html?bid=100 | - |
 | 2026-09-13 | honeymoon | HELLO KITTY SMILE(兵庫県淡路市) | https://awaji-resort.com/hellokittysmile/ | - |
+| 2026-09-14 | honeymoon | 神戸ハーバーランド「KOBE UMIAKARI」イルミネーション(兵庫県神戸市) | https://www.feel-kobe.jp/event/29808/ | - |
