@@ -95,3 +95,4 @@
 | 2026-09-17 | honeymoon | TOTTEI PARK(兵庫県神戸市中央区) | https://www.totteikobe.jp/about_totteipark | - |
 | 2026-09-18 | honeymoon | 新港第1突堤緑地(兵庫県神戸市中央区) | https://www.city.kobe.lg.jp/a42810/kanko/leisure/harbor/kankou/park/park-1.html | - |
 | 2026-09-19 | honeymoon | 神戸空港 展望デッキ「マリンエア」(兵庫県) | https://www.kairport.co.jp/service/information/view-deck | - |
+| 2026-09-20 | honeymoon | 孫文記念館(移情閣)(兵庫県神戸市) | https://hyogo-maikopark.jp/facility/f04/ | - |
