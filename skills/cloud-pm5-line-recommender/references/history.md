@@ -97,3 +97,4 @@
 | 2026-09-19 | honeymoon | 神戸空港 展望デッキ「マリンエア」(兵庫県) | https://www.kairport.co.jp/service/information/view-deck | - |
 | 2026-09-20 | honeymoon | 孫文記念館(移情閣)(兵庫県神戸市) | https://hyogo-maikopark.jp/facility/f04/ | - |
 | 2026-09-21 | honeymoon | 湊川神社(兵庫県神戸市中央区) | https://www.minatogawajinja.or.jp/ | - |
+| 2026-09-22 | honeymoon | おのころ島神社(兵庫県南あわじ市) | https://www.awajishima-kanko.jp/manual/detail.html?bid=104 | - |
