@@ -100,3 +100,4 @@
 | 2026-09-22 | honeymoon | おのころ島神社(兵庫県南あわじ市) | https://www.awajishima-kanko.jp/manual/detail.html?bid=104 | - |
 | 2026-09-23 | honeymoon | 神戸市立六甲山牧場(兵庫県神戸市灘区) | https://rokkosan.jp/ | - |
 | 2026-09-24 | honeymoon | 道の駅うずしお(兵庫県南あわじ市) | https://eki.uzunokuni.com/ | - |
+| 2026-09-25 | honeymoon | 兵庫津ミュージアム(兵庫県神戸市兵庫区) | https://hyogo-no-tsu.jp/ | - |
