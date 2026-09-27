@@ -102,3 +102,4 @@
 | 2026-09-24 | honeymoon | 道の駅うずしお(兵庫県南あわじ市) | https://eki.uzunokuni.com/ | - |
 | 2026-09-25 | honeymoon | 兵庫津ミュージアム(兵庫県神戸市兵庫区) | https://hyogo-no-tsu.jp/ | - |
 | 2026-09-26 | honeymoon | 奥須磨公園(兵庫県神戸市須磨区) | https://www.kobe-park.or.jp/park/okusuma/ | - |
+| 2026-09-27 | honeymoon | 能福寺・兵庫大仏(兵庫県神戸市兵庫区) | https://nofukuji.jp/ | - |
