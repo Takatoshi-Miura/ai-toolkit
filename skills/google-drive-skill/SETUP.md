@@ -4,12 +4,9 @@
 
 このスキルはGoogle Drive APIを使用するPythonスクリプトを含んでいます。
 
-## 認証の共有について
+## 認証ファイルについて
 
-このスキルは `generate-test-item-skill` と認証設定を共有する。
-既にセットアップ済みの場合、追加の認証設定は不要。
-
-**共有される認証ファイル**:
+**認証ファイル**:
 - `~/.config/google-drive-skills/client_secret.json`
 - `~/.config/google-drive-skills/token.json`
 

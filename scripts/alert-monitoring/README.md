@@ -61,7 +61,7 @@ print(json.dumps({
 
 ### 4. Slack App の設定
 
-既存の Slack App（slack-message-router と共有）の Bot Token を使用。
+既存の Slack App の Bot Token を使用。
 必要なスコープ: `chat:write`
 
 ## 使い方

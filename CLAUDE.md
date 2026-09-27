@@ -8,10 +8,8 @@
 ai-toolkit/
 ├── .claude/           # Claude Code ローカル設定（settings.local.json等）
 ├── .github/workflows/ # GitHub Actions ワークフロー（定期実行タスク用）
-├── agents/            # Task tool用サブエージェント定義
 ├── output-style/      # 出力スタイル設定（キャラクター別応答スタイル）
 ├── scripts/           # 自動化スクリプト（Python等）
-├── statusline/        # ステータスライン表示スクリプト（~/.claude/statusline.cjsに同期）
 └── skills/            # Skills定義（自動起動プロンプト）
 ```
 
@@ -19,15 +17,7 @@ ai-toolkit/
 
 ### 命名規則
 
-- エージェント: `agents/<name>.md`（kebab-case）
 - スキル: `skills/<name>/SKILL.md`（kebab-case）
-
-### 責務分離の判断基準
-
-| リソース | 用途 | 判断基準 |
-|---------|------|----------|
-| **Skill** | 自動発動のドメイン知識・ワークフロー | Claudeが文脈から自動判断して適用すべきもの |
-| **エージェント** | Task toolから委譲される専門タスク | 独立したコンテキストで実行すべきもの |
 
 ## プロンプト記述ルール
 

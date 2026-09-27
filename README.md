@@ -13,10 +13,8 @@ ai-toolkit/
 ├── .github/
 │   └── workflows/     <- GitHub Actions ワークフロー定義
 ├── skills/            <- Claude Code Skills（自動発動する専門スキル）
-├── agents/            <- サブエージェント関連の定義や設定
 ├── output-style/      <- Claude Codeの出力スタイル設定（キャラクター別応答スタイル）
 ├── scripts/           <- 自動化スクリプト（Python等）
-├── statusline/        <- Claude Codeステータスライン表示スクリプト（~/.claude/に同期）
 └── README.md          <- このファイル
 ```
 
@@ -27,16 +25,7 @@ ai-toolkit/
 | 外部連携 | `google-drive-skill` | Google Drive（Sheets/Docs/Slides）の読み書き（値挿入・シート作成・セル結合・行列操作など） | ✅ |
 | 外部連携 | `redmine-skill` | RedmineチケットURLからチケット詳細を取得・参照 | ✅ |
 | 外部連携 | `github-skill` | Issue・PR・強制プッシュなどGitHub/Git操作全般 | ✅ |
-| 自動化基盤 | `slack-message-router` | SlackメッセージをSocket Modeで監視し、キーワードに基づいてClaude Codeスキルにルーティング | ❌ |
-| 開発 | `coding` | モバイルアプリ・MCP開発・SportsNote iOS・OpenSpecプロポーザル作成・FE開発のオーケストレーター | ❌ |
-| 開発 | `generate-test-item-skill` | 因子水準の全組み合わせからテスト項目書をスプレッドシートに自動生成 | ❌ |
-| 開発 | `review-skill` | GitHub PRレビュー（Android/汎用を自動判定）とGoogle Drive資料レビュー | ✅ |
-| 開発 | `dev-tools` | AndroidデバイスへのAPKインストール、PDFからの画像抽出などの開発効率化ツール群 | ❌ |
-| 内省・分析 | `retrospective` | LifeGraph・日次記録・金銭データを分析して週次/月次レポートを作成 | ❌ |
-| 内省・分析 | `claude-session-log-to-rules` | セッションログ全プロジェクト横断でフィードバック・指示・承認を抽出し、ルールファイルへの反映を提案 | ❌ |
-| 環境管理 | `homebrew` | Homebrewの更新・追加・削除・App Store移行・Mac環境移行を統括 | ✅ |
 | 環境管理 | `skill-manager` | プライベートスキル（~/.claude/skills/）の新規作成・更新・セルフチェック | ✅ |
-| ゲーム | `genshin-advisor` | 原神アカウントの公式HoYoLAB APIでキャラ・聖遺物・パーティ編成・深境螺旋などをアドバイス | ✅ |
 
 ## 定期実行スキル一覧
 
@@ -52,10 +41,4 @@ Claude Code のルーチン実行が起動主体のスキル。
 | 開発 | `sportsnote-android-full-cycle` | `sportsnote-android-maintainer`の3フローを1回ずつ直列実行するオーケストレーター |
 
 > セットアップ手順は各スキルの `SETUP.md` を参照。
-
-## サブエージェント一覧
-
-| カテゴリ | エージェント名 | 説明 |
-|---------|--------------|------|
-| テスト | `test-item-writer` | テスト項目書をスプレッドシートに書き込む |
 

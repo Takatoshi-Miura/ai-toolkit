@@ -42,7 +42,6 @@ SportsNote iOSの開発・保守に関する3つのフローを提供する。�
 - **無人実行前提**: AskUserQuestionは使用しない。各WORKFLOWの成果物（doc更新・issue作成・PR作成）はユーザー承認を待たずに確定する
 - **単一情報源**: `references/review-insights.md`（レビュー観点ナレッジ）と `input/feedback.md`（ユーザーフィードバック）は全フロー共通で参照・蓄積する
 - **独立性**: 3フローはローカルルーチンから個別に呼ばれるため、各WORKFLOWは他フローが未実行でも単独で完走できる
-- **他スキルとの関係**: `~/.claude/skills/coding/WORKFLOW-SPORTSNOTE.md`（ユーザー対話型・単発実装依頼用）とは完全に独立している。ファイルの参照・importは行わない
 
 ## 対象リポジトリ
 

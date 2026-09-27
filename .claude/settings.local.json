@@ -11,8 +11,6 @@
       "Bash(cat:*)",
       "Bash(grep:*)",
       "Bash(ls:*)",
-      "Skill(retrospective-claude-usage-daily)",
-      "Skill(retrospective-claude-usage-daily:*)",
       "Bash(npm run auto-auth:google-drive:*)",
       "Bash(npm run:*)",
       "Bash(python3:*)",
