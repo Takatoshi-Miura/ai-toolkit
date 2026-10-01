@@ -106,3 +106,4 @@
 | 2026-09-28 | honeymoon | 再度公園(兵庫県神戸市北区) | https://www.city.kobe.lg.jp/a17526/kurashi/machizukuri/park/intoro/kobepark/futatabi.html | - |
 | 2026-09-29 | honeymoon | 神戸クリスタル80(兵庫県神戸市中央区) | http://kobecrystal80.com/ | - |
 | 2026-09-30 | honeymoon | 神戸ハーバーランド温泉 万葉倶楽部(兵庫県神戸市中央区) | https://www.manyo.co.jp/kobe/ | - |
+| 2026-10-01 | honeymoon | 諏訪山公園・金星台(兵庫県神戸市中央区) | https://www.kobe-park.or.jp/meisho/wp/%e8%ab%8f%e8%a8%aa%e5%b1%b1%e5%85%ac%e5%9c%92/ | - |
