@@ -109,3 +109,4 @@
 | 2026-10-01 | honeymoon | 諏訪山公園・金星台(兵庫県神戸市中央区) | https://www.kobe-park.or.jp/meisho/wp/%e8%ab%8f%e8%a8%aa%e5%b1%b1%e5%85%ac%e5%9c%92/ | - |
 | 2026-10-02 | honeymoon | 横尾忠則現代美術館(兵庫県神戸市灘区) | https://ytmoca.jp/ | - |
 | 2026-10-03 | honeymoon | 元町高架通商店街(モトコー)(兵庫県神戸市中央区) | https://ichibankobe.com/ja/motokoh/ | - |
+| 2026-10-04 | honeymoon | 六甲有馬ロープウェー(兵庫県神戸市) | https://koberope.jp/rokko | - |
