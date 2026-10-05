@@ -110,3 +110,4 @@
 | 2026-10-02 | honeymoon | 横尾忠則現代美術館(兵庫県神戸市灘区) | https://ytmoca.jp/ | - |
 | 2026-10-03 | honeymoon | 元町高架通商店街(モトコー)(兵庫県神戸市中央区) | https://ichibankobe.com/ja/motokoh/ | - |
 | 2026-10-04 | honeymoon | 六甲有馬ロープウェー(兵庫県神戸市) | https://koberope.jp/rokko | - |
+| 2026-10-05 | honeymoon | 神戸ファッション美術館(兵庫県神戸市東灘区) | https://www.feel-kobe.jp/facilities/0000000022/ | - |
