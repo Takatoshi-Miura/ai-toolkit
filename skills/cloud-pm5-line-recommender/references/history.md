@@ -113,3 +113,4 @@
 | 2026-10-05 | honeymoon | 神戸ファッション美術館(兵庫県神戸市東灘区) | https://www.feel-kobe.jp/facilities/0000000022/ | - |
 | 2026-10-06 | honeymoon | みなとのもり公園(神戸震災復興記念公園)(兵庫県神戸市中央区) | https://www.city.kobe.lg.jp/a10019/kurashi/machizukuri/park/intoro/about.html | - |
 | 2026-10-07 | honeymoon | 須磨海浜公園(兵庫県神戸市須磨区) | https://btimes.jp/hyogo/spot/2618/ | - |
+| 2026-10-08 | honeymoon | 神戸煉瓦倉庫(兵庫県神戸市中央区) | https://happyell.co.jp/spot/kobe-brickwarehouse | - |
