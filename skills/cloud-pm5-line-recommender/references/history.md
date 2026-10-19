@@ -122,3 +122,4 @@
 | 2026-10-14 | honeymoon | 生石公園(兵庫県洲本市) | https://summer.walkerplus.com/odekake/detail/ar0728s393492/ | - |
 | 2026-10-15 | honeymoon | こうべアグリパーク(旧神戸ワイナリー)(兵庫県神戸市西区) | https://happyell.co.jp/spot/kobe-agri-park | - |
 | 2026-10-18 | honeymoon | レディバードロード(兵庫県淡路市) | https://www.kobe-np.co.jp/news/awaji/202305/0016341119.shtml | - |
+| 2026-10-19 | honeymoon | 鉄人28号モニュメント(兵庫県神戸市長田区) | https://www.city.kobe.lg.jp/h53961/kuyakusho/nagataku/jyouhou/tetsujin28.html | - |
