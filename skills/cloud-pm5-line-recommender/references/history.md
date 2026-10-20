@@ -123,3 +123,4 @@
 | 2026-10-15 | honeymoon | こうべアグリパーク(旧神戸ワイナリー)(兵庫県神戸市西区) | https://happyell.co.jp/spot/kobe-agri-park | - |
 | 2026-10-18 | honeymoon | レディバードロード(兵庫県淡路市) | https://www.kobe-np.co.jp/news/awaji/202305/0016341119.shtml | - |
 | 2026-10-19 | honeymoon | 鉄人28号モニュメント(兵庫県神戸市長田区) | https://www.city.kobe.lg.jp/h53961/kuyakusho/nagataku/jyouhou/tetsujin28.html | - |
+| 2026-10-20 | honeymoon | しあわせの村(兵庫県神戸市北区) | https://www.shiawasenomura.jp/ | - |
