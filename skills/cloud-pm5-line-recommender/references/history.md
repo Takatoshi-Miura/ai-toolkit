@@ -124,3 +124,4 @@
 | 2026-10-18 | honeymoon | レディバードロード(兵庫県淡路市) | https://www.kobe-np.co.jp/news/awaji/202305/0016341119.shtml | - |
 | 2026-10-19 | honeymoon | 鉄人28号モニュメント(兵庫県神戸市長田区) | https://www.city.kobe.lg.jp/h53961/kuyakusho/nagataku/jyouhou/tetsujin28.html | - |
 | 2026-10-20 | honeymoon | しあわせの村(兵庫県神戸市北区) | https://www.shiawasenomura.jp/ | - |
+| 2026-10-21 | honeymoon | 神戸ベイクルーズ ロイヤルプリンセス(兵庫県神戸市中央区) | https://www.kobebayc.co.jp/ | - |
