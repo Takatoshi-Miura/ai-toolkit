@@ -129,3 +129,4 @@
 | 2026-10-23 | honeymoon | ハーバーウォーク(兵庫県神戸市中央区) | https://rurubu.jp/andmore/spot/80029596 | - |
 | 2026-10-24 | honeymoon | 神戸北野ノスタ(兵庫県神戸市中央区) | https://kobekitano-nosta.jp/ | - |
 | 2026-10-25 | honeymoon | 人と防災未来センター(兵庫県神戸市中央区) | https://www.dri.ne.jp/ | - |
+| 2026-10-26 | honeymoon | 北野天満神社(兵庫県神戸市中央区) | - | - |
