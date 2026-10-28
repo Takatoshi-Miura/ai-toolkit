@@ -131,3 +131,4 @@
 | 2026-10-25 | honeymoon | 人と防災未来センター(兵庫県神戸市中央区) | https://www.dri.ne.jp/ | - |
 | 2026-10-26 | honeymoon | 北野天満神社(兵庫県神戸市中央区) | - | - |
 | 2026-10-27 | honeymoon | パルシェ 香りの館(兵庫県淡路市) | https://rurubu.jp/andmore/spot/80031023 | - |
+| 2026-10-28 | honeymoon | 長田神社(兵庫県神戸市長田区) | https://nagatajinja.or.jp/ | - |
