@@ -136,3 +136,4 @@
 | 2026-10-30 | honeymoon | 神戸元町商店街(兵庫県神戸市中央区) | https://www.city.kobe.lg.jp/documents/51183/kobemotomachi_pamph.pdf | - |
 | 2026-10-31 | honeymoon | 本願寺神戸別院(モダン寺)(兵庫県神戸市中央区) | - | - |
 | 2026-11-01 | honeymoon | 大倉山公園(兵庫県神戸市中央区) | - | - |
+| 2026-11-02 | honeymoon | 明石 魚の棚商店街(兵庫県明石市) | http://www.uonotana.or.jp/ | - |
