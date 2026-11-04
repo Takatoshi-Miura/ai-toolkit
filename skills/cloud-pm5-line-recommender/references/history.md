@@ -138,3 +138,4 @@
 | 2026-11-01 | honeymoon | 大倉山公園(兵庫県神戸市中央区) | - | - |
 | 2026-11-02 | honeymoon | 明石 魚の棚商店街(兵庫県明石市) | http://www.uonotana.or.jp/ | - |
 | 2026-11-03 | honeymoon | 神戸海軍操練所跡碑(兵庫県神戸市中央区) | https://rurubu.jp/andmore/spot/80029430 | - |
+| 2026-11-04 | honeymoon | 乙仲通り(兵庫県神戸市中央区) | - | - |
