@@ -142,3 +142,4 @@
 | 2026-11-05 | honeymoon | 書寫山圓教寺(兵庫県姫路市) | https://rurubu.jp/andmore/spot/80029910/koyo | - |
 | 2026-11-06 | honeymoon | 六甲ケーブル(兵庫県神戸市灘区) | https://www.rokkosan.com/cable/ | - |
 | 2026-11-07 | honeymoon | 六甲山天覧台(兵庫県神戸市灘区) | https://www.rokkosan.com/ | - |
+| 2026-11-08 | honeymoon | 旧ハンター住宅(兵庫県神戸市灘区) | https://rurubu.jp/andmore/spot/80029154 | - |
