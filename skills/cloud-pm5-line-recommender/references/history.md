@@ -143,3 +143,4 @@
 | 2026-11-06 | honeymoon | 六甲ケーブル(兵庫県神戸市灘区) | https://www.rokkosan.com/cable/ | - |
 | 2026-11-07 | honeymoon | 六甲山天覧台(兵庫県神戸市灘区) | https://www.rokkosan.com/ | - |
 | 2026-11-08 | honeymoon | 旧ハンター住宅(兵庫県神戸市灘区) | https://rurubu.jp/andmore/spot/80029154 | - |
+| 2026-11-09 | honeymoon | トアロード(兵庫県神戸市中央区) | - | - |
