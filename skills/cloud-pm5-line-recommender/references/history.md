@@ -144,3 +144,4 @@
 | 2026-11-07 | honeymoon | 六甲山天覧台(兵庫県神戸市灘区) | https://www.rokkosan.com/ | - |
 | 2026-11-08 | honeymoon | 旧ハンター住宅(兵庫県神戸市灘区) | https://rurubu.jp/andmore/spot/80029154 | - |
 | 2026-11-09 | honeymoon | トアロード(兵庫県神戸市中央区) | - | - |
+| 2026-11-10 | honeymoon | ルミナス神戸2 ランチ・ディナークルーズ(兵庫県神戸市中央区) | https://thekobecruise.com/luminous/ | - |
