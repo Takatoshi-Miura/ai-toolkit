@@ -145,3 +145,4 @@
 | 2026-11-08 | honeymoon | 旧ハンター住宅(兵庫県神戸市灘区) | https://rurubu.jp/andmore/spot/80029154 | - |
 | 2026-11-09 | honeymoon | トアロード(兵庫県神戸市中央区) | - | - |
 | 2026-11-10 | honeymoon | ルミナス神戸2 ランチ・ディナークルーズ(兵庫県神戸市中央区) | https://thekobecruise.com/luminous/ | - |
+| 2026-11-11 | honeymoon | 慶野松原(兵庫県南あわじ市) | https://rurubu.jp/andmore/spot/80030858 | - |
