@@ -147,3 +147,4 @@
 | 2026-11-10 | honeymoon | ルミナス神戸2 ランチ・ディナークルーズ(兵庫県神戸市中央区) | https://thekobecruise.com/luminous/ | - |
 | 2026-11-11 | honeymoon | 慶野松原(兵庫県南あわじ市) | https://rurubu.jp/andmore/spot/80030858 | - |
 | 2026-11-12 | honeymoon | ヨドコウ迎賓館(兵庫県芦屋市) | https://www.yodoko-geihinkan.jp/ | - |
+| 2026-11-13 | honeymoon | 禅坊 靖寧(兵庫県淡路市) | https://zenbo-seinei.com/ | - |
