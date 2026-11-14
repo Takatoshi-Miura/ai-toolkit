@@ -148,3 +148,4 @@
 | 2026-11-11 | honeymoon | 慶野松原(兵庫県南あわじ市) | https://rurubu.jp/andmore/spot/80030858 | - |
 | 2026-11-12 | honeymoon | ヨドコウ迎賓館(兵庫県芦屋市) | https://www.yodoko-geihinkan.jp/ | - |
 | 2026-11-13 | honeymoon | 禅坊 靖寧(兵庫県淡路市) | https://zenbo-seinei.com/ | - |
+| 2026-11-14 | honeymoon | 絵島(兵庫県淡路市) | https://www.awajishima-kanko.jp/manual/detail.html?bid=357 | - |
