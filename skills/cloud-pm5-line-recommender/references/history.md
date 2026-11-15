@@ -149,3 +149,4 @@
 | 2026-11-12 | honeymoon | ヨドコウ迎賓館(兵庫県芦屋市) | https://www.yodoko-geihinkan.jp/ | - |
 | 2026-11-13 | honeymoon | 禅坊 靖寧(兵庫県淡路市) | https://zenbo-seinei.com/ | - |
 | 2026-11-14 | honeymoon | 絵島(兵庫県淡路市) | https://www.awajishima-kanko.jp/manual/detail.html?bid=357 | - |
+| 2026-11-15 | honeymoon | 沢の鶴資料館(兵庫県神戸市灘区) | https://tabi-mag.jp/hg0393/ | - |
