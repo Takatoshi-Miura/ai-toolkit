@@ -152,3 +152,4 @@
 | 2026-11-15 | honeymoon | 沢の鶴資料館(兵庫県神戸市灘区) | https://tabi-mag.jp/hg0393/ | - |
 | 2026-11-16 | honeymoon | ジャズライブ&レストラン ソネ 北野坂(兵庫県神戸市中央区) | https://r.gnavi.co.jp/e2hp16k80000/ | - |
 | 2026-11-17 | honeymoon | 白鶴美術館(兵庫県神戸市東灘区) | https://www.hakutsuru-museum.org/ | - |
+| 2026-11-18 | gacha | 【CAP'in GALLERY】SANRIO CHARACTERS Sugar & Spice | https://news.mynavi.jp/article/20261104-5241795/ | マイメロディ |
