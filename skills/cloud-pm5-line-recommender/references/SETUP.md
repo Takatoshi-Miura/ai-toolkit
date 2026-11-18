@@ -29,7 +29,7 @@
 |--------|------|
 | `LINE_CHANNEL_ACCESS_TOKEN` | LINE Messaging API の channel access token |
 | `LINE_GROUP_ID` | 通知先の LINE グループ ID |
-| `HONEYMOON_CONDITIONS` | 調査条件（JSON文字列）。キーの例: エリア・旅行時期・泊数・予算・出発地・避けたいもの・同行者・補足。値はClaudeデスクトップアプリの環境変数設定画面で直接入力する（このファイルには具体値を記載しない） |
+| `GACHA_KEYWORDS` | 調査対象のキャラクター・作品名（カンマ区切り）。例: `ドラゴンクエスト,マイメロディ,にっこりーの`。値はClaudeデスクトップアプリの環境変数設定画面で直接入力する |
 
 > **注意**: 環境変数は環境（Environment）単位で共有される。複数のルーチン・スキルで同じ環境を使う場合は、変数名の衝突に注意すること。
 
@@ -38,7 +38,7 @@
 ルーチンを一度手動実行し、以下を確認する：
 - LINE グループへの送信が成功すること
 - `references/history.md` に1行追記されること
-- `output/<YYYY-MM-DD>_honeymoon.md` に送信本文が保存されること
+- `output/<YYYY-MM-DD>_gacha.md` に送信本文が保存されること
 - references/history.md・output/ の変更がリポジトリに commit & push されること
 
 ---
@@ -59,14 +59,15 @@
 
 - 本スキルはクラウドルーチン専用。ローカルの Desktop Scheduled Tasks からは呼び出さない（ローカル実行したい場合は既存の `line-scheduled-recommender` スキルを使う）
 - `references/history.md` が肥大化しても動作に支障はないが、気になる場合は古い記録を別ファイルに退避する
-- 調査条件を変更したい場合は、references/CONFIG.md ではなく環境変数 `HONEYMOON_CONDITIONS` を更新する
+- 調査対象のキャラクター・作品を変更したい場合は、references/CONFIG.md ではなく環境変数 `GACHA_KEYWORDS` を更新する
+- 旧テーマ（新婚旅行）用の環境変数 `HONEYMOON_CONDITIONS` は使わなくなったため、環境から削除してよい
 
 ## 変更が起きたときの対応箇所
 
 | やりたいこと | 編集するもの |
 |---|---|
 | 実行時刻を変えたい | クラウドルーチンのスケジュール設定 |
-| 調査条件を変えたい | 環境変数 `HONEYMOON_CONDITIONS` |
+| 調査するキャラクター・作品を変えたい | 環境変数 `GACHA_KEYWORDS` |
 | 宛先グループを変えたい | 環境変数 `LINE_GROUP_ID` |
 | メッセージの見た目を変えたい | references/CONFIG.md のメッセージフォーマット |
 | ロジックを変えたい | SKILL.md |
