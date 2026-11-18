@@ -1,6 +1,6 @@
 ---
 name: cloud-pm5-line-recommender
-description: Claude Code のクラウドルーチンから毎日17時に呼び出され、環境変数の調査条件に基づき新婚旅行先を1件提案してLINEグループに通知する。クラウド実行専用スキル（ローカルのスケジュールタスクでは使わない）。「LINE 通知」「新婚旅行提案」などのキーワードが含まれる場合に使用。
+description: Claude Code のクラウドルーチンから毎日17時に呼び出され、環境変数で指定したキャラクター・作品のガチャガチャ（カプセルトイ）新商品情報を1件調べてLINEグループに通知する。クラウド実行専用スキル（ローカルのスケジュールタスクでは使わない）。「LINE 通知」「ガチャ情報」「ガチャガチャ新商品」などのキーワードが含まれる場合に使用。
 allowed-tools: Read, Write, Bash, WebSearch, TodoWrite
 user-invocable: true
 disable-model-invocation: true
@@ -8,11 +8,11 @@ disable-model-invocation: true
 
 # cloud-pm5-line-recommender
 
-Claude Code のクラウドルーチンから呼び出される想定で、毎日17時の実行時に新婚旅行先を1件調査し、LINE Messaging API でグループに通知する。設定・履歴・出力はすべてスキルディレクトリ内に内包する自己完結構成を取る。
+Claude Code のクラウドルーチンから呼び出される想定で、毎日17時の実行時にガチャガチャ（カプセルトイ）の新商品を1件調査し、LINE Messaging API でグループに通知する。設定・履歴・出力はすべてスキルディレクトリ内に内包する自己完結構成を取る。
 
 ## 役割
 
-クラウドルーチンから渡された調査条件（環境変数）をもとに、新婚旅行先の候補を1件調査・選定し、LINE グループに通知する。
+クラウドルーチンから渡された調査対象キーワード（環境変数 `GACHA_KEYWORDS`）をもとに、該当するガチャガチャの新商品を1件調査・選定し、LINE グループに通知する。
 
 ## 重要：このスキルの使い方
 
@@ -53,16 +53,16 @@ Claude Code のクラウドルーチンから呼び出される想定で、毎�
 
 - `LINE_CHANNEL_ACCESS_TOKEN`: LINE Messaging API のトークン
 - `LINE_GROUP_ID`: 送信先グループID
-- `HONEYMOON_CONDITIONS`: 調査条件（JSON文字列）
+- `GACHA_KEYWORDS`: 調査対象のキャラクター・作品名（カンマ区切り。例: `ドラゴンクエスト,マイメロディ,にっこりーの`）
 
-いずれか未設定の場合は、その旨をエラー出力して終了する（Phase 2 以降には進まない）。
+いずれか未設定（または `GACHA_KEYWORDS` が空）の場合は、その旨をエラー出力して終了する（Phase 2 以降には進まない）。
 
 ### 1-2. references/CONFIG.md・references/history.md の読み込み
 
-- `references/CONFIG.md` を Read ツールで読み込み、除外条件・メッセージフォーマットを把握する
-- `references/history.md` を Read ツールで読み込み、既存の提案先一覧（除外対象）を把握する
+- `references/CONFIG.md` を Read ツールで読み込み、調査対象・除外条件・メッセージフォーマットを把握する
+- `references/history.md` を Read ツールで読み込み、テーマ `gacha` の既存提案一覧（除外対象）を把握する
 
-**成功確認**: 環境変数・調査条件・除外一覧が把握できた → Phase 2 へ
+**成功確認**: 環境変数・キーワード・除外一覧が把握できた → Phase 2 へ
 
 ---
 
@@ -70,7 +70,9 @@ Claude Code のクラウドルーチンから呼び出される想定で、毎�
 
 ### 2-1. 候補の列挙
 
-`HONEYMOON_CONDITIONS` の調査条件に合う候補を WebSearch で 5 件ほど列挙する。
+`GACHA_KEYWORDS` をカンマで分割し、各キーワードについて WebSearch で「{キーワード} ガチャ 新商品」「{キーワード} カプセルトイ 発売」などを検索する。references/CONFIG.md の「調査対象」の定義に合う新商品を、キーワード全体で 5 件ほど列挙する（特定のキーワードに偏らないようにする）。
+
+各候補について、商品名・商品ページ URL・1回の値段・発売時期・ラインナップを把握する。
 
 **成功確認**: 候補が 3 件以上列挙できた → Phase 3 へ
 
@@ -80,11 +82,11 @@ Claude Code のクラウドルーチンから呼び出される想定で、毎�
 
 ### 3-1. 除外処理
 
-Phase 1-2 で読み込んだ references/history.md の行に含まれる候補をすべて除外する。`HONEYMOON_CONDITIONS` の「避けたいもの」に合致するものも除外する。
+Phase 1-2 で読み込んだ references/history.md のテーマ `gacha` の行に含まれる商品（商品名または URL が一致）をすべて除外する。
 
 ### 3-2. ベスト 1 件の選定
 
-残った候補から調査条件との整合性が最も高いものを 1 つ選ぶ。
+残った候補から、発売日が新しい（または発売が近い）もの・公式情報で値段と URL が確認できるものを優先して 1 つ選ぶ。直近の `gacha` 履歴と同じキーワードが続いている場合は、別のキーワードの商品を優先する。
 
 ### 3-3. 本文生成
 
@@ -115,12 +117,12 @@ python3 skills/cloud-pm5-line-recommender/scripts/send_line.py "<本文>" "$LINE
 
 `references/history.md` の末尾に 1 行追記する：
 
-- **送信成功時**: `| YYYY-MM-DD | honeymoon | {選定タイトル/スポット名} | {URLがあれば記載、なければ -} | - |`
-- **送信失敗時**: `| YYYY-MM-DD | honeymoon | - | - | ERROR: {エラー内容} |`
+- **送信成功時**: `| YYYY-MM-DD | gacha | {商品名} | {URLがあれば記載、なければ -} | {該当キーワード} |`
+- **送信失敗時**: `| YYYY-MM-DD | gacha | - | - | ERROR: {エラー内容} |`
 
 ### 5-2. output への保存
 
-送信成功時のみ、送信した本文をそのまま `output/<YYYY-MM-DD>_honeymoon.md` に保存する（送信失敗時は保存しない）。
+送信成功時のみ、送信した本文をそのまま `output/<YYYY-MM-DD>_gacha.md` に保存する（送信失敗時は保存しない）。
 
 ### 5-3. git commit & push・PR作成・自動マージ
 
@@ -166,28 +168,29 @@ git branch -D <作業ブランチ名>
 
 | エラー | 対応 |
 |-------|------|
-| `LINE_CHANNEL_ACCESS_TOKEN` / `LINE_GROUP_ID` / `HONEYMOON_CONDITIONS` が未設定 | クラウドルーチンの環境変数設定を確認する。references/SETUP.md を参照 |
+| `LINE_CHANNEL_ACCESS_TOKEN` / `LINE_GROUP_ID` / `GACHA_KEYWORDS` が未設定 | クラウドルーチンの環境変数設定を確認する。references/SETUP.md を参照 |
 | HTTPError 401 / 403 | `LINE_CHANNEL_ACCESS_TOKEN` を確認・更新 |
 | HTTPError 400 (invalid group ID) | `LINE_GROUP_ID` が正しいか確認 |
-| 候補が除外後に 0 件 | references/history.md の内容を確認し、古い記録のアーカイブを検討 |
+| 候補が除外後に 0 件 | 新商品が見つからなかった旨を history.md に `ERROR: 新商品なし` として記録して終了する（LINE 送信はしない）。継続する場合は `GACHA_KEYWORDS` にキーワードを追加する |
 | `outbound network policy denied api.line.me:443` | クラウド環境のネットワークアクセス設定で `api.line.me` への発信が許可されていない。環境のネットワークポリシー設定でアクセスを許可する |
 | git push 失敗 | クラウドルーチンの環境にリポジトリへの書き込み権限があるか確認 |
 | `gh pr create` / `gh pr merge --auto` 失敗 | PR は作成済みだが自動マージできない場合がある（ブランチ保護等）。手動マージが必要な旨を報告する |
 
 ## 出力形式
 
-- 最終的に「送信成功: honeymoon - {選定内容}」または「送信失敗: {エラー内容}」を報告する
+- 最終的に「送信成功: gacha - {商品名}」または「送信失敗: {エラー内容}」を報告する
 - references/history.md の追記内容、output への保存先パス、git push の成否も合わせて報告する
 
 ## 詳細リファレンス
 
 - **セットアップ**: [references/SETUP.md](references/SETUP.md)
-- **設定（除外条件・メッセージフォーマット）**: [references/CONFIG.md](references/CONFIG.md)
+- **設定（調査対象・除外条件・メッセージフォーマット）**: [references/CONFIG.md](references/CONFIG.md)
 - **メッセージスタイル定義**: [references/chipoyo.md](references/chipoyo.md)
 - **送信履歴**: [references/history.md](references/history.md)
 
 ## 注意事項
 
 - 本スキルはクラウドルーチン専用。ローカルの Desktop Scheduled Tasks からは呼び出さない
-- 調査条件・宛先・トークンはすべて環境変数管理。references/CONFIG.md やこのリポジトリに実データを書き込まない
-- 調査条件を変更したい場合は、クラウドルーチンの環境変数 `HONEYMOON_CONDITIONS` を更新する（ファイル編集は不要）
+- 調査キーワード・宛先・トークンはすべて環境変数管理。references/CONFIG.md やこのリポジトリに実データを書き込まない
+- 調査対象のキャラクター・作品を変更したい場合は、クラウドルーチンの環境変数 `GACHA_KEYWORDS` を更新する（ファイル編集は不要）
+- references/history.md・output/ に残っている `honeymoon` の記録は旧テーマのもの。削除せず残し、除外判定には使わない
