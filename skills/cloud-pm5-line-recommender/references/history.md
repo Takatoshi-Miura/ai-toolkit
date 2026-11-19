@@ -155,3 +155,4 @@
 | 2026-11-18 | gacha | 【CAP'in GALLERY】SANRIO CHARACTERS Sugar & Spice | https://news.mynavi.jp/article/20261104-5241795/ | マイメロディ |
 | 2026-11-18 | gacha | HUNTER×HUNTER めじるしアクセサリー キメラアント編Vol.2 | https://game.watch.impress.co.jp/docs/news/2152968.html | 目印 |
 | 2026-11-18 | gacha | ドラゴンクエスト あつめて！モンスターギャラリー ～40周年記念バージョンVol.2～ | https://www.jp.square-enix.com/goods/capsule-toys/ | ドラゴンクエスト |
+| 2026-11-19 | gacha | サンリオキャラクターズ 雪だるまふわふわめじるしアクセサリー | https://www.inside-games.jp/article/2026/11/04/190332.html | マイメロディ,目印 |
