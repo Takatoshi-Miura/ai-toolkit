@@ -157,3 +157,4 @@
 | 2026-11-18 | gacha | ドラゴンクエスト あつめて！モンスターギャラリー ～40周年記念バージョンVol.2～ | https://www.jp.square-enix.com/goods/capsule-toys/ | ドラゴンクエスト |
 | 2026-11-19 | gacha | サンリオキャラクターズ 雪だるまふわふわめじるしアクセサリー | https://www.inside-games.jp/article/2026/11/04/190332.html | マイメロディ,目印 |
 | 2026-11-20 | gacha | たまごっち めじるしアクセサリー 30th anniversary edition | https://news.mynavi.jp/article/20261021-5138941/ | たまごっち,目印 |
+| 2026-11-21 | gacha | サンリオキャラクターズ なかよしチャーム オーロラMIX | https://hobby.dengeki.com/news/3201393/ | マイメロディ |
