@@ -160,3 +160,4 @@
 | 2026-11-21 | gacha | サンリオキャラクターズ なかよしチャーム オーロラMIX | https://hobby.dengeki.com/news/3201393/ | マイメロディ |
 | 2026-11-22 | gacha | カプセリウム ドラゴンクエスト（再販） | https://gashapon.jp/products/detail.php?jan_code=4582769979019000 | ドラゴンクエスト |
 | 2026-11-23 | gacha | サンリオキャラクターズ バレリーナめじるしアクセサリー | https://gashapon.jp/products/detail.php?jan_code=4582770054774000 | マイメロディ,目印 |
+| 2026-11-24 | gacha | たまごっち スイングケース（再販） | https://news.mynavi.jp/article/20261110-5216460/ | たまごっち |
