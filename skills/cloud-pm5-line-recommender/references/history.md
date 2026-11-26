@@ -162,3 +162,4 @@
 | 2026-11-23 | gacha | サンリオキャラクターズ バレリーナめじるしアクセサリー | https://gashapon.jp/products/detail.php?jan_code=4582770054774000 | マイメロディ,目印 |
 | 2026-11-24 | gacha | たまごっち スイングケース（再販） | https://news.mynavi.jp/article/20261110-5216460/ | たまごっち |
 | 2026-11-25 | gacha | ドラゴンクエスト つみつみスライム小物入れ キングスライムたちも登場編 | https://zawatto.com/news/dq-tsumitsumi-slime-kingslime-2026 | ドラゴンクエスト |
+| 2026-11-26 | gacha | サンリオキャラクターズ Holidayオーナメントチャーム | https://gashapon.jp/products/detail.php?jan_code=4582770054767000 | マイメロディ |
