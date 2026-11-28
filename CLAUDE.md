@@ -10,7 +10,8 @@ ai-toolkit/
 ├── .github/workflows/ # GitHub Actions ワークフロー（定期実行タスク用）
 ├── output-style/      # 出力スタイル設定（キャラクター別応答スタイル）
 ├── scripts/           # 自動化スクリプト（Python等）
-└── skills/            # Skills定義（自動起動プロンプト）
+├── skills/            # Skills定義（自動起動プロンプト）
+└── cloud-routines/    # Claude.aiのクラウドルーチン用スキル（zipでアップロード）
 ```
 
 ## リソース作成ルール
@@ -18,6 +19,7 @@ ai-toolkit/
 ### 命名規則
 
 - スキル: `skills/<name>/SKILL.md`（kebab-case）
+- クラウドルーチン用スキル: `cloud-routines/<name>/SKILL.md`（kebab-case）。`CONFIG.md` には個人の値を書かずテンプレートにする
 
 ## プロンプト記述ルール
 
