@@ -13,6 +13,7 @@ ai-toolkit/
 ├── .github/
 │   └── workflows/     <- GitHub Actions ワークフロー定義
 ├── skills/            <- Claude Code Skills（自動発動する専門スキル）
+├── cloud-routines/    <- Claude.aiにアップロードしてクラウドルーチンで動かすスキル
 ├── output-style/      <- Claude Codeの出力スタイル設定（キャラクター別応答スタイル）
 ├── scripts/           <- 自動化スクリプト（Python等）
 └── README.md          <- このファイル
@@ -41,4 +42,14 @@ Claude Code のルーチン実行が起動主体のスキル。
 | 開発 | `sportsnote-android-full-cycle` | `sportsnote-android-maintainer`の3フローを1回ずつ直列実行するオーケストレーター |
 
 > セットアップ手順は各スキルの `SETUP.md` を参照。
+
+## クラウドルーチン一覧
+
+`cloud-routines/` 配下のスキルは、zipにしてClaude.aiにアップロードし、Claude.aiのクラウドルーチンから実行する（Macの起動状態に関係なく動く）。シートやDriveの読み書きはClaude.aiのコネクタで行い、実行ごとに消えるデータはスキル外（スプレッドシート・Drive・アーティファクト）に置く。
+
+| カテゴリ | スキル名 | 説明 |
+|---------|---------|------|
+| 健康管理 | `health-advisor` | 「食事」シートの摂取カロリー・PFC・歩数・睡眠時間を毎朝補完する記録フローと、健康診断結果PDFとガイドを踏まえた週次レポートをアーティファクト「からだ週報」に公開するレポートフローの2本立て |
+
+> `CONFIG.md` はテンプレート（`<...>` を自分の値に置き換える）。zipの作成・アップロード・ルーチン登録の手順は各スキルの `SETUP.md` を参照。
 
